@@ -18,7 +18,7 @@ void InputMeasurement::init() {
         while (1); // Halt execution if sensor is not found
     }
 
-    // Configure the shunt resistor value
+    // Configure the shunt resistor valuelalalallalalalaa
     ina228.setShunt(ShuntResistor);
 }
 
