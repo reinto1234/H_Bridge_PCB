@@ -4,6 +4,6 @@ Inpute Voltage 24V
 Input current 10A
 Power: 240W
 
-##General
+## General
 The H_Bridge_PCB_Design includes the whole PCB design in KiCad
 The H_Bridge_PCB_Code contains the Code for the ESP32
