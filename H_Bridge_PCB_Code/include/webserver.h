@@ -8,6 +8,8 @@
 #include <LittleFS.h>
 #include <WiFi.h>
 
+//no comments yet
+
 class HBridgeWebServer {
 public:
     static void initWiFi();
