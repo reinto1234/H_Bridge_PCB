@@ -1729,7 +1729,7 @@
 				)
 			)
 		)
-		(symbol "SamacSys_Parts:MKP1847H55025JK2"
+		(symbol "SamacSys_Parts:MKS4C042204C00KSSD"
 			(pin_names hide)
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -1743,7 +1743,7 @@
 					(justify left top)
 				)
 			)
-			(property "Value" "MKP1847H55025JK2"
+			(property "Value" "MKS4C042204C00KSSD"
 				(at 8.89 3.81 0)
 				(effects
 					(font
@@ -1752,7 +1752,7 @@
 					(justify left top)
 				)
 			)
-			(property "Footprint" "MKP1847H55025JK2"
+			(property "Footprint" "MKS4C042204C00KSSD"
 				(at 8.89 -96.19 0)
 				(effects
 					(font
@@ -1762,7 +1762,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "https://www.vishay.com/docs/26067/mkp1847hacfiltering.pdf"
+			(property "Datasheet" "https://componentsearchengine.com/Datasheets/2/MKS4C042204C00KSSD.pdf"
 				(at 8.89 -196.19 0)
 				(effects
 					(font
@@ -1772,7 +1772,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Vishay MKP1847H Polypropylene Film Capacitor, 250V ac, +/-5%, 5uF, Through Hole"
+			(property "Description" "Film Capacitors 63V 2.2uF10% P15 PCM15"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1781,7 +1781,7 @@
 					(hide yes)
 				)
 			)
-			(property "Height" "31"
+			(property "Height" "12.5"
 				(at 8.89 -396.19 0)
 				(effects
 					(font
@@ -1791,7 +1791,7 @@
 					(hide yes)
 				)
 			)
-			(property "Mouser Part Number" "75-MKP1847H55025JK2"
+			(property "Mouser Part Number" "505-MKS42.2/63/10P15"
 				(at 8.89 -496.19 0)
 				(effects
 					(font
@@ -1801,7 +1801,7 @@
 					(hide yes)
 				)
 			)
-			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Vishay-Roederstein/MKP1847H55025JK2?qs=X2Il8U3XE3BN5R5UG4IfSg%3D%3D"
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/WIMA/MKS4C042204C00KSSD?qs=qvPXrfw3upO0dVDnGoLGCA%3D%3D"
 				(at 8.89 -596.19 0)
 				(effects
 					(font
@@ -1811,7 +1811,7 @@
 					(hide yes)
 				)
 			)
-			(property "Manufacturer_Name" "Vishay"
+			(property "Manufacturer_Name" "WIMA"
 				(at 8.89 -696.19 0)
 				(effects
 					(font
@@ -1821,7 +1821,7 @@
 					(hide yes)
 				)
 			)
-			(property "Manufacturer_Part_Number" "MKP1847H55025JK2"
+			(property "Manufacturer_Part_Number" "MKS4C042204C00KSSD"
 				(at 8.89 -796.19 0)
 				(effects
 					(font
@@ -1831,7 +1831,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "MKP1847H55025JK2_1_1"
+			(symbol "MKS4C042204C00KSSD_1_1"
 				(polyline
 					(pts
 						(xy 5.08 0) (xy 5.588 0)
@@ -2742,7 +2742,7 @@
 		(uuid "018188a8-8899-4e62-a3b2-f1b4d408d22f")
 	)
 	(junction
-		(at 123.825 171.45)
+		(at 136.525 52.705)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0275c61b-fa05-422e-829f-7d160630f391")
@@ -2832,7 +2832,7 @@
 		(uuid "45540fb6-f03e-4fce-a179-b515768eb5ae")
 	)
 	(junction
-		(at 80.645 168.91)
+		(at 93.345 50.165)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "45f1e1f8-6a27-4d00-8fc9-99fee8dd7e23")
@@ -2880,16 +2880,16 @@
 		(uuid "5f915620-6e83-4bc6-aa28-b0dd1f83d2b4")
 	)
 	(junction
-		(at 215.265 140.335)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "62285234-af94-4a7c-be61-863416c8145d")
-	)
-	(junction
 		(at 256.54 113.665)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6ac08d35-3bd6-4ac9-96d7-2860db74b1a6")
+	)
+	(junction
+		(at 64.135 142.875)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "736fd777-ad9e-47ae-88f8-17cd6b0b2b32")
 	)
 	(junction
 		(at 104.775 83.185)
@@ -2946,7 +2946,7 @@
 		(uuid "87bea7d4-ffef-40a7-8ee0-6ae538da7c52")
 	)
 	(junction
-		(at 123.19 147.32)
+		(at 135.89 28.575)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8839959e-1f62-4f6d-846b-d4c07bd85a4a")
@@ -2988,7 +2988,7 @@
 		(uuid "a3d621d4-fa1a-4a9d-b015-be0d1231628e")
 	)
 	(junction
-		(at 76.835 144.78)
+		(at 89.535 26.035)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a57faf34-5890-4be9-8c5d-115c53c5f2b2")
@@ -3006,7 +3006,7 @@
 		(uuid "aa6ea9bc-66d1-4de0-b708-6f64d1fce28c")
 	)
 	(junction
-		(at 77.47 168.91)
+		(at 90.17 50.165)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ab0b0824-70ce-45ff-bd23-ba3e3021f6d2")
@@ -3048,6 +3048,12 @@
 		(uuid "c3cf7fff-1876-4de3-bfb7-76b2fe03cfc7")
 	)
 	(junction
+		(at 41.91 143.51)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c834459f-b4e2-46c7-b57d-ca2542f4be81")
+	)
+	(junction
 		(at 222.885 83.185)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3060,16 +3066,28 @@
 		(uuid "d21d1c08-f7c4-435c-ae73-eff6b6da2924")
 	)
 	(junction
+		(at 64.135 166.37)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d9c15f0b-cfe4-415b-976e-c9691cbb2f6f")
+	)
+	(junction
 		(at 171.45 98.425)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "db92f7dc-7847-4313-a631-6c0b503ae840")
 	)
 	(junction
-		(at 80.01 144.78)
+		(at 92.71 26.035)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dcbe0a2d-3155-4435-9722-db2b9353ff31")
+	)
+	(junction
+		(at 41.91 166.37)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e6c1d1f0-4b8f-42b5-9c07-2c1ad4a6903a")
 	)
 	(junction
 		(at 131.445 99.06)
@@ -3082,6 +3100,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ea13b4fc-6728-4112-bbc5-54f51138af14")
+	)
+	(junction
+		(at 216.535 140.335)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f2f20d77-3ba3-412d-be12-da6c59fa7709")
 	)
 	(junction
 		(at 29.21 73.66)
@@ -3117,6 +3141,16 @@
 	)
 	(wire
 		(pts
+			(xy 81.915 142.875) (xy 72.39 142.875)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "01f3b818-007f-46ee-a32f-81d75722144c")
+	)
+	(wire
+		(pts
 			(xy 40.64 109.22) (xy 40.64 114.3)
 		)
 		(stroke
@@ -3134,6 +3168,16 @@
 			(type default)
 		)
 		(uuid "033eeeb6-e892-4566-b334-008dbdead3cc")
+	)
+	(wire
+		(pts
+			(xy 81.915 166.37) (xy 74.295 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03a6aabe-2fd3-486f-a01a-5d12ce778afe")
 	)
 	(wire
 		(pts
@@ -3197,16 +3241,6 @@
 	)
 	(wire
 		(pts
-			(xy 215.265 153.035) (xy 215.265 152.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "17eec7c7-27d1-4bd7-b338-ca61c7cd234d")
-	)
-	(wire
-		(pts
 			(xy 120.015 73.025) (xy 131.445 73.025)
 		)
 		(stroke
@@ -3237,7 +3271,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.845 144.78) (xy 38.735 144.78)
+			(xy 42.545 26.035) (xy 51.435 26.035)
 		)
 		(stroke
 			(width 0)
@@ -3277,7 +3311,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.035 52.07) (xy 151.765 52.07)
+			(xy 159.385 67.31) (xy 158.115 67.31)
 		)
 		(stroke
 			(width 0)
@@ -3287,7 +3321,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 140.97) (xy 80.01 144.78)
+			(xy 92.71 22.225) (xy 92.71 26.035)
 		)
 		(stroke
 			(width 0)
@@ -3317,7 +3351,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 147.32) (xy 127.635 147.32)
+			(xy 135.89 28.575) (xy 140.335 28.575)
 		)
 		(stroke
 			(width 0)
@@ -3367,13 +3401,23 @@
 	)
 	(wire
 		(pts
-			(xy 74.295 147.32) (xy 76.835 147.32)
+			(xy 86.995 28.575) (xy 89.535 28.575)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "28032377-6466-4b06-b60c-139f10e82a51")
+	)
+	(wire
+		(pts
+			(xy 81.915 147.955) (xy 81.915 142.875)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "289ee3c6-2b96-40f7-8430-b0a2039ca244")
 	)
 	(wire
 		(pts
@@ -3397,7 +3441,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 168.91) (xy 77.47 168.91)
+			(xy 87.63 50.165) (xy 90.17 50.165)
 		)
 		(stroke
 			(width 0)
@@ -3444,6 +3488,16 @@
 			(type default)
 		)
 		(uuid "34ee8794-66e3-4803-830d-f15ddf120b3f")
+	)
+	(wire
+		(pts
+			(xy 71.755 166.37) (xy 64.135 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "35ac8fe1-18d3-412b-bdef-739b4728eb5d")
 	)
 	(wire
 		(pts
@@ -3627,6 +3681,16 @@
 	)
 	(wire
 		(pts
+			(xy 57.15 166.37) (xy 64.135 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "53cb644b-1ad1-4874-a8c7-4fd9a37bd642")
+	)
+	(wire
+		(pts
 			(xy 53.975 101.6) (xy 50.8 101.6)
 		)
 		(stroke
@@ -3667,6 +3731,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 142.875) (xy 64.135 142.875)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c7a7158-7015-4872-9860-071d522a1127")
+	)
+	(wire
+		(pts
 			(xy 265.43 85.725) (xy 265.43 113.03)
 		)
 		(stroke
@@ -3674,6 +3748,16 @@
 			(type default)
 		)
 		(uuid "5dcfba84-2007-4933-a18d-3f39610a07cc")
+	)
+	(wire
+		(pts
+			(xy 24.13 166.37) (xy 33.02 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5f0ad31c-9f36-48ef-8d6e-1f3ea0d03243")
 	)
 	(wire
 		(pts
@@ -3747,6 +3831,16 @@
 	)
 	(wire
 		(pts
+			(xy 216.535 140.335) (xy 227.33 140.335)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "683c8281-0f68-4712-b2ef-2582b25751f4")
+	)
+	(wire
+		(pts
 			(xy 171.45 121.92) (xy 151.13 121.92)
 		)
 		(stroke
@@ -3767,7 +3861,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.765 47.625) (xy 151.765 52.07)
+			(xy 158.115 62.865) (xy 158.115 67.31)
 		)
 		(stroke
 			(width 0)
@@ -3807,13 +3901,23 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 168.91) (xy 39.37 168.91)
+			(xy 43.18 50.165) (xy 52.07 50.165)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "7220903f-94c4-4a79-8c60-5790aabeca62")
+	)
+	(wire
+		(pts
+			(xy 215.265 149.225) (xy 215.265 153.035)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "725f6fa8-ec20-44d1-a840-45f0ef00543c")
 	)
 	(wire
 		(pts
@@ -3857,6 +3961,26 @@
 	)
 	(wire
 		(pts
+			(xy 81.915 166.37) (xy 81.915 160.655)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7bab5525-a6d3-4c4f-8671-d26042c4a9d7")
+	)
+	(wire
+		(pts
+			(xy 36.195 143.51) (xy 41.91 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7fbd498b-ef31-4ad5-984a-dc312364fe7e")
+	)
+	(wire
+		(pts
 			(xy 43.18 114.3) (xy 53.975 114.3)
 		)
 		(stroke
@@ -3887,6 +4011,16 @@
 	)
 	(wire
 		(pts
+			(xy 55.245 142.875) (xy 64.135 142.875)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "82dcc2ba-b9fa-45a6-bd54-c80681b65c9f")
+	)
+	(wire
+		(pts
 			(xy 171.45 121.92) (xy 200.66 121.92)
 		)
 		(stroke
@@ -3897,7 +4031,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.835 147.32) (xy 76.835 144.78)
+			(xy 89.535 28.575) (xy 89.535 26.035)
 		)
 		(stroke
 			(width 0)
@@ -3907,7 +4041,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.295 144.78) (xy 76.835 144.78)
+			(xy 86.995 26.035) (xy 89.535 26.035)
 		)
 		(stroke
 			(width 0)
@@ -3937,7 +4071,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.825 171.45) (xy 128.27 171.45)
+			(xy 136.525 52.705) (xy 140.97 52.705)
 		)
 		(stroke
 			(width 0)
@@ -3987,6 +4121,16 @@
 	)
 	(wire
 		(pts
+			(xy 41.91 143.51) (xy 41.91 147.955)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "92ef99f6-91cf-43fe-9aa6-904a48dd419d")
+	)
+	(wire
+		(pts
 			(xy 19.05 99.06) (xy 35.56 99.06)
 		)
 		(stroke
@@ -4017,6 +4161,16 @@
 	)
 	(wire
 		(pts
+			(xy 52.705 143.51) (xy 52.705 142.875)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a2da049-118e-4916-a9b3-468a7fe09843")
+	)
+	(wire
+		(pts
 			(xy 264.16 100.965) (xy 264.16 113.03)
 		)
 		(stroke
@@ -4037,7 +4191,7 @@
 	)
 	(wire
 		(pts
-			(xy 80.645 168.91) (xy 88.265 168.91)
+			(xy 93.345 50.165) (xy 100.965 50.165)
 		)
 		(stroke
 			(width 0)
@@ -4054,6 +4208,16 @@
 			(type default)
 		)
 		(uuid "9db30c4a-7d58-49a1-8ca5-5e9e1908aad8")
+	)
+	(wire
+		(pts
+			(xy 41.91 166.37) (xy 35.56 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9dc7beab-c493-4eda-b6c8-4be06c10aaff")
 	)
 	(wire
 		(pts
@@ -4137,6 +4301,16 @@
 	)
 	(wire
 		(pts
+			(xy 41.91 160.655) (xy 41.91 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "add7c6c0-f253-4bf6-a68c-94ce77d6b20b")
+	)
+	(wire
+		(pts
 			(xy 80.01 104.14) (xy 80.01 113.03)
 		)
 		(stroke
@@ -4147,7 +4321,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 171.45) (xy 77.47 171.45)
+			(xy 87.63 52.705) (xy 90.17 52.705)
 		)
 		(stroke
 			(width 0)
@@ -4207,6 +4381,16 @@
 	)
 	(wire
 		(pts
+			(xy 216.535 144.78) (xy 216.535 140.335)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b2c63edb-2bfb-4572-b046-fdba2095db58")
+	)
+	(wire
+		(pts
 			(xy 256.54 69.215) (xy 266.065 69.215)
 		)
 		(stroke
@@ -4237,7 +4421,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.825 168.91) (xy 123.825 171.45)
+			(xy 136.525 50.165) (xy 136.525 52.705)
 		)
 		(stroke
 			(width 0)
@@ -4327,6 +4511,16 @@
 	)
 	(wire
 		(pts
+			(xy 64.135 142.875) (xy 64.135 147.955)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3b18c66-dff0-4f2c-9971-16b7e420bf55")
+	)
+	(wire
+		(pts
 			(xy 99.06 83.185) (xy 104.775 83.185)
 		)
 		(stroke
@@ -4357,7 +4551,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.835 144.78) (xy 80.01 144.78)
+			(xy 89.535 26.035) (xy 92.71 26.035)
 		)
 		(stroke
 			(width 0)
@@ -4417,6 +4611,16 @@
 	)
 	(wire
 		(pts
+			(xy 33.655 143.51) (xy 33.655 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d2fd5be2-9c27-4714-a80a-e064a713cab6")
+	)
+	(wire
+		(pts
 			(xy 256.54 69.215) (xy 256.54 83.185)
 		)
 		(stroke
@@ -4454,6 +4658,16 @@
 			(type default)
 		)
 		(uuid "d7419db3-e0ba-4add-a604-90278f2e88f4")
+	)
+	(wire
+		(pts
+			(xy 54.61 166.37) (xy 41.91 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7ecef5e-3fea-4710-ad43-59893643168b")
 	)
 	(wire
 		(pts
@@ -4527,13 +4741,23 @@
 	)
 	(wire
 		(pts
-			(xy 215.265 140.335) (xy 227.33 140.335)
+			(xy 215.265 140.335) (xy 216.535 140.335)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "e1a45828-7dcf-4003-ae7e-b05d455df09d")
+	)
+	(wire
+		(pts
+			(xy 64.135 166.37) (xy 64.135 160.655)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e27f4fc2-f1f5-4c07-9e03-85412ebc8093")
 	)
 	(wire
 		(pts
@@ -4597,7 +4821,7 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 171.45) (xy 77.47 168.91)
+			(xy 90.17 52.705) (xy 90.17 50.165)
 		)
 		(stroke
 			(width 0)
@@ -4617,7 +4841,17 @@
 	)
 	(wire
 		(pts
-			(xy 77.47 168.91) (xy 80.645 168.91)
+			(xy 214.63 144.78) (xy 216.535 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ece3646e-b8e3-47f3-9eb7-884a28b4f527")
+	)
+	(wire
+		(pts
+			(xy 90.17 50.165) (xy 93.345 50.165)
 		)
 		(stroke
 			(width 0)
@@ -4634,6 +4868,16 @@
 			(type default)
 		)
 		(uuid "f0bcf138-3714-450e-84f0-f66ffbeaf3f5")
+	)
+	(wire
+		(pts
+			(xy 52.705 143.51) (xy 41.91 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f158b57e-abb0-4d7a-89a8-ad30b36e82b2")
 	)
 	(wire
 		(pts
@@ -4657,7 +4901,27 @@
 	)
 	(wire
 		(pts
-			(xy 80.645 165.1) (xy 80.645 168.91)
+			(xy 214.63 149.225) (xy 215.265 149.225)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2b3c03f-48f5-4884-8547-baacc152e0db")
+	)
+	(wire
+		(pts
+			(xy 24.765 143.51) (xy 33.655 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f43a747f-3722-485b-bb7a-cba7db27b232")
+	)
+	(wire
+		(pts
+			(xy 93.345 46.355) (xy 93.345 50.165)
 		)
 		(stroke
 			(width 0)
@@ -4667,7 +4931,17 @@
 	)
 	(wire
 		(pts
-			(xy 80.01 144.78) (xy 87.63 144.78)
+			(xy 36.195 143.51) (xy 36.195 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f581f6e6-7387-4385-964d-3df3e8f84f94")
+	)
+	(wire
+		(pts
+			(xy 92.71 26.035) (xy 100.33 26.035)
 		)
 		(stroke
 			(width 0)
@@ -4677,7 +4951,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 144.78) (xy 123.19 147.32)
+			(xy 135.89 26.035) (xy 135.89 28.575)
 		)
 		(stroke
 			(width 0)
@@ -4803,7 +5077,7 @@
 	)
 	(global_label "Out+"
 		(shape input)
-		(at 80.01 140.97 90)
+		(at 92.71 22.225 90)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4813,7 +5087,7 @@
 		)
 		(uuid "4c4e5bfe-997f-4bd6-9025-daa800025374")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 80.01 133.2072 90)
+			(at 92.71 14.4622 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4847,7 +5121,7 @@
 	)
 	(global_label "Out-"
 		(shape input)
-		(at 80.645 165.1 90)
+		(at 93.345 46.355 90)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4857,7 +5131,7 @@
 		)
 		(uuid "627f461b-91f0-4f73-ab07-5e4abedb989e")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 80.645 157.3372 90)
+			(at 93.345 38.5922 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4869,7 +5143,7 @@
 	)
 	(global_label "SO1"
 		(shape input)
-		(at 30.48 168.91 180)
+		(at 43.18 50.165 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4879,7 +5153,29 @@
 		)
 		(uuid "6bc1553b-f918-4c3c-bdf7-83b2dc6fc881")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 23.7453 168.91 0)
+			(at 36.4453 50.165 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "Cout-"
+		(shape input)
+		(at 24.13 166.37 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7b4fbfb2-95be-440d-ac8b-39183d70a1cc")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 15.2787 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4902,6 +5198,28 @@
 		(uuid "83d7a9b3-8d43-4649-9a0e-157df7c34539")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 160.5122 93.345 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "Cout+"
+		(shape input)
+		(at 24.765 143.51 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "85eae93f-7e8d-40d2-b7ac-7b688961b8f3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 15.9137 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4935,7 +5253,7 @@
 	)
 	(global_label "SO1"
 		(shape input)
-		(at 29.845 144.78 180)
+		(at 42.545 26.035 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -4945,7 +5263,7 @@
 		)
 		(uuid "9e90c294-e790-4304-9717-264ce898bb22")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 23.1103 144.78 0)
+			(at 35.8103 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5045,7 +5363,7 @@
 	)
 	(global_label "SI1"
 		(shape output)
-		(at 153.035 52.07 0)
+		(at 159.385 67.31 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -5055,7 +5373,7 @@
 		)
 		(uuid "b69520cb-6501-4ed8-851f-d48561df9afd")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 159.044 52.07 0)
+			(at 165.394 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5131,6 +5449,28 @@
 			)
 		)
 	)
+	(global_label "Cout+"
+		(shape input)
+		(at 214.63 144.78 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "d23030e3-b868-45e9-a49e-b753f19c8bef")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 205.7787 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SI2"
 		(shape input)
 		(at 238.125 146.05 180)
@@ -5144,6 +5484,28 @@
 		(uuid "d572376f-9b16-4a1a-8510-7a8c36ec3c09")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 232.116 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "Cout-"
+		(shape input)
+		(at 214.63 149.225 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "dc0e7373-24ff-4387-8ac4-096d8e934326")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 205.7787 149.225 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5823,6 +6185,146 @@
 		)
 	)
 	(symbol
+		(lib_id "SamacSys_Parts:TMS-102-21-G-S")
+		(at 57.15 166.37 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "1a5be0f8-e7d3-4d3b-bca0-c93db7ce142f")
+		(property "Reference" "J7"
+			(at 61.595 175.2599 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TMS-102-21-G-S"
+			(at 61.595 177.7999 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TMS-102-YY-XX-S"
+			(at -37.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://suddendocs.samtec.com/prints/tms-1xx-xx-xx-x-xx-xxx-mkt.pdf"
+			(at -137.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "2 Position, Single-Row .050&quot; x .100&quot; Micro Terminal Strip"
+			(at 57.15 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at -337.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "200-TMS10221GS"
+			(at -437.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Samtec/TMS-102-21-G-S?qs=0lQeLiL1qya3I3g9lQbxtA%3D%3D"
+			(at -537.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "SAMTEC"
+			(at -637.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TMS-102-21-G-S"
+			(at -737.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LSCS Part#" ""
+			(at 57.15 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Lcsc Part#" ""
+			(at 57.15 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "4fa9c572-d8a8-4b61-bea0-7a0d63f663d6")
+		)
+		(pin "1"
+			(uuid "f7e5e2a4-5780-4367-a02d-ed24ccc45fd8")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "J7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 104.775 88.9 0)
 		(unit 1)
@@ -6155,7 +6657,7 @@
 	)
 	(symbol
 		(lib_id "SamacSys_Parts:FSV2060L")
-		(at 87.63 144.78 0)
+		(at 100.33 26.035 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6164,7 +6666,7 @@
 		(fields_autoplaced yes)
 		(uuid "1ffb8eea-453e-45e3-929d-cb6c813aff04")
 		(property "Reference" "D2"
-			(at 105.41 137.16 0)
+			(at 118.11 18.415 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6172,7 +6674,7 @@
 			)
 		)
 		(property "Value" "FSV2060L"
-			(at 105.41 139.7 0)
+			(at 118.11 20.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6180,7 +6682,7 @@
 			)
 		)
 		(property "Footprint" "FSV2060L"
-			(at 119.38 239.7 0)
+			(at 132.08 120.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6190,7 +6692,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/FSV2060L-D.PDF"
-			(at 119.38 339.7 0)
+			(at 132.08 220.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6200,7 +6702,7 @@
 			)
 		)
 		(property "Description" "Qualified with Reflow (J-STD-020) and Solder Temperature 260C Classification; Low Thermal Resistance; RoHS Compliant; Lead Free in Compliance with EU RoHS 2011/65/EU Directive; Very Low Forward Voltage Drop; Very Low Profile: Typical Height of 1.1 mm; Green Molding Compound as per IEC61249 Standard"
-			(at 87.63 144.78 0)
+			(at 100.33 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6209,7 +6711,7 @@
 			)
 		)
 		(property "Height" "1"
-			(at 119.38 539.7 0)
+			(at 132.08 420.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6219,7 +6721,7 @@
 			)
 		)
 		(property "Mouser Part Number" "512-FSV2060L"
-			(at 119.38 639.7 0)
+			(at 132.08 520.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6229,7 +6731,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/onsemi-Fairchild/FSV2060L?qs=bY1dm4K8r4UoO1QAcrTxcg%3D%3D"
-			(at 119.38 739.7 0)
+			(at 132.08 620.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6239,7 +6741,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "onsemi"
-			(at 119.38 839.7 0)
+			(at 132.08 720.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6249,7 +6751,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "FSV2060L"
-			(at 119.38 939.7 0)
+			(at 132.08 820.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6259,7 +6761,7 @@
 			)
 		)
 		(property "LCSC Part #" ""
-			(at 87.63 144.78 0)
+			(at 100.33 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6268,7 +6770,7 @@
 			)
 		)
 		(property "LCSC Part#" "C110669"
-			(at 87.63 144.78 0)
+			(at 100.33 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6277,7 +6779,7 @@
 			)
 		)
 		(property "LSCS Part#" ""
-			(at 87.63 144.78 0)
+			(at 100.33 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6286,7 +6788,7 @@
 			)
 		)
 		(property "Lcsc Part#" ""
-			(at 87.63 144.78 0)
+			(at 100.33 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6588,6 +7090,128 @@
 		)
 	)
 	(symbol
+		(lib_id "SamacSys_Parts:MKS4C042204C00KSSD")
+		(at 81.915 160.655 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "25f8b77f-a591-4fbd-be2d-3daaa74fd92e")
+		(property "Reference" "C22"
+			(at 86.36 153.0349 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "MKS4C042204C00KSSD"
+			(at 86.36 155.5749 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:MKS4C042204C00KSSD"
+			(at 178.105 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://componentsearchengine.com/Datasheets/2/MKS4C042204C00KSSD.pdf"
+			(at 278.105 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "Film Capacitors 63V 2.2uF10% P15 PCM15"
+			(at 81.915 160.655 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "12.5"
+			(at 478.105 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "505-MKS42.2/63/10P15"
+			(at 578.105 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/WIMA/MKS4C042204C00KSSD?qs=qvPXrfw3upO0dVDnGoLGCA%3D%3D"
+			(at 678.105 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "WIMA"
+			(at 778.105 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "MKS4C042204C00KSSD"
+			(at 878.105 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "77f47c67-fe96-4755-8632-4bee0430992a")
+		)
+		(pin "1"
+			(uuid "021be702-fbde-4138-845f-365e78093822")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "C22")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 67.945 62.23 270)
 		(unit 1)
@@ -6683,7 +7307,7 @@
 	)
 	(symbol
 		(lib_id "power:+24V")
-		(at 151.765 47.625 0)
+		(at 158.115 62.865 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6692,7 +7316,7 @@
 		(fields_autoplaced yes)
 		(uuid "36cd42f5-e8b7-421d-ac7c-938fcb8161db")
 		(property "Reference" "#PWR06"
-			(at 151.765 51.435 0)
+			(at 158.115 66.675 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6701,7 +7325,7 @@
 			)
 		)
 		(property "Value" "+24V"
-			(at 151.765 42.545 0)
+			(at 158.115 57.785 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6709,7 +7333,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 151.765 47.625 0)
+			(at 158.115 62.865 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6718,7 +7342,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 151.765 47.625 0)
+			(at 158.115 62.865 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6727,7 +7351,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+24V\""
-			(at 151.765 47.625 0)
+			(at 158.115 62.865 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6742,6 +7366,408 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "#PWR06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:TMS-102-21-G-S")
+		(at 33.655 142.24 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "41484f22-09c0-42f9-a230-91a51e3dc677")
+		(property "Reference" "J11"
+			(at 40.005 130.8099 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "TMS-102-21-G-S"
+			(at 40.005 133.3499 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TMS-102-YY-XX-S"
+			(at 128.575 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://suddendocs.samtec.com/prints/tms-1xx-xx-xx-x-xx-xxx-mkt.pdf"
+			(at 228.575 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "2 Position, Single-Row .050&quot; x .100&quot; Micro Terminal Strip"
+			(at 33.655 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 428.575 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "200-TMS10221GS"
+			(at 528.575 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Samtec/TMS-102-21-G-S?qs=0lQeLiL1qya3I3g9lQbxtA%3D%3D"
+			(at 628.575 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "SAMTEC"
+			(at 728.575 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TMS-102-21-G-S"
+			(at 828.575 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LSCS Part#" ""
+			(at 33.655 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Lcsc Part#" ""
+			(at 33.655 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "98b53713-c6dd-471a-bd41-7a3bc93de89f")
+		)
+		(pin "1"
+			(uuid "55921bf3-9efa-44db-9d30-2065344465aa")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "J11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:TMS-102-21-G-S")
+		(at 69.85 142.875 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "456b0361-c388-46bd-893a-a2f92405b842")
+		(property "Reference" "J8"
+			(at 76.2 131.4449 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "TMS-102-21-G-S"
+			(at 76.2 133.9849 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TMS-102-YY-XX-S"
+			(at 164.77 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://suddendocs.samtec.com/prints/tms-1xx-xx-xx-x-xx-xxx-mkt.pdf"
+			(at 264.77 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "2 Position, Single-Row .050&quot; x .100&quot; Micro Terminal Strip"
+			(at 69.85 142.875 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 464.77 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "200-TMS10221GS"
+			(at 564.77 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Samtec/TMS-102-21-G-S?qs=0lQeLiL1qya3I3g9lQbxtA%3D%3D"
+			(at 664.77 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "SAMTEC"
+			(at 764.77 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TMS-102-21-G-S"
+			(at 864.77 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LSCS Part#" ""
+			(at 69.85 142.875 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Lcsc Part#" ""
+			(at 69.85 142.875 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "6c479ac6-b06c-4c76-bc65-253a4738483b")
+		)
+		(pin "1"
+			(uuid "46462f63-bfb4-4074-ac9d-596aaa9a7281")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "J8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:MKS4C042204C00KSSD")
+		(at 64.135 160.655 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "490f8787-ea4c-40c6-b65e-2985168333e2")
+		(property "Reference" "C13"
+			(at 68.58 153.0349 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "MKS4C042204C00KSSD"
+			(at 68.58 155.5749 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:MKS4C042204C00KSSD"
+			(at 160.325 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://componentsearchengine.com/Datasheets/2/MKS4C042204C00KSSD.pdf"
+			(at 260.325 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "Film Capacitors 63V 2.2uF10% P15 PCM15"
+			(at 64.135 160.655 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "12.5"
+			(at 460.325 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "505-MKS42.2/63/10P15"
+			(at 560.325 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/WIMA/MKS4C042204C00KSSD?qs=qvPXrfw3upO0dVDnGoLGCA%3D%3D"
+			(at 660.325 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "WIMA"
+			(at 760.325 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "MKS4C042204C00KSSD"
+			(at 860.325 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "c7e6e26e-425a-4811-acd3-1b2d14fbf075")
+		)
+		(pin "1"
+			(uuid "e655651d-309e-4684-9ac4-7a88fe1642dc")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "C13")
 					(unit 1)
 				)
 			)
@@ -7124,6 +8150,146 @@
 		)
 	)
 	(symbol
+		(lib_id "SamacSys_Parts:TMS-102-21-G-S")
+		(at 52.705 142.875 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "577375b2-6935-4d1c-b588-d669a43ad3c4")
+		(property "Reference" "J6"
+			(at 59.055 131.4449 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "TMS-102-21-G-S"
+			(at 59.055 133.9849 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TMS-102-YY-XX-S"
+			(at 147.625 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://suddendocs.samtec.com/prints/tms-1xx-xx-xx-x-xx-xxx-mkt.pdf"
+			(at 247.625 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "2 Position, Single-Row .050&quot; x .100&quot; Micro Terminal Strip"
+			(at 52.705 142.875 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at 447.625 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "200-TMS10221GS"
+			(at 547.625 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Samtec/TMS-102-21-G-S?qs=0lQeLiL1qya3I3g9lQbxtA%3D%3D"
+			(at 647.625 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "SAMTEC"
+			(at 747.625 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TMS-102-21-G-S"
+			(at 847.625 126.365 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LSCS Part#" ""
+			(at 52.705 142.875 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Lcsc Part#" ""
+			(at 52.705 142.875 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "56c0430d-0bc4-458e-9462-ea406b2dfe5f")
+		)
+		(pin "1"
+			(uuid "3f892989-a202-4177-94ca-b42c61477df8")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "SamacSys_Parts:IRLB4030PBF")
 		(at 179.07 113.03 0)
 		(mirror y)
@@ -7363,7 +8529,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 127.635 147.32 0)
+		(at 140.335 28.575 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7372,7 +8538,7 @@
 		(fields_autoplaced yes)
 		(uuid "6457febe-d014-4387-8d27-53025998dcd6")
 		(property "Reference" "#PWR010"
-			(at 127.635 153.67 0)
+			(at 140.335 34.925 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7381,7 +8547,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 127.635 152.4 0)
+			(at 140.335 33.655 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7389,7 +8555,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 127.635 147.32 0)
+			(at 140.335 28.575 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7398,7 +8564,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 127.635 147.32 0)
+			(at 140.335 28.575 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7407,7 +8573,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 127.635 147.32 0)
+			(at 140.335 28.575 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7605,7 +8771,7 @@
 	)
 	(symbol
 		(lib_id "SamacSys_Parts:FSV2060L")
-		(at 39.37 168.91 0)
+		(at 52.07 50.165 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7614,7 +8780,7 @@
 		(fields_autoplaced yes)
 		(uuid "67f821f8-aff7-404f-8135-ae38097d6501")
 		(property "Reference" "D3"
-			(at 57.15 161.29 0)
+			(at 69.85 42.545 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7622,7 +8788,7 @@
 			)
 		)
 		(property "Value" "FSV2060L"
-			(at 57.15 163.83 0)
+			(at 69.85 45.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7630,7 +8796,7 @@
 			)
 		)
 		(property "Footprint" "FSV2060L"
-			(at 71.12 263.83 0)
+			(at 83.82 145.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7640,7 +8806,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/FSV2060L-D.PDF"
-			(at 71.12 363.83 0)
+			(at 83.82 245.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7650,7 +8816,7 @@
 			)
 		)
 		(property "Description" "Qualified with Reflow (J-STD-020) and Solder Temperature 260C Classification; Low Thermal Resistance; RoHS Compliant; Lead Free in Compliance with EU RoHS 2011/65/EU Directive; Very Low Forward Voltage Drop; Very Low Profile: Typical Height of 1.1 mm; Green Molding Compound as per IEC61249 Standard"
-			(at 39.37 168.91 0)
+			(at 52.07 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7659,7 +8825,7 @@
 			)
 		)
 		(property "Height" "1"
-			(at 71.12 563.83 0)
+			(at 83.82 445.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7669,7 +8835,7 @@
 			)
 		)
 		(property "Mouser Part Number" "512-FSV2060L"
-			(at 71.12 663.83 0)
+			(at 83.82 545.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7679,7 +8845,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/onsemi-Fairchild/FSV2060L?qs=bY1dm4K8r4UoO1QAcrTxcg%3D%3D"
-			(at 71.12 763.83 0)
+			(at 83.82 645.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7689,7 +8855,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "onsemi"
-			(at 71.12 863.83 0)
+			(at 83.82 745.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7699,7 +8865,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "FSV2060L"
-			(at 71.12 963.83 0)
+			(at 83.82 845.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7709,7 +8875,7 @@
 			)
 		)
 		(property "LCSC Part #" ""
-			(at 39.37 168.91 0)
+			(at 52.07 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7718,7 +8884,7 @@
 			)
 		)
 		(property "LCSC Part#" "C110669"
-			(at 39.37 168.91 0)
+			(at 52.07 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7727,7 +8893,7 @@
 			)
 		)
 		(property "LSCS Part#" ""
-			(at 39.37 168.91 0)
+			(at 52.07 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7736,7 +8902,7 @@
 			)
 		)
 		(property "Lcsc Part#" ""
-			(at 39.37 168.91 0)
+			(at 52.07 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8114,6 +9280,146 @@
 		)
 	)
 	(symbol
+		(lib_id "SamacSys_Parts:TMS-102-21-G-S")
+		(at 35.56 166.37 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "70925e09-9da2-4b35-9351-697a7cf46d8e")
+		(property "Reference" "J10"
+			(at 40.005 175.2599 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TMS-102-21-G-S"
+			(at 40.005 177.7999 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TMS-102-YY-XX-S"
+			(at -59.36 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://suddendocs.samtec.com/prints/tms-1xx-xx-xx-x-xx-xxx-mkt.pdf"
+			(at -159.36 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "2 Position, Single-Row .050&quot; x .100&quot; Micro Terminal Strip"
+			(at 35.56 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at -359.36 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "200-TMS10221GS"
+			(at -459.36 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Samtec/TMS-102-21-G-S?qs=0lQeLiL1qya3I3g9lQbxtA%3D%3D"
+			(at -559.36 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "SAMTEC"
+			(at -659.36 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TMS-102-21-G-S"
+			(at -759.36 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LSCS Part#" ""
+			(at 35.56 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Lcsc Part#" ""
+			(at 35.56 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "bc5757cc-cfb7-41f7-9241-dddb92b49ef0")
+		)
+		(pin "1"
+			(uuid "2513122a-6bd6-4801-97d0-7d92c283ba99")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "J10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 151.13 128.27 0)
 		(unit 1)
@@ -8181,7 +9487,7 @@
 	)
 	(symbol
 		(lib_id "SamacSys_Parts:FSV2060L")
-		(at 88.265 168.91 0)
+		(at 100.965 50.165 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8190,7 +9496,7 @@
 		(fields_autoplaced yes)
 		(uuid "84025926-38f8-4757-a78b-199c8592793e")
 		(property "Reference" "D5"
-			(at 106.045 161.29 0)
+			(at 118.745 42.545 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8198,7 +9504,7 @@
 			)
 		)
 		(property "Value" "FSV2060L"
-			(at 106.045 163.83 0)
+			(at 118.745 45.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8206,7 +9512,7 @@
 			)
 		)
 		(property "Footprint" "FSV2060L"
-			(at 120.015 263.83 0)
+			(at 132.715 145.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8216,7 +9522,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/FSV2060L-D.PDF"
-			(at 120.015 363.83 0)
+			(at 132.715 245.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8226,7 +9532,7 @@
 			)
 		)
 		(property "Description" "Qualified with Reflow (J-STD-020) and Solder Temperature 260C Classification; Low Thermal Resistance; RoHS Compliant; Lead Free in Compliance with EU RoHS 2011/65/EU Directive; Very Low Forward Voltage Drop; Very Low Profile: Typical Height of 1.1 mm; Green Molding Compound as per IEC61249 Standard"
-			(at 88.265 168.91 0)
+			(at 100.965 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8235,7 +9541,7 @@
 			)
 		)
 		(property "Height" "1"
-			(at 120.015 563.83 0)
+			(at 132.715 445.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8245,7 +9551,7 @@
 			)
 		)
 		(property "Mouser Part Number" "512-FSV2060L"
-			(at 120.015 663.83 0)
+			(at 132.715 545.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8255,7 +9561,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/onsemi-Fairchild/FSV2060L?qs=bY1dm4K8r4UoO1QAcrTxcg%3D%3D"
-			(at 120.015 763.83 0)
+			(at 132.715 645.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8265,7 +9571,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "onsemi"
-			(at 120.015 863.83 0)
+			(at 132.715 745.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8275,7 +9581,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "FSV2060L"
-			(at 120.015 963.83 0)
+			(at 132.715 845.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8285,7 +9591,7 @@
 			)
 		)
 		(property "LCSC Part #" ""
-			(at 88.265 168.91 0)
+			(at 100.965 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8294,7 +9600,7 @@
 			)
 		)
 		(property "LCSC Part#" "C110669"
-			(at 88.265 168.91 0)
+			(at 100.965 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8303,7 +9609,7 @@
 			)
 		)
 		(property "LSCS Part#" ""
-			(at 88.265 168.91 0)
+			(at 100.965 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8312,7 +9618,7 @@
 			)
 		)
 		(property "Lcsc Part#" ""
-			(at 88.265 168.91 0)
+			(at 100.965 50.165 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8747,146 +10053,6 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "SamacSys_Parts:MKP1847H55025JK2")
-		(at 215.265 153.035 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "99e3d196-3c94-4bb4-94b2-bc14f1b2ece5")
-		(property "Reference" "C13"
-			(at 219.71 145.4149 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "MKP1847H55025JK2"
-			(at 219.71 147.9549 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "SamacSys_Parts:MKP1847H55025JK2"
-			(at 311.455 144.145 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.vishay.com/docs/26067/mkp1847hacfiltering.pdf"
-			(at 411.455 144.145 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "Vishay MKP1847H Polypropylene Film Capacitor, 250V ac, +/-5%, 5uF, Through Hole"
-			(at 215.265 153.035 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Height" "31"
-			(at 611.455 144.145 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "75-MKP1847H55025JK2"
-			(at 711.455 144.145 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Vishay-Roederstein/MKP1847H55025JK2?qs=X2Il8U3XE3BN5R5UG4IfSg%3D%3D"
-			(at 811.455 144.145 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "Vishay"
-			(at 911.455 144.145 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "MKP1847H55025JK2"
-			(at 1011.455 144.145 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 215.265 153.035 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 215.265 153.035 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "421b2f86-a127-4965-a2e0-badef9cd21cc")
-		)
-		(pin "1"
-			(uuid "370510a9-6dda-40a8-b141-d649a8ef35f4")
-		)
-		(instances
-			(project ""
-				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
-					(reference "C13")
 					(unit 1)
 				)
 			)
@@ -9934,7 +11100,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 128.27 171.45 0)
+		(at 140.97 52.705 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9943,7 +11109,7 @@
 		(fields_autoplaced yes)
 		(uuid "c206c779-428c-4d3a-a133-d5e13ec60b18")
 		(property "Reference" "#PWR011"
-			(at 128.27 177.8 0)
+			(at 140.97 59.055 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9952,7 +11118,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 128.27 176.53 0)
+			(at 140.97 57.785 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9960,7 +11126,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 128.27 171.45 0)
+			(at 140.97 52.705 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9969,7 +11135,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 128.27 171.45 0)
+			(at 140.97 52.705 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9978,7 +11144,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 128.27 171.45 0)
+			(at 140.97 52.705 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10149,7 +11315,7 @@
 	)
 	(symbol
 		(lib_id "SamacSys_Parts:FSV2060L")
-		(at 38.735 144.78 0)
+		(at 51.435 26.035 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10158,7 +11324,7 @@
 		(fields_autoplaced yes)
 		(uuid "c521b227-7037-4515-9c4c-d62b14116857")
 		(property "Reference" "D1"
-			(at 56.515 137.16 0)
+			(at 69.215 18.415 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10166,7 +11332,7 @@
 			)
 		)
 		(property "Value" "FSV2060L"
-			(at 56.515 139.7 0)
+			(at 69.215 20.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10174,7 +11340,7 @@
 			)
 		)
 		(property "Footprint" "FSV2060L"
-			(at 70.485 239.7 0)
+			(at 83.185 120.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10184,7 +11350,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/FSV2060L-D.PDF"
-			(at 70.485 339.7 0)
+			(at 83.185 220.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10194,7 +11360,7 @@
 			)
 		)
 		(property "Description" "Qualified with Reflow (J-STD-020) and Solder Temperature 260C Classification; Low Thermal Resistance; RoHS Compliant; Lead Free in Compliance with EU RoHS 2011/65/EU Directive; Very Low Forward Voltage Drop; Very Low Profile: Typical Height of 1.1 mm; Green Molding Compound as per IEC61249 Standard"
-			(at 38.735 144.78 0)
+			(at 51.435 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10203,7 +11369,7 @@
 			)
 		)
 		(property "Height" "1"
-			(at 70.485 539.7 0)
+			(at 83.185 420.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10213,7 +11379,7 @@
 			)
 		)
 		(property "Mouser Part Number" "512-FSV2060L"
-			(at 70.485 639.7 0)
+			(at 83.185 520.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10223,7 +11389,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/onsemi-Fairchild/FSV2060L?qs=bY1dm4K8r4UoO1QAcrTxcg%3D%3D"
-			(at 70.485 739.7 0)
+			(at 83.185 620.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10233,7 +11399,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "onsemi"
-			(at 70.485 839.7 0)
+			(at 83.185 720.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10243,7 +11409,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "FSV2060L"
-			(at 70.485 939.7 0)
+			(at 83.185 820.955 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10253,7 +11419,7 @@
 			)
 		)
 		(property "LCSC Part #" ""
-			(at 38.735 144.78 0)
+			(at 51.435 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10262,7 +11428,7 @@
 			)
 		)
 		(property "LCSC Part#" "C110669"
-			(at 38.735 144.78 0)
+			(at 51.435 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10271,7 +11437,7 @@
 			)
 		)
 		(property "LSCS Part#" ""
-			(at 38.735 144.78 0)
+			(at 51.435 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10280,7 +11446,7 @@
 			)
 		)
 		(property "Lcsc Part#" ""
-			(at 38.735 144.78 0)
+			(at 51.435 26.035 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11034,6 +12200,146 @@
 		)
 	)
 	(symbol
+		(lib_id "SamacSys_Parts:TMS-102-21-G-S")
+		(at 74.295 166.37 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "d7d8e216-77eb-4f26-99e1-19ef96cac4d6")
+		(property "Reference" "J9"
+			(at 78.74 175.2599 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "TMS-102-21-G-S"
+			(at 78.74 177.7999 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:TMS-102-YY-XX-S"
+			(at -20.625 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://suddendocs.samtec.com/prints/tms-1xx-xx-xx-x-xx-xxx-mkt.pdf"
+			(at -120.625 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "2 Position, Single-Row .050&quot; x .100&quot; Micro Terminal Strip"
+			(at 74.295 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" ""
+			(at -320.625 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "200-TMS10221GS"
+			(at -420.625 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Samtec/TMS-102-21-G-S?qs=0lQeLiL1qya3I3g9lQbxtA%3D%3D"
+			(at -520.625 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "SAMTEC"
+			(at -620.625 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TMS-102-21-G-S"
+			(at -720.625 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "LSCS Part#" ""
+			(at 74.295 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Lcsc Part#" ""
+			(at 74.295 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "a4d6694f-1655-4736-b307-ccb10955f035")
+		)
+		(pin "1"
+			(uuid "65d8b028-ad04-4121-8e95-8b7d9924f682")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "J9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 73.025 95.25 0)
 		(unit 1)
@@ -11125,6 +12431,128 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SamacSys_Parts:MKS4C042204C00KSSD")
+		(at 41.91 160.655 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d96ad156-1f01-40a6-b92d-c3e0d763aaca")
+		(property "Reference" "C16"
+			(at 46.355 153.0349 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "MKS4C042204C00KSSD"
+			(at 46.355 155.5749 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "SamacSys_Parts:MKS4C042204C00KSSD"
+			(at 138.1 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://componentsearchengine.com/Datasheets/2/MKS4C042204C00KSSD.pdf"
+			(at 238.1 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "Film Capacitors 63V 2.2uF10% P15 PCM15"
+			(at 41.91 160.655 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "12.5"
+			(at 438.1 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "505-MKS42.2/63/10P15"
+			(at 538.1 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/WIMA/MKS4C042204C00KSSD?qs=qvPXrfw3upO0dVDnGoLGCA%3D%3D"
+			(at 638.1 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "WIMA"
+			(at 738.1 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "MKS4C042204C00KSSD"
+			(at 838.1 151.765 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "61d17cce-b41a-4228-990a-fb5919a755a9")
+		)
+		(pin "1"
+			(uuid "48013cbb-a36b-4f6e-aebe-c3ca7562442f")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "C16")
 					(unit 1)
 				)
 			)
