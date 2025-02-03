@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H-Bridge Control</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>H-Bridge Control</h1>
+    <div class="container">
+        <div class="properties">
+            <div class="input-properties">
+                <h2>Input</h2>
+                <p>Voltage: <span id="inputVoltage">0V</span></p>
+                <p>Current: <span id="inputCurrent">0A</span></p>
+                <p>Power: <span id="inputPower">0W</span></p>
+            </div>
+            <div class="output-properties">
+                <h2>Output</h2>
+                <p>Voltage (RMS): <span id="outputVoltage">0V</span></p>
+                <p>Current (RMS): <span id="outputCurrent">0A</span></p>
+                <p>Power: <span id="outputPower">0W</span></p>
+            </div>
+        </div>
+        <p class="efficiency">Efficiency: <span id="efficiency">0%</span></p>
+
+        <h2>Control</h2>
+        <label for="freq">Switching Frequency (1000Hz - 45000Hz):</label>
+        <input type="number" id="freq" min="1000" max="45000" value="1000">
+        <button id="applyFreq">Apply</button>
+        
+        <label>Modulation:</label>
+        <div class="radio-group" style="display: flex; justify-content: center; gap: 15px;">
+            <label><input type="radio" name="modulation" value="Bipolar" checked> Bipolar</label>
+            <label><input type="radio" name="modulation" value="Unipolar"> Unipolar</label>
+        </div>
+        
+        <button id="startStopBtn" class="start">Start</button>
+    </div>
+    
+    <script src="/script.js"></script>
+</body>
+</html>

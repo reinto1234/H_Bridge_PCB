@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.parameters {
+    background: #eee;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.parameters p {
+    margin: 5px 0;
+}
+
+input, button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+input {
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.radio-group {
+    margin: 10px 0;
+}
+
+button {
+    background: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    border-radius: 5px;
+}
+
+button.stopped {
+    background: red;
+}

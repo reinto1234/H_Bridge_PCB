@@ -1,28 +1,23 @@
-#include <Arduino.h>
-#include "Input_meas.h"
+/*********
+  Rui Santos
+  Complete project details at https://randomnerdtutorials.com  
+*********/
 
-unsigned long delayTime = 1000;
+#include <Arduino.h>
+#include "webserver.h"
 
 void setup() {
-    Serial.begin(19200);
-    Serial.println(F("INA228 Test"));
+    // Start serial communication for debugging
+    Serial.begin(115200);
+    delay(1000); // Give time for the serial monitor to start
 
-    InputMeasurement::init();
+    // Initialize WiFi
+    HBridgeWebServer::initWiFi();
+
+    // Initialize the server
+    HBridgeWebServer::initServer();
 }
 
 void loop() {
-    Serial.print("Spannung = ");
-    Serial.print(InputMeasurement::getVoltage());
-    Serial.println(" V");
-
-    Serial.print("Strom = ");
-    Serial.print(InputMeasurement::getCurrent());
-    Serial.println(" A");
-
-    Serial.print("Leistung = ");
-    Serial.print(InputMeasurement::getPower());
-    Serial.println(" W");
-
-    Serial.println();
-    delay(delayTime);
+    // Nothing to do here, everything is handled by the server
 }
