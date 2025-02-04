@@ -1,23 +1,25 @@
-/*********
-  Rui Santos
-  Complete project details at https://randomnerdtutorials.com  
-*********/
-
 #include <Arduino.h>
 #include "webserver.h"
+#include "PWM.h"
 
 void setup() {
-    // Start serial communication for debugging
     Serial.begin(115200);
-    delay(1000); // Give time for the serial monitor to start
+    Serial.println("Starting H-Bridge Inverter System...");
 
-    // Initialize WiFi
+    // Initialize WiFi and WebServer
     HBridgeWebServer::initWiFi();
-
-    // Initialize the server
     HBridgeWebServer::initServer();
+
+    Serial.println("System Initialized!");
 }
 
 void loop() {
-    // Nothing to do here, everything is handled by the server
+    if (inverter != nullptr) {
+        // Simulated control loop (replace with actual measurement)
+        float vMeasured = analogRead(A0);  // Example: Read input voltage (adjust as needed)
+        inverter->loop(512, vMeasured);    // 512 as a placeholder setpoint
+    }
+
+    delayMicroseconds(200);  // Small delay to avoid excessive CPU usage
 }
+

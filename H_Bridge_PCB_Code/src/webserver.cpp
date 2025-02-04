@@ -1,12 +1,26 @@
 #include "webserver.h"
+#include "PWM.h"
+#include "LittleFS.h"
 
 // Define static variables
-String HBridgeWebServer::_switchingFrequency;
-String HBridgeWebServer::_modulationType;
-bool HBridgeWebServer::_isRunning;
+uint32_t HBridgeWebServer::_switchingFrequency = 20000;
+String HBridgeWebServer::_modulationType = "BIPOLAR";
+bool HBridgeWebServer::_isRunning = false;
 AsyncWebServer HBridgeWebServer::server(80);
 WebSocketsServer HBridgeWebServer::webSocket(81);
 StaticJsonDocument<512> HBridgeWebServer::doc;
+
+// New helper function to convert _modulationType string to enum
+ModulationType HBridgeWebServer::getModulationType() {
+    if (_modulationType == "Bipolar") {
+        Serial.println("Modulation Mode: BIPOLAR");
+        return BIPOLAR;
+    } else {
+        Serial.println("Modulation Mode: Unipolar");
+        return UNIPOLAR;
+    }
+}
+
 
 void HBridgeWebServer::initWiFi() {
     WiFi.softAP("HBridge_Control", "12345678");
@@ -19,13 +33,14 @@ void HBridgeWebServer::initWiFi() {
 }
 
 void HBridgeWebServer::initServer() {
+    // Initialize the file system for serving the website
     if (!LittleFS.begin(true)) {
         Serial.println("LittleFS Mount Failed!");
         return;
     }
     Serial.println("LittleFS Mounted Successfully");
 
-    // Serve index.html with processor function
+    // Serve index.html
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
         if (LittleFS.exists("/index.html")) {
             Serial.println("Serving index.html");
@@ -36,7 +51,7 @@ void HBridgeWebServer::initServer() {
         }
     });
 
-    // Serve CSS
+    // Serve CSS file
     server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
         if (LittleFS.exists("/style.css")) {
             Serial.println("Serving style.css");
@@ -47,7 +62,7 @@ void HBridgeWebServer::initServer() {
         }
     });
 
-    // Serve JavaScript
+    // Serve JavaScript file
     server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request) {
         if (LittleFS.exists("/script.js")) {
             Serial.println("Serving script.js");
@@ -58,30 +73,68 @@ void HBridgeWebServer::initServer() {
         }
     });
 
-    // Handle Updates
+    // Handle frequency and modulation updates
     server.on("/update", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (request->hasParam("freq")) {
-            String freq = request->getParam("freq")->value();
-            int freqValue = freq.toInt();
-            if (freqValue >= 1000 && freqValue <= 45000) {
-                _switchingFrequency = freq;
-                Serial.println("Frequency updated to: " + freq);
-            } else {
-                Serial.println("Invalid frequency value: " + freq);
+        if (!_isRunning) {  // Allow updates only if the inverter is not running
+            if (request->hasParam("freq")) {
+                String freq = request->getParam("freq")->value();
+                int freqValue = freq.toInt();
+                if (freqValue >= 1000 && freqValue <= 45000) {
+                    _switchingFrequency = freqValue;
+                    Serial.println("Frequency updated to: " + freq);
+                } else {
+                    Serial.println("Invalid frequency value: " + freq);
+                }
             }
-        }
-        if (request->hasParam("modulation")) {
-            _modulationType = request->getParam("modulation")->value();
-            Serial.println("Modulation type updated to: " + _modulationType);
+            if (request->hasParam("modulation")) {
+                String newModulationType = request->getParam("modulation")->value();
+                if (newModulationType == "Bipolar" || newModulationType == "Unipolar") {
+                    _modulationType = newModulationType;
+                    Serial.println("Modulation type updated to: " + _modulationType);
+                } else {
+                    Serial.println("Invalid modulation type: " + newModulationType);
+                }
+            }
         }
         request->send(200, "text/plain", "Update Received");
     });
 
+    // Start the inverter
+    server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request) {
+        if (!_isRunning) {
+            float freq = _switchingFrequency;
+            ModulationType modType = getModulationType();
+
+            Serial.println("Starting inverter with:");
+            Serial.println("  Frequency: " + String(freq));
+            Serial.println("  Modulation: " + _modulationType);
+
+            // Stop any existing inverter before switching
+            stopInverter();
+
+            // Start with new modulation type
+            startInverter(0.1, 0.01, 0, 1023, modType, freq);
+            _isRunning = true;
+            Serial.println("Inverter started!");
+        }
+        request->send(200, "text/plain", "Inverter Started");
+    });
+
+    // Stop the inverter
+    server.on("/stop", HTTP_GET, [](AsyncWebServerRequest *request) {
+        if (_isRunning) {
+            stopInverter();
+            _isRunning = false;
+            Serial.println("Inverter stopped!");
+        }
+        request->send(200, "text/plain", "Inverter Stopped");
+    });
+
+    // Start the web server
     server.begin();
-    Serial.println("HTTP server started");
+    Serial.println("HTTP Server Started");
 }
 
 String HBridgeWebServer::processor(const String& var) {
-    // Implement your processor function here
     return String();
 }

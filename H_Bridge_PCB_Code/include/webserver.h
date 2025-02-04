@@ -7,6 +7,7 @@
 #include <ArduinoJson.h>
 #include <LittleFS.h>
 #include <WiFi.h>
+#include "PWM.h"
 
 //no comments yet
 
@@ -20,13 +21,15 @@ public:
 private:
     static String processor(const String& var);
     
-    static String _switchingFrequency;
+    static uint32_t _switchingFrequency;
     static String _modulationType;
     static bool _isRunning;
     
     static AsyncWebServer server;
     static WebSocketsServer webSocket;
     static StaticJsonDocument<512> doc;
+
+    static ModulationType getModulationType(); // New helper function
 };
 
 #endif // WEBSERVER_H
