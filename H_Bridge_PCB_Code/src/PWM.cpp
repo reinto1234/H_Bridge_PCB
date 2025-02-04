@@ -1,4 +1,5 @@
 #include "PWM.h"
+#include "mutexdefinitions.h"
 
 // Global variable for the inverter
 HBridgeInverter* inverter = nullptr;
@@ -7,27 +8,34 @@ HBridgeInverter* inverter = nullptr;
 
 void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, float freq) {
     if (inverter == nullptr) {
+        if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
         inverter = new HBridgeInverter(kp, ki, outputMin, outputMax, modType);
         inverter->begin();
         inverter->setFrequency(freq);
         Serial.println("H-Bridge Inverter started!");
+        xSemaphoreGive(inverterMutex);
+    }
     } else {
         Serial.println("Inverter is already running!");
     }
 }
 
 void stopInverter() {
+    
     if (inverter != nullptr) {
         // Stop PWM and reset GPIOs
+        
+    if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
+        delete inverter;
+        inverter = nullptr;
+        xSemaphoreGive(inverterMutex);
+    }
         ledcWrite(PWM_CHANNEL_1, 0);
         ledcWrite(PWM_CHANNEL_2, 0);
         digitalWrite(HIN1, LOW);
         digitalWrite(HIN2, LOW);
         digitalWrite(LIN1, LOW);
         digitalWrite(LIN2, LOW);
-
-        delete inverter;
-        inverter = nullptr;
         Serial.println("H-Bridge Inverter stopped!");
     } else {
         Serial.println("No inverter is running!");

@@ -18,6 +18,10 @@ public:
     static void handleWebSocket();
     static void sendStatusUpdate();
 
+    static void loopWebSocket() {
+        webSocket.loop();
+    }
+
 private:
     static String processor(const String& var);
     
