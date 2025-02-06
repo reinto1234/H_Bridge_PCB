@@ -100,25 +100,50 @@ void HBridgeWebServer::initServer() {
     });
 
     // Start the inverter
-    server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (!_isRunning) {
-            float freq = _switchingFrequency;
-            ModulationType modType = getModulationType();
-
-            Serial.println("Starting inverter with:");
-            Serial.println("  Frequency: " + String(freq));
-            Serial.println("  Modulation: " + _modulationType);
-
-            // Stop any existing inverter before switching
-            stopInverter();
-
-            // Start with new modulation type
-            startInverter(0.1, 0.01, 0, 1023, modType, freq);
-            _isRunning = true;
-            Serial.println("Inverter started!");
+ server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request) {
+    if (!_isRunning) {
+        // Validate and update frequency
+        if (request->hasParam("freq")) {
+            String freq = request->getParam("freq")->value();
+            int freqValue = freq.toInt();
+            if (freqValue >= 1000 && freqValue <= 45000) {
+                _switchingFrequency = freqValue;
+                Serial.println("Frequency updated to: " + String(freqValue));
+            } else {
+                Serial.println("Invalid frequency value: " + String(freqValue));
+                request->send(400, "text/plain", "Invalid Frequency. Must be between 1000Hz - 45000Hz.");
+                return;
+            }
         }
+
+        // Validate and update modulation type
+        if (request->hasParam("modulation")) {
+            String newModulationType = request->getParam("modulation")->value();
+            if (newModulationType == "Bipolar" || newModulationType == "Unipolar") {
+                _modulationType = newModulationType;
+                Serial.println("Modulation type updated to: " + _modulationType);
+            } else {
+                Serial.println("Invalid modulation type: " + newModulationType);
+                request->send(400, "text/plain", "Invalid Modulation Type.");
+                return;
+            }
+        }
+
+        ModulationType modType = getModulationType();
+
+        Serial.println("Starting inverter with:");
+        Serial.println("  Frequency: " + String(_switchingFrequency));
+        Serial.println("  Modulation: " + _modulationType);
+
+        stopInverter();
+        startInverter(0.1, 0.01, 0, 1023, modType, _switchingFrequency);
+        _isRunning = true;
+        Serial.println("Inverter started!");
+
         request->send(200, "text/plain", "Inverter Started");
-    });
+    }
+});
+
 
     // Stop the inverter
     server.on("/stop", HTTP_GET, [](AsyncWebServerRequest *request) {
