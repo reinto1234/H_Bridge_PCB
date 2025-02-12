@@ -20,6 +20,8 @@ unsigned long debounceTime = 1000; // Minimum time between zero-crossing detecti
 
 portMUX_TYPE zeroCrossMux = portMUX_INITIALIZER_UNLOCKED;  // Mutex for ISR-safe critical section
 
+float OutputMeasurement::measurementBufferout[7] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}; // [Voltage, Current, Power, Powerfactor, Phase, ImaginaryPower, Frequency]
+
 // Interrupt Service Routine for Zero-Cross Detection
 void IRAM_ATTR zeroCrossISR() {
     unsigned long currentTime = micros();  // Use micros() for better precision
@@ -99,6 +101,28 @@ float OutputMeasurement::getImaginaryPower() {
         return reactivePower;
     }
     return -1.0; // Return error value
+}
+
+float* OutputMeasurement::measurementall() {
+    float voltage = getVoltage();
+    float current = getCurrent();
+    float power = getPower();
+    float powerfactor = getPowerfactor();
+    float phase = getPhase();
+    float imaginaryPower = getImaginaryPower();
+    float frequency = getFrequency();
+
+    if (xSemaphoreTake(measurementoutMutex, portMAX_DELAY) == pdTRUE) {
+        measurementBufferout[0] = voltage;
+        measurementBufferout[1] = current;
+        measurementBufferout[2] = power;
+        measurementBufferout[3] = powerfactor;
+        measurementBufferout[4] = phase;
+        measurementBufferout[5] = imaginaryPower;
+        measurementBufferout[6] = frequency;
+        xSemaphoreGive(measurementoutMutex);
+    }
+    return measurementBufferout;
 }
 
 float OutputMeasurement::getFrequency() {

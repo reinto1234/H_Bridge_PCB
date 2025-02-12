@@ -22,6 +22,8 @@ public:
         webSocket.loop();
     }
 
+    static void updateMeasurements(float* input, float* output);
+
 private:
     static String processor(const String& var);
     

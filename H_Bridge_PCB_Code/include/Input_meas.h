@@ -21,19 +21,21 @@ class InputMeasurement {
 public:
     /* Initialize the sensor */
     static void init();
-    
+    static float* measurementall();
+
+
+private:
+    static Adafruit_INA228 ina228;
+    static TwoWire I2CINA;
+    static float measurementBufferin[3]; // [Voltage, Current, Power]
     /* Get voltage measurement */
     static float getVoltage();
-    
+
     /* Get current measurement */
     static float getCurrent();
     
     /* Get power measurement */
     static float getPower();
-
-private:
-    static Adafruit_INA228 ina228;
-    static TwoWire I2CINA;
 };
 
 #endif /* INPUT_MEAS_H_ */

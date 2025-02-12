@@ -1,6 +1,7 @@
 #include "webserver.h"
 #include "PWM.h"
 #include "LittleFS.h"
+#include "mutexdefinitions.h"
 
 // Define static variables
 uint32_t HBridgeWebServer::_switchingFrequency = 20000;
@@ -158,8 +159,38 @@ void HBridgeWebServer::initServer() {
     // Start the web server
     server.begin();
     Serial.println("HTTP Server Started");
+
+    // Starte den WebSocket-Server
+    webSocket.begin();
+    Serial.println("WebSocket Server Started");
 }
 
 String HBridgeWebServer::processor(const String& var) {
     return String();
+}
+
+void HBridgeWebServer::updateMeasurements(float* input, float* output) {
+    StaticJsonDocument<128> jsonDoc;
+    if (xSemaphoreTake(measurementinMutex, portMAX_DELAY) == pdTRUE) {
+        jsonDoc["voltage"] = input[0];
+        jsonDoc["current"] = input[1];
+        jsonDoc["power"] = input[2];
+        xSemaphoreGive(measurementinMutex);
+    }
+    if (xSemaphoreTake(measurementoutMutex, portMAX_DELAY) == pdTRUE) {
+        jsonDoc["voltage_out"] = output[0];
+        jsonDoc["current_out"] = output[1];
+        jsonDoc["power_out"] = output[2];
+        jsonDoc["powerfactor"] = output[3];
+        jsonDoc["phase"] = output[4];
+        jsonDoc["imaginaryPower"] = output[5];
+        jsonDoc["frequency"] = output[6];
+        xSemaphoreGive(measurementoutMutex);
+    }
+
+    char buffer[128];
+    serializeJson(jsonDoc, buffer);
+
+    webSocket.broadcastTXT(buffer);
+    //Serial.println("Updated Measurements Sent via WebSocket");
 }

@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 #include <math.h>
+#include <iostream>
+#include <vector>
 
 // GPIO-Pins für H-Brücke
 #define HIN1 15
@@ -14,12 +16,13 @@
 #define PWM_CHANNEL_1 0
 #define PWM_CHANNEL_2 1
 #define RESOLUTION 10  // 10-Bit PWM
-#define BASE_FREQ 30000 // Startfrequenz in Hz
+#define CYCLETIME_PWM 0.2  //PWM-Zykluszeit in ms
+
 
 // Sinus-Tabelle für SPWM
 
 #define OUTPUT_FREQ 50   // Ausgangsfrequenz in Hz
-#define SINE_STEPS int(BASE_FREQ/OUTPUT_FREQ)   // Anzahl der Werte für eine Periode
+
 
 enum ModulationType {
     UNIPOLAR,
@@ -38,25 +41,28 @@ struct PIController {
 // H-Brücke Klasse
 class HBridgeInverter {
 public:
-    HBridgeInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType);
+    HBridgeInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq);
     void begin();
-    void setFrequency(float freq);
     float computePI(float setpoint, float measurement);
     void generateSPWM();
     void loop(float vRef, float vMeasured);
+    void getmeasurements(float* measurementin, float* measurementout);
     
 
 private:
+    int SINE_STEPS;    // Anzahl der Werte für eine Periode
+    int S_FREQ; // Startfrequenz in Hz
+    std::vector<int> sineTable;
     PIController pi;
     float pwmDutyCycle;
-    uint16_t sineTable[SINE_STEPS];
     uint16_t stepIndex;
     ModulationType modulationType;
     void setModulationType(ModulationType type);      // Neu für Webserver
     void setSwitchingFrequency(int freq);            // Neu für Webserver
+    float measurementBuffer[10];
 };
 
-void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, float freq);
+void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq);
 void stopInverter();
 
 // Declare global inverter instance so other files can use it

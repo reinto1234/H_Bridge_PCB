@@ -5,15 +5,14 @@
 HBridgeInverter* inverter = nullptr;
 
 
-
-void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, float freq) {
+void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq) {
     if (inverter == nullptr) {
         if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
-        inverter = new HBridgeInverter(kp, ki, outputMin, outputMax, modType);
+        inverter = new HBridgeInverter(kp, ki, outputMin, outputMax, modType, freq);
         inverter->begin();
-        inverter->setFrequency(freq);
         Serial.println("H-Bridge Inverter started!");
         xSemaphoreGive(inverterMutex);
+        
     }
     } else {
         Serial.println("Inverter is already running!");
@@ -42,7 +41,7 @@ void stopInverter() {
     }
 }
 
-HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType) {
+HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq)  {
     pi.kp = kp;
     pi.ki = ki;
     pi.integral = 0;
@@ -52,6 +51,16 @@ HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outp
     pwmDutyCycle = 0.5;
     stepIndex = 0;
     modulationType = modType; // Store modulation type correctly
+    S_FREQ = freq;
+    
+    SINE_STEPS = 500.0f / float(OUTPUT_FREQ) / (float(CYCLETIME_PWM));
+
+        
+        // Initialisierung des Vektors
+    sineTable.resize(SINE_STEPS);
+    Serial.println("Sine Table Size: " + String(SINE_STEPS));
+
+    
 
     // Precompute sine wave table
     for (int i = 0; i < SINE_STEPS; i++) {
@@ -62,12 +71,17 @@ HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outp
             sineTable[i] = (uint16_t)(abs(sinValue) * 1023); // Unipolar: Only positive part
         }
     }
+    
 }
 
 void HBridgeInverter::begin() {
+    for (int i = 0; i < 10; i++) {
+        inverter->measurementBuffer[i] = 0.0f;
+    }
+    
     // PWM setup
-    ledcSetup(PWM_CHANNEL_1, BASE_FREQ, RESOLUTION);
-    ledcSetup(PWM_CHANNEL_2, BASE_FREQ, RESOLUTION);
+    ledcSetup(PWM_CHANNEL_1, S_FREQ, RESOLUTION);
+    ledcSetup(PWM_CHANNEL_2, S_FREQ, RESOLUTION);
 
     // Attach PWM to GPIOs
     ledcAttachPin(HIN1, PWM_CHANNEL_1);
@@ -78,14 +92,6 @@ void HBridgeInverter::begin() {
     pinMode(LIN2, OUTPUT);
 }
 
-void HBridgeInverter::setFrequency(float freq) {
-    if (freq < 1000) freq = 1000;
-    if (freq > 45000) freq = 45000;
-
-    ledcSetup(PWM_CHANNEL_1, freq, RESOLUTION);
-    ledcSetup(PWM_CHANNEL_2, freq, RESOLUTION);
-}
-
 float HBridgeInverter::computePI(float setpoint, float measurement) {
     float error = setpoint - measurement;
     pi.integral += error;
@@ -94,7 +100,26 @@ float HBridgeInverter::computePI(float setpoint, float measurement) {
     if (output > pi.outputMax) output = pi.outputMax;
     if (output < pi.outputMin) output = pi.outputMin;
 
-    return output;
+    return setpoint;
+}
+
+void HBridgeInverter::getmeasurements(float* measurementin, float* measurementout) { //noch anpassbar je nachdem welche daten man braucht
+    if (xSemaphoreTake(measurementinMutex, portMAX_DELAY) == pdTRUE) {
+        measurementBuffer[0] = measurementin[0];
+        measurementBuffer[1] = measurementin[1];
+        measurementBuffer[2] = measurementin[2];
+        xSemaphoreGive(measurementinMutex);
+    }
+    if (xSemaphoreTake(measurementoutMutex, portMAX_DELAY) == pdTRUE) {
+        measurementBuffer[3] = measurementout[0];
+        measurementBuffer[4] = measurementout[1];
+        measurementBuffer[5] = measurementout[2];
+        measurementBuffer[6] = measurementout[3];
+        measurementBuffer[7] = measurementout[4];
+        measurementBuffer[8] = measurementout[5];
+        measurementBuffer[9] = measurementout[6];
+        xSemaphoreGive(measurementoutMutex);
+    }
 }
 
 void HBridgeInverter::generateSPWM() {

@@ -13,15 +13,22 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <SparkFun_ACS37800_Arduino_Library.h>
+#include "mutexdefinitions.h"
 
 /*************************************************************************
  * Class
  ************************************************************************/
 class OutputMeasurement {
 public:
+    static float* measurementall();
     /* Initialize the sensor */
     static void init();
-    
+
+private:
+    static float measurementBufferout[7]; // [Voltage, Current, Power, Powerfactor, Phase, ImaginaryPower, Frequency]
+    static ACS37800 acs37800;
+    static TwoWire I2CACS;
+
     /* Get voltage measurement */
     static float getVoltage();
     
@@ -42,10 +49,7 @@ public:
     
     /* Get frequency measurement */
     static float getFrequency();
-
-private:
-    static ACS37800 acs37800;
-    static TwoWire I2CACS;
+    
 };
 
 #endif /* OUTPUT_MEAS_H_ */
