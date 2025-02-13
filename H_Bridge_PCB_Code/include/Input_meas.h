@@ -11,7 +11,6 @@
  * Includes
  ************************************************************************/
 #include <Arduino.h>
-#include <Wire.h>
 #include <Adafruit_INA228.h>
 
 /*************************************************************************
@@ -26,7 +25,7 @@ public:
 
 private:
     static Adafruit_INA228 ina228;
-    static TwoWire I2CINA;
+    
     static float measurementBufferin[3]; // [Voltage, Current, Power]
     /* Get voltage measurement */
     static float getVoltage();

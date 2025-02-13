@@ -6,8 +6,11 @@
 
 #include "Output_meas.h"
 #include <cmath>
+#include "mutexdefinitions.h"
+#include "I2C.h"
 
-TwoWire OutputMeasurement::I2CACS = TwoWire(1);
+
+
 ACS37800 OutputMeasurement::acs37800;
 
 #define DIO_0_PIN 25  // Zero-crossing detection
@@ -35,14 +38,18 @@ void IRAM_ATTR zeroCrossISR() {
         }
         lastZeroCrossTime = currentTime;
     }
+    //Serial.println("Zero-cross detected");
 }
 
 void OutputMeasurement::init() {
-    I2CACS.begin(34, 35, 100000); // SDA on IO34, SCL on IO35
+    I2CINA.begin(32, 33, 100000); // SDA on IO32, SCL on IO33
+    Serial.println("I2CINA initialized");
+    sleep(1);
 
-    if (!acs37800.begin(0x60, I2CACS)) { // 0x60 is the default I2C address
+    if (!acs37800.begin(0x62, I2CINA)) { // 0x60 is the default I2C address
         while (1); // Halt execution if sensor is not found
     }
+    Serial.println("ACS37800 found!");
 
     // Configure GPIO for Zero-Crossing and Event Detection
     pinMode(DIO_0_PIN, INPUT_PULLUP);
@@ -129,7 +136,7 @@ float OutputMeasurement::getFrequency() {
     // To safely access frequency from ISR, use a critical section
     float currentFrequency;
     portENTER_CRITICAL(&zeroCrossMux);  // Enter critical section to protect shared resource
-    currentFrequency = frequency > 0 ? frequency : -1.0; // Return the calculated frequency
+    currentFrequency = frequency; // Return the calculated frequency
     portEXIT_CRITICAL(&zeroCrossMux);   // Exit critical section
     return currentFrequency;
 }

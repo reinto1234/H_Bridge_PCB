@@ -25,6 +25,9 @@ TaskHandle_t webSocketUpdateHandle = NULL;
 
 
 
+
+
+
 /**
  * @brief Task that updates the inverter control loop.
  * 
@@ -67,8 +70,8 @@ void webSocketUpdate(void *pvParameters) {
   (void)pvParameters; // Unused parameter
   while (true) {
     float* measurementin = InputMeasurement::measurementall();
-    float measurementout[7]={1,0,0,0,0,0,0};
-    //float* measurementout = OutputMeasurement::measurementall();
+    //float measurementout[7]={1,0,0,0,0,0,0};
+    float* measurementout = OutputMeasurement::measurementall();
     HBridgeWebServer::updateMeasurements(measurementin, measurementout);
     vTaskDelay(pdMS_TO_TICKS(500)); // 500 ms delay between updates
   }
@@ -78,12 +81,12 @@ void measurementTask(void *pvParameters) {
   (void)pvParameters; // Unused parameter
     while (true) {
         float* measurementin = InputMeasurement::measurementall();
-        float measurementout[7]={0,0,0,0,0,0,0};
-        //float* measurementout = OutputMeasurement::measurementall();
+        //float measurementout[7]={0,0,0,0,0,0,0};
+        float* measurementout = OutputMeasurement::measurementall();
         if (inverter != nullptr){
         inverter->getmeasurements(measurementin, measurementout);
         }
-        vTaskDelay(pdMS_TO_TICKS(0.5)); // 500 µs
+        vTaskDelay(pdMS_TO_TICKS(10)); // 500 µs
 }
 }
 
@@ -101,12 +104,15 @@ void setup() {
   measurementinMutex = xSemaphoreCreateMutex();
   measurementoutMutex = xSemaphoreCreateMutex();
 
+  InputMeasurement::init();
+  OutputMeasurement::init();
+
 
   // Initialize WiFi and HTTP/WebSocket server
   HBridgeWebServer::initWiFi();
   HBridgeWebServer::initServer();
 
-  InputMeasurement::init();
+
 
   // Note: The inverter is started/stopped via HTTP endpoints (/start, /stop)
 
@@ -146,15 +152,21 @@ void setup() {
 
 
   // Create the WebSocket task on core 0 with a 4KB stack and low priority (1)
-  xTaskCreatePinnedToCore(
+  BaseType_t result = xTaskCreatePinnedToCore(
     webSocketUpdate,       // Task function
     "WebSocketUpdate",     // Name of task
     4096,                // Stack size (in bytes)
     NULL,                // Parameter to pass
-    2,                   // Task priority
+    1,                   // Task priority
     &webSocketUpdateHandle,  // Task handle
     0                    // Core where the task should run
   );
+
+  if (result == pdPASS) {
+    Serial.println("MeasurementTask created successfully!");
+} else {
+    Serial.println("Failed to create MeasurementTask!");
+}
 }
 
 /**

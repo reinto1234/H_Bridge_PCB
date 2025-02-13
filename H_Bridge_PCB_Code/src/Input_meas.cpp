@@ -6,8 +6,9 @@
 
 #include "Input_meas.h"
 #include "mutexdefinitions.h"
+#include "I2C.h"
 
-TwoWire InputMeasurement::I2CINA = TwoWire(0);
+
 Adafruit_INA228 InputMeasurement::ina228;
 
 #define ShuntResistor 0.015
@@ -15,11 +16,14 @@ Adafruit_INA228 InputMeasurement::ina228;
 float InputMeasurement::measurementBufferin[3] = {0.0, 0.0, 0.0}; // [Voltage, Current, Power]
 
 void InputMeasurement::init() {
-    I2CINA.begin(33, 32, 100000);
+    I2CINA.begin(32, 33, 100000);
+    sleep(1);   // Wait for the sensor to initialize
+    Serial.println("I2CINA initialized");
 
     if (!ina228.begin(0x40, &I2CINA)) {
         while (1); // Halt execution if sensor is not found
     }
+    Serial.println("INA228 found!");
 
     // Set the shunt resistor value
     ina228.setShunt(ShuntResistor);

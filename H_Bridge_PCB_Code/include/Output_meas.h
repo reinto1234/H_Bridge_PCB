@@ -11,7 +11,7 @@
  * Includes
  ************************************************************************/
 #include <Arduino.h>
-#include <Wire.h>
+
 #include <SparkFun_ACS37800_Arduino_Library.h>
 #include "mutexdefinitions.h"
 
@@ -27,7 +27,6 @@ public:
 private:
     static float measurementBufferout[7]; // [Voltage, Current, Power, Powerfactor, Phase, ImaginaryPower, Frequency]
     static ACS37800 acs37800;
-    static TwoWire I2CACS;
 
     /* Get voltage measurement */
     static float getVoltage();
