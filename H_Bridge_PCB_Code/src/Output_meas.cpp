@@ -42,7 +42,7 @@ void IRAM_ATTR zeroCrossISR() {
 }
 
 void OutputMeasurement::init() {
-    I2CINA.begin(32, 33, 100000); // SDA on IO32, SCL on IO33
+    I2CINA.begin(17, 18, 100000); // SDA on IO32, SCL on IO33
     Serial.println("I2CINA initialized");
     sleep(1);
 

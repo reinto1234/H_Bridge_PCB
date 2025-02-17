@@ -74,6 +74,29 @@ void HBridgeWebServer::initServer() {
         }
     });
 
+
+    // Serve bipolar image
+server.on("/bipolar.png", HTTP_GET, [](AsyncWebServerRequest *request) {
+    if (LittleFS.exists("/bipolar.png")) {
+        Serial.println("Serving bipolar.png");
+        request->send(LittleFS, "/bipolar.png", "image/png");
+    } else {
+        Serial.println("bipolar.png not found");
+        request->send(404, "text/plain", "File Not Found");
+    }
+});
+
+// Serve unipolar image
+server.on("/unipolar.png", HTTP_GET, [](AsyncWebServerRequest *request) {
+    if (LittleFS.exists("/unipolar.png")) {
+        Serial.println("Serving unipolar.png");
+        request->send(LittleFS, "/unipolar.png", "image/png");
+    } else {
+        Serial.println("unipolar.png not found");
+        request->send(404, "text/plain", "File Not Found");
+    }
+});
+
     // Handle frequency and modulation updates
     server.on("/update", HTTP_GET, [](AsyncWebServerRequest *request) {
         if (!_isRunning) {  // Allow updates only if the inverter is not running

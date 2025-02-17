@@ -43,10 +43,6 @@ input {
     border-radius: 5px;
 }
 
-.radio-group {
-    margin: 10px 0;
-}
-
 button {
     background: green;
     color: white;
@@ -58,4 +54,33 @@ button {
 
 button.stopped {
     background: red;
+}
+
+/* Container for the modulation radio options */
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Each radio option container */
+.radio-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Align radio button and label text in one line */
+.radio-option label {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+/* Image styling */
+.modulation-img {
+    width: 150px;
+    height: 60px;
+    object-fit: contain;
+    margin-top: 0px;
 }

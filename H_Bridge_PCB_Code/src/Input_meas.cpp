@@ -16,7 +16,7 @@ Adafruit_INA228 InputMeasurement::ina228;
 float InputMeasurement::measurementBufferin[3] = {0.0, 0.0, 0.0}; // [Voltage, Current, Power]
 
 void InputMeasurement::init() {
-    I2CINA.begin(32, 33, 100000);
+    I2CINA.begin(17, 18, 100000);
     sleep(1);   // Wait for the sensor to initialize
     Serial.println("I2CINA initialized");
 

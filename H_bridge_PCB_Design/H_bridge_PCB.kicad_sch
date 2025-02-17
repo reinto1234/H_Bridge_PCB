@@ -1312,6 +1312,16 @@
 	)
 	(wire
 		(pts
+			(xy 198.12 215.9) (xy 198.12 213.995)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c28c590-376c-438d-b770-27069c1cc680")
+	)
+	(wire
+		(pts
 			(xy 208.915 217.805) (xy 208.915 218.44)
 		)
 		(stroke
@@ -1422,16 +1432,6 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 241.935) (xy 217.805 241.935)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "54263522-e1f9-4191-8988-0b6e058a2a26")
-	)
-	(wire
-		(pts
 			(xy 171.45 175.26) (xy 171.45 173.355)
 		)
 		(stroke
@@ -1469,6 +1469,16 @@
 			(type default)
 		)
 		(uuid "59195516-e43e-4014-9eac-fd9594fec346")
+	)
+	(wire
+		(pts
+			(xy 198.12 213.36) (xy 220.345 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a898843-0f8f-4a8d-8546-f23a461052c3")
 	)
 	(wire
 		(pts
@@ -1539,6 +1549,16 @@
 			(type default)
 		)
 		(uuid "7163c16e-cb49-47b8-bc6e-a8a01707f0b4")
+	)
+	(wire
+		(pts
+			(xy 220.345 215.9) (xy 198.12 215.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7c12a562-9444-496f-85e4-54231bc7fada")
 	)
 	(wire
 		(pts
@@ -1652,6 +1672,16 @@
 	)
 	(wire
 		(pts
+			(xy 198.12 213.36) (xy 198.12 211.455)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bb23df6b-fb13-465d-b00b-10c921804093")
+	)
+	(wire
+		(pts
 			(xy 213.995 187.325) (xy 206.375 187.325)
 		)
 		(stroke
@@ -1739,16 +1769,6 @@
 			(type default)
 		)
 		(uuid "e2f271a6-25d3-4f3e-b12c-44a9467ec9f2")
-	)
-	(wire
-		(pts
-			(xy 198.12 239.395) (xy 217.805 239.395)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "eccc1edb-cb5f-4080-b659-8d29b5ba7fcc")
 	)
 	(wire
 		(pts
@@ -1934,7 +1954,7 @@
 	)
 	(global_label "SCL2MC"
 		(shape output)
-		(at 217.805 241.935 0)
+		(at 220.345 215.9 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1944,7 +1964,7 @@
 		)
 		(uuid "3a8f5387-9417-44d2-90da-50a136277037")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 228.2287 241.935 0)
+			(at 230.7687 215.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1956,7 +1976,7 @@
 	)
 	(global_label "SDA2MC"
 		(shape bidirectional)
-		(at 217.805 239.395 0)
+		(at 220.345 213.36 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1966,7 +1986,7 @@
 		)
 		(uuid "49ccf496-1805-4bc4-815d-3934b41b13be")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 229.4005 239.395 0)
+			(at 231.9405 213.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
