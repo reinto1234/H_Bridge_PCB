@@ -40,9 +40,9 @@ Before starting the project, the following software and hardware components shou
 - [PlatformIO](https://platformio.org/) (for ESP32 development)  
 - [VS Code](https://code.visualstudio.com/) (recommended for code development)
 
-##Code
+## Code
 The project is mostly written in C++. For the Website jss, html and css was used.
-###Structure
+### Structure
 ```
 
 H_Bridge_PCB_Code/           
