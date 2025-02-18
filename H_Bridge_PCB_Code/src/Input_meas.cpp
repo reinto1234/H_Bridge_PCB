@@ -38,14 +38,14 @@ float InputMeasurement::getCurrent() {
 }
 
 float InputMeasurement::getPower() {
-    return ina228.readPower()+1.1;
+    return ina228.readPower();
 }
 
 float* InputMeasurement::measurementall() {
     
-    float voltage = ((int)((ina228.readBusVoltage() / 1000000) * 100 + 0.5) / 100.0);
-    float current = ((int)((ina228.readCurrent() / 1000000) * 100 + 0.5) / 100.0);
-    float power = ina228.readPower();
+    float voltage = getVoltage();
+    float current = getCurrent();
+    float power = getPower();
 
     if (xSemaphoreTake(measurementinMutex, portMAX_DELAY) == pdTRUE) {
         measurementBufferin[0] = voltage;

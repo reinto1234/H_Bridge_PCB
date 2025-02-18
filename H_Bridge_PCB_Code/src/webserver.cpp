@@ -4,14 +4,14 @@
 #include "mutexdefinitions.h"
 
 // Define static variables
-uint32_t HBridgeWebServer::_switchingFrequency = 20000;
-String HBridgeWebServer::_modulationType = "BIPOLAR";
-bool HBridgeWebServer::_isRunning = false;
-AsyncWebServer HBridgeWebServer::server(80);
-WebSocketsServer HBridgeWebServer::webSocket(81);
-StaticJsonDocument<512> HBridgeWebServer::doc;
+uint32_t HBridgeWebServer::_switchingFrequency = 20000; // Default switching frequency
+String HBridgeWebServer::_modulationType = "BIPOLAR"; // Default modulation type
+bool HBridgeWebServer::_isRunning = false; // Inverter running state
+AsyncWebServer HBridgeWebServer::server(80); // Web server instance
+WebSocketsServer HBridgeWebServer::webSocket(81); // WebSocket server instance
+StaticJsonDocument<512> HBridgeWebServer::doc; // JSON document for communication
 
-// New helper function to convert _modulationType string to enum
+// Converts modulation type string to enum value
 ModulationType HBridgeWebServer::getModulationType() {
     if (_modulationType == "Bipolar") {
         Serial.println("Modulation Mode: BIPOLAR");
@@ -22,176 +22,99 @@ ModulationType HBridgeWebServer::getModulationType() {
     }
 }
 
-
+// Initializes WiFi Access Point
 void HBridgeWebServer::initWiFi() {
     WiFi.softAP("HBridge_Control", "12345678");
     Serial.println("WiFi Access Point Started. Connect to 'HBridge_Control'");
-
-    // Get and print the IP address
     IPAddress IP = WiFi.softAPIP();
     Serial.print("AP IP address: ");
     Serial.println(IP);
 }
 
+// Initializes Web Server and Serves Static Files
 void HBridgeWebServer::initServer() {
-    // Initialize the file system for serving the website
     if (!LittleFS.begin(true)) {
         Serial.println("LittleFS Mount Failed!");
         return;
     }
     Serial.println("LittleFS Mounted Successfully");
 
-    // Serve index.html
+    // Serve HTML, CSS, JavaScript, and images
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (LittleFS.exists("/index.html")) {
-            Serial.println("Serving index.html");
-            request->send(LittleFS, "/index.html", String(), false, processor);
-        } else {
-            Serial.println("index.html not found");
-            request->send(404, "text/plain", "File Not Found");
-        }
+        request->send(LittleFS, "/index.html", String(), false, processor);
     });
-
-    // Serve CSS file
     server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (LittleFS.exists("/style.css")) {
-            Serial.println("Serving style.css");
-            request->send(LittleFS, "/style.css", "text/css");
-        } else {
-            Serial.println("style.css not found");
-            request->send(404, "text/plain", "File Not Found");
-        }
+        request->send(LittleFS, "/style.css", "text/css");
     });
-
-    // Serve JavaScript file
     server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (LittleFS.exists("/script.js")) {
-            Serial.println("Serving script.js");
-            request->send(LittleFS, "/script.js", "application/javascript");
-        } else {
-            Serial.println("script.js not found");
-            request->send(404, "text/plain", "File Not Found");
-        }
+        request->send(LittleFS, "/script.js", "application/javascript");
     });
-
-
-    // Serve bipolar image
-server.on("/bipolar.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (LittleFS.exists("/bipolar.png")) {
-        Serial.println("Serving bipolar.png");
+    server.on("/bipolar.png", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(LittleFS, "/bipolar.png", "image/png");
-    } else {
-        Serial.println("bipolar.png not found");
-        request->send(404, "text/plain", "File Not Found");
-    }
-});
-
-// Serve unipolar image
-server.on("/unipolar.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (LittleFS.exists("/unipolar.png")) {
-        Serial.println("Serving unipolar.png");
+    });
+    server.on("/unipolar.png", HTTP_GET, [](AsyncWebServerRequest *request) {
         request->send(LittleFS, "/unipolar.png", "image/png");
-    } else {
-        Serial.println("unipolar.png not found");
-        request->send(404, "text/plain", "File Not Found");
-    }
-});
+    });
 
     // Handle frequency and modulation updates
     server.on("/update", HTTP_GET, [](AsyncWebServerRequest *request) {
-        if (!_isRunning) {  // Allow updates only if the inverter is not running
+        if (!_isRunning) {
             if (request->hasParam("freq")) {
-                String freq = request->getParam("freq")->value();
-                int freqValue = freq.toInt();
+                int freqValue = request->getParam("freq")->value().toInt();
                 if (freqValue >= 1000 && freqValue <= 45000) {
                     _switchingFrequency = freqValue;
-                    Serial.println("Frequency updated to: " + freq);
-                } else {
-                    Serial.println("Invalid frequency value: " + freq);
                 }
             }
             if (request->hasParam("modulation")) {
-                String newModulationType = request->getParam("modulation")->value();
-                if (newModulationType == "Bipolar" || newModulationType == "Unipolar") {
-                    _modulationType = newModulationType;
-                    Serial.println("Modulation type updated to: " + _modulationType);
-                } else {
-                    Serial.println("Invalid modulation type: " + newModulationType);
-                }
+                _modulationType = request->getParam("modulation")->value();
             }
         }
         request->send(200, "text/plain", "Update Received");
     });
 
     // Start the inverter
- server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (!_isRunning) {
-        // Validate and update frequency
-        if (request->hasParam("freq")) {
-            String freq = request->getParam("freq")->value();
-            int freqValue = freq.toInt();
-            if (freqValue >= 1000 && freqValue <= 45000) {
+    server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request) {
+        if (!_isRunning) {
+            if (request->hasParam("freq")) {
+                int freqValue = request->getParam("freq")->value().toInt();
+                if (freqValue < 1000 || freqValue > 45000) {
+                    request->send(400, "text/plain", "Invalid Frequency.");
+                    return;
+                }
                 _switchingFrequency = freqValue;
-                Serial.println("Frequency updated to: " + String(freqValue));
-            } else {
-                Serial.println("Invalid frequency value: " + String(freqValue));
-                request->send(400, "text/plain", "Invalid Frequency. Must be between 1000Hz - 45000Hz.");
-                return;
             }
-        }
-
-        // Validate and update modulation type
-        if (request->hasParam("modulation")) {
-            String newModulationType = request->getParam("modulation")->value();
-            if (newModulationType == "Bipolar" || newModulationType == "Unipolar") {
-                _modulationType = newModulationType;
-                Serial.println("Modulation type updated to: " + _modulationType);
-            } else {
-                Serial.println("Invalid modulation type: " + newModulationType);
-                request->send(400, "text/plain", "Invalid Modulation Type.");
-                return;
+            if (request->hasParam("modulation")) {
+                _modulationType = request->getParam("modulation")->value();
             }
+            ModulationType modType = getModulationType();
+            stopInverter();
+            startInverter(0.1, 0.01, 0, 1023, modType, _switchingFrequency);
+            _isRunning = true;
+            request->send(200, "text/plain", "Inverter Started");
         }
-
-        ModulationType modType = getModulationType();
-
-        Serial.println("Starting inverter with:");
-        Serial.println("  Frequency: " + String(_switchingFrequency));
-        Serial.println("  Modulation: " + _modulationType);
-
-        stopInverter();
-        startInverter(0.1, 0.01, 0, 1023, modType, _switchingFrequency);
-        _isRunning = true;
-        Serial.println("Inverter started!");
-
-        request->send(200, "text/plain", "Inverter Started");
-    }
-});
-
+    });
 
     // Stop the inverter
     server.on("/stop", HTTP_GET, [](AsyncWebServerRequest *request) {
         if (_isRunning) {
             stopInverter();
             _isRunning = false;
-            Serial.println("Inverter stopped!");
         }
         request->send(200, "text/plain", "Inverter Stopped");
     });
 
-    // Start the web server
     server.begin();
     Serial.println("HTTP Server Started");
-
-    // Starte den WebSocket-Server
     webSocket.begin();
     Serial.println("WebSocket Server Started");
 }
 
+// Web page processor function (placeholder)
 String HBridgeWebServer::processor(const String& var) {
     return String();
 }
 
+// Updates measurements and broadcasts via WebSocket
 void HBridgeWebServer::updateMeasurements(float* input, float* output) {
     StaticJsonDocument<128> jsonDoc;
     if (xSemaphoreTake(measurementinMutex, portMAX_DELAY) == pdTRUE) {
@@ -210,10 +133,7 @@ void HBridgeWebServer::updateMeasurements(float* input, float* output) {
         jsonDoc["frequency"] = output[6];
         xSemaphoreGive(measurementoutMutex);
     }
-
     char buffer[128];
     serializeJson(jsonDoc, buffer);
-
     webSocket.broadcastTXT(buffer);
-    //Serial.println("Updated Measurements Sent via WebSocket");
 }
