@@ -19,6 +19,7 @@ The project consists of two main components:
 H_Bridge_PCB_Project/
 │-- H_Bridge_PCB_Design/   # PCB design (KiCad files)
 │-- H_Bridge_PCB_Code/     # Source code for the ESP32
+│-- images/                # images used in the README.md
 │-- README.md              # This file
 ```
 
