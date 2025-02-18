@@ -59,5 +59,5 @@ H_Bridge_PCB_Code/
 │-- platformio.ini     # Configuration file for PlatformIO
 ```
 ### Flowchart
-
+![Flowchart of the programm](images/Flowchart.png)
 
