@@ -17,11 +17,19 @@
 #include "Input_meas.h"
 #include "Output_meas.h"
 
+
+#define CYCLETIME_PWM 0.2  //PWM-Zykluszeit in ms
+#define CYCLETIME_MEASUREMENT 0.5  //PWM-Zykluszeit in ms
+#define CYCLETIME_WEBSOCKET 10  //PWM-Zykluszeit in ms
+#define CYCLETIME_WEBSOCKETUPDATE 500  //PWM-Zykluszeit in ms
+
 // --- Task Handles ---
 TaskHandle_t inverterTaskHandle = NULL;
 TaskHandle_t webSocketTaskHandle  = NULL;
 TaskHandle_t measurementTaskHandle = NULL;
 TaskHandle_t webSocketUpdateHandle = NULL;
+
+
 
 
 
@@ -62,7 +70,7 @@ void webSocketTask(void *pvParameters) {
   while (true) {
     // Use the public function to call the private webSocket.loop()
     HBridgeWebServer::loopWebSocket();
-    vTaskDelay(pdMS_TO_TICKS(10)); // 10 ms delay between updates
+    vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKET)); // 10 ms delay between updates
   }
 }
 
@@ -73,20 +81,20 @@ void webSocketUpdate(void *pvParameters) {
     //float measurementout[7]={1,0,0,0,0,0,0};
     float* measurementout = OutputMeasurement::measurementall();
     HBridgeWebServer::updateMeasurements(measurementin, measurementout);
-    vTaskDelay(pdMS_TO_TICKS(500)); // 500 ms delay between updates
+    vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKETUPDATE)); // 500 ms delay between updates
   }
 }
 
 void measurementTask(void *pvParameters) {
   (void)pvParameters; // Unused parameter
     while (true) {
+      if (inverter != nullptr){
         float* measurementin = InputMeasurement::measurementall();
         //float measurementout[7]={0,0,0,0,0,0,0};
         float* measurementout = OutputMeasurement::measurementall();
-        if (inverter != nullptr){
         inverter->getmeasurements(measurementin, measurementout);
         }
-        vTaskDelay(pdMS_TO_TICKS(10)); // 500 µs
+        vTaskDelay(pdMS_TO_TICKS(CYCLETIME_MEASUREMENT)); // 500 µs
 }
 }
 
