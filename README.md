@@ -50,7 +50,7 @@ H_Bridge_PCB_Code/
 │   │-- index.html           # html file for webserver
 │   │-- script.js            # js file for webserver
 │   │-- style.css            # css file for webserver
-│   │-- src/                 # Main code directory
+│-- src/                 # Main code directory
 │   │-- I2C.cpp              #file for output and input measurement that both can work with the same I2C bus
 │   │-- Input_meas.cpp       #Input measurement of voltage, current and power 
 │   │-- main_OutputTest.cpp  #Testfile for calibration of Output sensor (should be outcommented in normal use)
