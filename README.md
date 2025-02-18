@@ -1,43 +1,67 @@
 # H-Bridge PCB Project
 
-## Projektbeschreibung
-Dieses Projekt beinhaltet den Entwurf und die Umsetzung einer H-Brücke unter Verwendung eines Espressif ESP32 Controllers. Die H-Brücke kann Lasten mit den folgenden Spezifikationen steuern:
+## Project Description
+This project involves the design and implementation of an H-Bridge using an Espressif ESP32 controller. The H-Bridge can control loads with the following specifications:
 
-- **Eingangsspannung:** 24V
-- **Eingangsstrom:** 10A
-- **Leistung:** 240W
+- **Input Voltage:** 24V  
+- **Input Current:** 10A  
+- **Power:** 240W  
 
-Das Projekt besteht aus zwei Hauptbestandteilen:
-1. **H_Bridge_PCB_Design:** Enthält das vollständige PCB-Design in KiCad.
-2. **H_Bridge_PCB_Code:** Enthält den Code für den ESP32 zur Steuerung der H-Brücke.
+The project consists of two main components:  
+1. **H_Bridge_PCB_Design:** Contains the complete PCB design in KiCad.  
+2. **H_Bridge_PCB_Code:** Contains the code for the ESP32 to control the H-Bridge.  
 
 ---
 
-## Verzeichnisstruktur
+## Directory Structure
 
 ```
 H_Bridge_PCB_Project/
-│-- H_Bridge_PCB_Design/   # PCB-Design (KiCad-Dateien)
-│-- H_Bridge_PCB_Code/     # Quellcode für den ESP32
-│   │-- src/               # Hauptcode-Verzeichnis
-│   │-- include/           # Headfiles Verzeichnis
-│   │-- lib/               # Zusätzliche Bibliotheken
-│   │-- platformio.ini     # Konfigurationsdatei für PlatformIO
-│-- README.md              # Diese Datei
+│-- H_Bridge_PCB_Design/   # PCB design (KiCad files)
+│-- H_Bridge_PCB_Code/     # Source code for the ESP32
+│   │-- data/              # Server data directory
+│   │-- src/               # Main code directory
+│   │-- include/           # Header files directory
+│   │-- lib/               # Additional libraries
+│   │-- platformio.ini     # Configuration file for PlatformIO
+│-- README.md              # This file
 ```
 
 ---
 
-## Voraussetzungen
-Bevor das Projekt gestartet werden kann, sollten folgende Software- und Hardwarekomponenten bereitgestellt werden:
+## Requirements
+Before starting the project, the following software and hardware components should be available:
 
 ### Hardware:
-- PCB gemäß KiCad-Design
+- PCB according to the KiCad design  
 
 ### Software:
-- [KiCad](https://www.kicad.org/) (für PCB-Design)
-- [PlatformIO](https://platformio.org/) (für ESP32-Entwicklung)
-- [VS Code](https://code.visualstudio.com/) (empfohlen für die Code-Entwicklung)
+- [KiCad](https://www.kicad.org/) (for PCB design)  
+- [PlatformIO](https://platformio.org/) (for ESP32 development)  
+- [VS Code](https://code.visualstudio.com/) (recommended for code development)
 
+##Code
+The project is mostly written in C++. For the Website jss, html and css was used.
+###Structure
+```
 
+H_Bridge_PCB_Code/           
+│-- data/                    # Server data directory
+│   │-- index.html           # html file for webserver
+│   │-- script.js            # js file for webserver
+│   │-- style.css            # css file for webserver
+│   │-- src/                 # Main code directory
+│   │-- I2C.cpp              #file for output and input measurement that both can work with the same I2C bus
+│   │-- Input_meas.cpp       #Input measurement of voltage, current and power 
+│   │-- main_OutputTest.cpp  #Testfile for calibration of Output sensor (should be outcommented in normal use)
+│   │-- main.cpp             #implementation of the Multithreading
+│   │-- mutexdefinitions.cpp #mutex definitions prevent concurrent memory access in measurement and inverter tasks
+│   │-- Output_meas.cpp      #Output measurement of VRMS, IRMS, active and reactive Power, Frequency and Phase
+│   │-- PWM.cpp              #class with all inverter functions
+│   │-- webserver.cpp        #webserver cpp file
+│-- include/           # Header files directory
+│-- lib/               # Additional libraries
+│-- platformio.ini     # Configuration file for PlatformIO
+```
+###
 
