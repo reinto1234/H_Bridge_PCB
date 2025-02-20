@@ -5,7 +5,11 @@ This project involves the design and implementation of an H-Bridge using an Espr
 
 - **Input Voltage:** 24V  
 - **Input Current:** 10A  
-- **Power:** 240W  
+- **Power:** 240W
+### Features
+- Customizable switching frequency 1kHz - 45kHz
+- unipolar or bipolar modulation
+- Input and output power measurement
 
 The project consists of two main components:  
 1. **H_Bridge_PCB_Design:** Contains the complete PCB design in KiCad.  
