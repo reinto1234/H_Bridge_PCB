@@ -29,7 +29,9 @@ H_Bridge_PCB_Project/
 Before starting the project, the following software and hardware components should be available:
 
 ### Hardware:
-- PCB according to the KiCad design  
+- PCB according to the KiCad design
+- Voltage source 24V and 10A
+- Load Resistor
 
 ### Software:
 - [KiCad](https://www.kicad.org/) (for PCB design)  
