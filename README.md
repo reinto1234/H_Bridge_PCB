@@ -75,3 +75,16 @@ The `HBridgeInverter` class handles the control of an H-Bridge inverter using th
 - **generateSPWM()**: Generates the sinusoidal PWM signal for bipolar and unipolar modulation.
 - **loop()**: Runs the main control loop, adjusting the PWM duty cycle based on the reference voltage.
 
+### Web Server and WebSocket Implementation
+The `webserver.cpp` file contains the implementation of a web server and WebSocket functionalities, allowing remote control and monitoring of the inverter system. Below are its key components:
+
+- **initWiFi()**: Sets up an access point for the ESP32.
+- **initServer()**: Starts the HTTP server and WebSocket server, serving static files like HTML, CSS, and JavaScript.
+- **getModulationType()**: Converts a string input to a modulation type (bipolar or unipolar).
+- **updateMeasurements()**: Retrieves real-time inverter measurements and broadcasts them via WebSocket.
+- **HTTP Endpoints:**
+  - `/`: Serves the main HTML page.
+  - `/start`: Starts the inverter with specified parameters.
+  - `/stop`: Stops the inverter.
+  - `/update`: Updates inverter settings like frequency and modulation type.
+  - `/bipolar.png`, `/unipolar.png`: Serves images representing modulation types.
