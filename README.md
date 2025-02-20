@@ -70,7 +70,7 @@ The `HBridgeInverter` class handles the control of an H-Bridge inverter using th
 - **stopInverter()**: Stops the inverter and resets all PWM outputs.
 - **HBridgeInverter() constructor**: Initializes the PI controller and precomputes a sine wave table.
 - **begin()**: Configures PWM channels and GPIOs.
-- **computePI()**: Implements a PI control algorithm.
+- **computePI()**: Implements a PI control algorithm. (Not done yet)
 - **getmeasurements()**: Retrieves input and output measurements.
 - **generateSPWM()**: Generates the sinusoidal PWM signal for bipolar and unipolar modulation.
 - **loop()**: Runs the main control loop, adjusting the PWM duty cycle based on the reference voltage.
