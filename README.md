@@ -36,12 +36,12 @@ Before starting the project, the following software and hardware components shou
 - [PlatformIO](https://platformio.org/) (for ESP32 development)  
 - [VS Code](https://code.visualstudio.com/) (recommended for code development)
 
-##Webserver
+## Webserver
 Webserver (based on WebSocket) to display all measurements and configure the controller.
 
 ### Connect to WLAN Access Point with default credentials:
 
-**SSID:** H_Bridge_Control
+**SSID:** H_Bridge_Control  
 **Password:** 12345678  
 
 ### Navigate to the web interface:
