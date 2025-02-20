@@ -62,3 +62,16 @@ H_Bridge_PCB_Code/
 ### Flowchart
 ![Flowchart of the programm](images/Flowchart.png)
 
+### Code Documentation
+
+The `HBridgeInverter` class handles the control of an H-Bridge inverter using the ESP32. Below is a breakdown of its main functionalities:
+
+- **startInverter()**: Initializes the inverter if it is not already running.
+- **stopInverter()**: Stops the inverter and resets all PWM outputs.
+- **HBridgeInverter() constructor**: Initializes the PI controller and precomputes a sine wave table.
+- **begin()**: Configures PWM channels and GPIOs.
+- **computePI()**: Implements a PI control algorithm.
+- **getmeasurements()**: Retrieves input and output measurements.
+- **generateSPWM()**: Generates the sinusoidal PWM signal for bipolar and unipolar modulation.
+- **loop()**: Runs the main control loop, adjusting the PWM duty cycle based on the reference voltage.
+
