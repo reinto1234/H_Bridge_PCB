@@ -74,7 +74,12 @@ H_Bridge_PCB_Code/
 ### Flowchart
 ![Flowchart of the programm](images/Flowchart.png)
 
-### Code Documentation
+## Code Documentation
+Brief documentation of the most important functions.
+
+### Inverter implementation
+
+The Iverter is implemented in `PWM.cpp`.
 
 The `HBridgeInverter` class handles the control of an H-Bridge inverter using the ESP32. Below is a breakdown of its main functionalities:
 
