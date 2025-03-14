@@ -1,3 +1,11 @@
+/************************************************************************
+ * @file PWM.cpp
+ * @brief PWM control and H-Bridge Inverter implementation
+ *
+ * This file contains the implementation of the H-Bridge Inverter, including
+ * the PI controller, sine wave generation, and PWM signal control.
+ ************************************************************************/
+
 #include "PWM.h"
 #include "mutexdefinitions.h"
 
@@ -69,7 +77,8 @@ HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outp
     for (int i = 0; i < SINE_STEPS; i++) {
         float sinValue = sin(2 * M_PI * i / SINE_STEPS);
         if (modulationType == BIPOLAR) {
-            sineTable[i] = (uint16_t)((sinValue + 1) * 511);  // Bipolar: Full sinus range
+            sineTable[i] = (uint16_t)((sinValue+1) * 511);  // Bipolar: Full sinus range#
+            Serial.println(sineTable[i]);
         } else {
             sineTable[i] = (uint16_t)(abs(sinValue) * 1023); // Unipolar: Only positive part
         }
@@ -87,13 +96,32 @@ void HBridgeInverter::begin() {
     ledcSetup(PWM_CHANNEL_1, S_FREQ, RESOLUTION);
     ledcSetup(PWM_CHANNEL_2, S_FREQ, RESOLUTION);
 
-    // Attach PWM to GPIOs
     ledcAttachPin(HIN1, PWM_CHANNEL_1);
-    ledcAttachPin(HIN2, PWM_CHANNEL_2);
+    
+    
 
-    // Set complementary outputs as digital
-    pinMode(LIN1, OUTPUT);
-    pinMode(LIN2, OUTPUT);
+    if (modulationType == UNIPOLAR) {
+        // Set complementary outputs as digital
+        // Attach PWM to GPIOs
+        ledcAttachPin(HIN2, PWM_CHANNEL_2);
+
+        pinMode(LIN1, OUTPUT);
+        pinMode(LIN2, OUTPUT);
+        
+    }
+    else {
+        // Attach PWM to GPIOs
+        // Initialize MCPWM GPIOs for complementary outputs
+        ledcAttachPin(HIN2, PWM_CHANNEL_1);
+        ledcAttachPin(LIN1, PWM_CHANNEL_1);
+        ledcAttachPin(LIN2, PWM_CHANNEL_1);
+        GPIO.func_out_sel_cfg[LIN1].inv_sel = 1;
+        GPIO.func_out_sel_cfg[HIN2].inv_sel = 1;
+        
+        
+    }
+
+
 }
 
 // Compute PI controller output
@@ -136,23 +164,27 @@ void HBridgeInverter::generateSPWM() {
 
     if (modulationType == BIPOLAR) {
         // Bipolar modulation: both bridge arms switch simultaneously
-        ledcWrite(PWM_CHANNEL_1, pwmValue);
-        ledcWrite(PWM_CHANNEL_2, 1023 - pwmValue);
 
-        digitalWrite(LIN1, !digitalRead(HIN1));
-        digitalWrite(LIN2, !digitalRead(HIN2));
+        //Serial.println(pwmValue);
+        ledcWrite(PWM_CHANNEL_1, pwmValue);
+        
+        //ledcWrite(PWM_CHANNEL_2, 1023 - pwmValue);
+                
     } else {
         // Unipolar modulation: one bridge arm stays constant
+            // Set complementary outputs as digital
         if (stepIndex < SINE_STEPS / 2) {
-            ledcWrite(PWM_CHANNEL_1, pwmValue);
             ledcWrite(PWM_CHANNEL_2, 0);
             digitalWrite(LIN1, LOW);
             digitalWrite(LIN2, HIGH);
+            ledcWrite(PWM_CHANNEL_1, pwmValue);
+
         } else {
             ledcWrite(PWM_CHANNEL_1, 0);
-            ledcWrite(PWM_CHANNEL_2, pwmValue);
-            digitalWrite(LIN1, HIGH);
             digitalWrite(LIN2, LOW);
+            digitalWrite(LIN1, HIGH);
+            ledcWrite(PWM_CHANNEL_2, pwmValue);
+
         }
     }
     // Increment sine wave step

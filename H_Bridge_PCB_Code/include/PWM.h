@@ -1,11 +1,23 @@
+/*************************************************************************
+ * @file PWM.h
+ * @date 2025/01/31
+ *
+ ************************************************************************/
+
 #ifndef PWM_H
 #define PWM_H
 
+/*************************************************************************
+ * Includes
+ ************************************************************************/
 #include <Arduino.h>
 #include <math.h>
 #include <iostream>
 #include <vector>
 
+/*************************************************************************
+ * Defines
+ ************************************************************************/
 // GPIO-Pins für H-Brücke
 #define HIN1 15
 #define LIN1 16
@@ -18,12 +30,12 @@
 #define RESOLUTION 10  // 10-Bit PWM
 #define CYCLETIME_PWM 0.2  //PWM-Zykluszeit in ms
 
-
 // Sinus-Tabelle für SPWM
-
 #define OUTPUT_FREQ 50   // Ausgangsfrequenz in Hz
 
-
+/*************************************************************************
+ * Enums and Structs
+ ************************************************************************/
 enum ModulationType {
     UNIPOLAR,
     BIPOLAR
@@ -38,7 +50,9 @@ struct PIController {
     float outputMax;
 };
 
-// H-Brücke Klasse
+/*************************************************************************
+ * Class
+ ************************************************************************/
 class HBridgeInverter {
 public:
     HBridgeInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq);

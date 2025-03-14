@@ -2,9 +2,11 @@
  * @file main.cpp
  * @brief Multithreaded main file for the H-Bridge Inverter System
  * 
- * This example creates two tasks:
+ * This example creates four tasks:
  *   - inverterTask: Runs the inverter control loop (reads sensor, updates PWM)
  *   - webSocketTask: Runs the WebSocket loop for real-time communications
+*   - measurementTask: Collects input and output measurements
+ *   - webSocketUpdate: Periodically updates WebSocket with measurements
  *
  * The HTTP server (AsyncWebServer) is initialized in setup() and handles the
  * file serving and parameter updates.
@@ -19,7 +21,7 @@
 
 
 #define CYCLETIME_PWM 0.2  //PWM-Zykluszeit in ms
-#define CYCLETIME_MEASUREMENT 0.5  //PWM-Zykluszeit in ms
+#define CYCLETIME_MEASUREMENT 100  //PWM-Zykluszeit in ms
 #define CYCLETIME_WEBSOCKET 10  //PWM-Zykluszeit in ms
 #define CYCLETIME_WEBSOCKETUPDATE 500  //PWM-Zykluszeit in ms
 
@@ -28,8 +30,6 @@ TaskHandle_t inverterTaskHandle = NULL;
 TaskHandle_t webSocketTaskHandle  = NULL;
 TaskHandle_t measurementTaskHandle = NULL;
 TaskHandle_t webSocketUpdateHandle = NULL;
-
-
 
 
 
@@ -77,9 +77,10 @@ void webSocketTask(void *pvParameters) {
 void webSocketUpdate(void *pvParameters) {
   (void)pvParameters; // Unused parameter
   while (true) {
-    float* measurementin = InputMeasurement::measurementall();
-    //float measurementout[7]={1,0,0,0,0,0,0};
-    float* measurementout = OutputMeasurement::measurementall();
+    float measurementin[3]={1,0,0};
+    //float* measurementin = InputMeasurement::measurementall();
+    float measurementout[7]={1,0,0,0,0,0,0};
+    //float* measurementout = OutputMeasurement::measurementall();
     HBridgeWebServer::updateMeasurements(measurementin, measurementout);
     vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKETUPDATE)); // 500 ms delay between updates
   }
@@ -89,9 +90,10 @@ void measurementTask(void *pvParameters) {
   (void)pvParameters; // Unused parameter
     while (true) {
       if (inverter != nullptr){
-        float* measurementin = InputMeasurement::measurementall();
-        //float measurementout[7]={0,0,0,0,0,0,0};
-        float* measurementout = OutputMeasurement::measurementall();
+        float measurementin[7]={1,0,0};
+        //float* measurementin = InputMeasurement::measurementall();
+        float measurementout[7]={0,0,0,0,0,0,0};
+        //float* measurementout = OutputMeasurement::measurementall();
         inverter->getmeasurements(measurementin, measurementout);
         }
         vTaskDelay(pdMS_TO_TICKS(CYCLETIME_MEASUREMENT)); // 500 µs
@@ -112,13 +114,14 @@ void setup() {
   measurementinMutex = xSemaphoreCreateMutex();
   measurementoutMutex = xSemaphoreCreateMutex();
 
-  InputMeasurement::init();
-  OutputMeasurement::init();
+  //InputMeasurement::init();
+  //OutputMeasurement::init();
 
 
   // Initialize WiFi and HTTP/WebSocket server
   HBridgeWebServer::initWiFi();
   HBridgeWebServer::initServer();
+  Serial.println("WebServer initialized!");
 
 
 
@@ -165,7 +168,7 @@ void setup() {
     "WebSocketUpdate",     // Name of task
     4096,                // Stack size (in bytes)
     NULL,                // Parameter to pass
-    1,                   // Task priority
+    2,                   // Task priority
     &webSocketUpdateHandle,  // Task handle
     0                    // Core where the task should run
   );
@@ -183,7 +186,11 @@ void setup() {
  * The main loop can remain empty (or perform low-priority background tasks)
  * because the functionality is split among FreeRTOS tasks.
  */
+
+
+
 void loop() {
   // Nothing to do here – tasks are running independently.
-  delay(1000);
 }
+
+

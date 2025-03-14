@@ -1,3 +1,11 @@
+/************************************************************************
+ * @file webserver.cpp
+ * @brief Web server and WebSocket implementation for the H-Bridge Inverter System
+ *
+ * This file contains the implementation of the web server and WebSocket
+ * functionalities, including serving static files and handling HTTP requests.
+ ************************************************************************/
+
 #include "webserver.h"
 #include "PWM.h"
 #include "LittleFS.h"
@@ -116,7 +124,7 @@ String HBridgeWebServer::processor(const String& var) {
 
 // Updates measurements and broadcasts via WebSocket
 void HBridgeWebServer::updateMeasurements(float* input, float* output) {
-    StaticJsonDocument<128> jsonDoc;
+    StaticJsonDocument<256> jsonDoc;
     if (xSemaphoreTake(measurementinMutex, portMAX_DELAY) == pdTRUE) {
         jsonDoc["voltage"] = input[0];
         jsonDoc["current"] = input[1];
@@ -133,7 +141,7 @@ void HBridgeWebServer::updateMeasurements(float* input, float* output) {
         jsonDoc["frequency"] = output[6];
         xSemaphoreGive(measurementoutMutex);
     }
-    char buffer[128];
+    char buffer[512];
     serializeJson(jsonDoc, buffer);
     webSocket.broadcastTXT(buffer);
 }

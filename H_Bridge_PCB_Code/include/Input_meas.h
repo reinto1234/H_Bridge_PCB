@@ -21,6 +21,7 @@ public:
     /* Initialize the sensor */
     static void init();
     static float* measurementall();
+    static void init1();
 
 
 private:
@@ -29,6 +30,8 @@ private:
     static float measurementBufferin[3]; // [Voltage, Current, Power]
     /* Get voltage measurement */
     static float getVoltage();
+
+    static void scanI2C();
 
     /* Get current measurement */
     static float getCurrent();

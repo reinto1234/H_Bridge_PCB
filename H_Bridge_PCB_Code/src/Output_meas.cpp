@@ -1,7 +1,9 @@
 /*************************************************************************
  * @file Output_meas.cpp
- * @date 2025/01/31
+ * @brief Output measurements for the H-Bridge Inverter System
  *
+ * This file contains the implementation of output measurements, including
+ * voltage, current, power, power factor, phase, imaginary power, and frequency.
  ************************************************************************/
 
 #include "Output_meas.h"
@@ -42,20 +44,32 @@ void IRAM_ATTR zeroCrossISR() {
 }
 
 void OutputMeasurement::init() {
-    I2CINA.begin(SDA_PIN, SCL_PIN, 100000); // SDA on IO32, SCL on IO33
-    Serial.println("I2CINA initialized");
-    sleep(1);
-
-    if (!acs37800.begin(0x62, I2CINA)) { // 0x60 is the default I2C address
-        while (1); // Halt execution if sensor is not found
-    }
-    Serial.println("ACS37800 found!");
 
     // Configure GPIO for Zero-Crossing and Event Detection
     pinMode(DIO_0_PIN, INPUT_PULLUP);
     attachInterrupt(DIO_0_PIN, zeroCrossISR, FALLING); // Interrupt on falling edge for zero-cross
 
     pinMode(DIO_1_PIN, INPUT_PULLUP);
+
+
+    I2CINA.begin(SDA_PIN, SCL_PIN, I2CSpeed); // SDA on IO32, SCL on IO33
+    Serial.println("I2CINA Output initialized");
+    sleep(1);   // Wait for the sensor to initialize
+
+    bool sensorFound = false;
+    while (!sensorFound) {
+        // Attempt to initialize the ACS37800 sensor
+        if (acs37800.begin(0x66, I2CINA)) { // 0x66 is the I2C address for ACS37800
+            Serial.println("ACS37800 found!");
+            sensorFound = true; // Sensor found, exit the loop
+        } else {
+            // If the sensor is not found, print an error message and retry
+            Serial.println("ACS37800 not found. Retrying...");
+            delay(1000); // Wait before retrying (adjust as needed)
+        }
+    }
+
+    
 }
 
 float OutputMeasurement::getVoltage() {

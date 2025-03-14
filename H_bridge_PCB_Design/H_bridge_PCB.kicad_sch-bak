@@ -1265,12 +1265,6 @@
 		)
 	)
 	(junction
-		(at 160.655 175.26)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "33ef4034-7530-482d-ae9a-983f675feef2")
-	)
-	(junction
 		(at 154.94 183.515)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1283,22 +1277,10 @@
 		(uuid "43210778-16d8-488e-9027-1108495908b8")
 	)
 	(junction
-		(at 153.67 163.83)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5b0e73fd-7dd1-4611-a4fd-09860d552613")
-	)
-	(junction
 		(at 182.88 163.83)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "98b697a6-b4f9-4f1c-8b80-dfbefab389f2")
-	)
-	(junction
-		(at 148.59 183.515)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a33606ad-9f51-4cfb-8cf9-57333a05f78f")
 	)
 	(junction
 		(at 160.655 163.83)
@@ -1327,16 +1309,6 @@
 			(type default)
 		)
 		(uuid "000a4147-2312-4f54-9063-b903f7dcae33")
-	)
-	(wire
-		(pts
-			(xy 153.67 175.26) (xy 160.655 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "021de212-bc69-4d83-bd3c-f93d17d53981")
 	)
 	(wire
 		(pts
@@ -1440,7 +1412,7 @@
 	)
 	(wire
 		(pts
-			(xy 141.605 183.515) (xy 148.59 183.515)
+			(xy 149.86 183.515) (xy 154.94 183.515)
 		)
 		(stroke
 			(width 0)
@@ -1457,26 +1429,6 @@
 			(type default)
 		)
 		(uuid "462bc7fc-6f0f-4078-8924-d0401a4a1e78")
-	)
-	(wire
-		(pts
-			(xy 153.67 173.355) (xy 153.67 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4db63f0e-4932-4566-98cf-3c26ef671d82")
-	)
-	(wire
-		(pts
-			(xy 153.67 163.83) (xy 153.67 165.735)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "534f40cd-c2f5-4b8a-873a-ad2bec046759")
 	)
 	(wire
 		(pts
@@ -1620,7 +1572,7 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 163.83) (xy 148.59 167.64)
+			(xy 154.94 163.83) (xy 154.94 169.545)
 		)
 		(stroke
 			(width 0)
@@ -1687,16 +1639,6 @@
 			(type default)
 		)
 		(uuid "9929175d-87e4-4ca1-a1a6-363ee6c23d14")
-	)
-	(wire
-		(pts
-			(xy 148.59 183.515) (xy 154.94 183.515)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a232a497-f08e-4db7-83e6-481d4fe99774")
 	)
 	(wire
 		(pts
@@ -1830,17 +1772,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 163.83) (xy 160.655 163.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7691b41-38ea-42ac-9f51-33aad62a5bc6")
-	)
-	(wire
-		(pts
-			(xy 148.59 175.26) (xy 148.59 183.515)
+			(xy 154.94 183.515) (xy 154.94 177.165)
 		)
 		(stroke
 			(width 0)
@@ -1870,7 +1802,7 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 163.83) (xy 153.67 163.83)
+			(xy 154.94 163.83) (xy 160.655 163.83)
 		)
 		(stroke
 			(width 0)
@@ -2176,7 +2108,7 @@
 	)
 	(global_label "EN"
 		(shape output)
-		(at 141.605 183.515 180)
+		(at 149.86 183.515 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -2186,7 +2118,7 @@
 		)
 		(uuid "cd743486-1854-40d5-8d82-d40a301a46cd")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 136.1403 183.515 0)
+			(at 144.3953 183.515 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2686,102 +2618,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 153.67 169.545 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "5a6f03a1-a520-4a19-b3e2-13d019e2cc97")
-		(property "Reference" "C20"
-			(at 157.48 168.2749 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "4.7 µF"
-			(at 153.924 172.212 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 154.6352 173.355 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 153.67 169.545 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 153.67 169.545 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C49678"
-			(at 153.67 169.545 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 153.67 169.545 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 153.67 169.545 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "a2cb024b-dade-466f-a686-0b19a9152f68")
-		)
-		(pin "1"
-			(uuid "bd9ed714-8439-4dcb-8c9f-5bf0d556e40d")
-		)
-		(instances
-			(project "H_bridge_PCB"
-				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19"
-					(reference "C20")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 211.455 179.705 90)
 		(mirror x)
@@ -3270,7 +3106,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 148.59 171.45 0)
+		(at 154.94 173.355 0)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3279,7 +3115,7 @@
 		(dnp no)
 		(uuid "ece92b5b-4e07-4e27-9927-d8046825fd26")
 		(property "Reference" "R13"
-			(at 142.24 171.45 90)
+			(at 148.59 173.355 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3287,7 +3123,7 @@
 			)
 		)
 		(property "Value" "12k"
-			(at 144.78 171.45 90)
+			(at 151.13 173.355 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3295,7 +3131,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 146.812 171.45 90)
+			(at 153.162 173.355 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3304,7 +3140,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 148.59 171.45 0)
+			(at 154.94 173.355 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3313,7 +3149,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 148.59 171.45 0)
+			(at 154.94 173.355 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3322,7 +3158,7 @@
 			)
 		)
 		(property "LCSC Part#" "C139925"
-			(at 148.59 171.45 90)
+			(at 154.94 173.355 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3331,7 +3167,7 @@
 			)
 		)
 		(property "LSCS Part#" ""
-			(at 148.59 171.45 0)
+			(at 154.94 173.355 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3340,7 +3176,7 @@
 			)
 		)
 		(property "Lcsc Part#" ""
-			(at 148.59 171.45 0)
+			(at 154.94 173.355 0)
 			(effects
 				(font
 					(size 1.27 1.27)
