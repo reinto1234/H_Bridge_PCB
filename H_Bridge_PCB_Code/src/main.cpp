@@ -20,7 +20,7 @@
 #include "Output_meas.h"
 
 
-#define CYCLETIME_PWM 0.2  //PWM-Zykluszeit in ms
+//#define CYCLETIME_PWM 0.1  //PWM-Zykluszeit in ms
 #define CYCLETIME_MEASUREMENT 100  //PWM-Zykluszeit in ms
 #define CYCLETIME_WEBSOCKET 10  //PWM-Zykluszeit in ms
 #define CYCLETIME_WEBSOCKETUPDATE 500  //PWM-Zykluszeit in ms
@@ -42,23 +42,23 @@ TaskHandle_t webSocketUpdateHandle = NULL;
  * This task reads an analog value (e.g., from A0) as a simulated measurement
  * and updates the inverter's control loop using a placeholder setpoint value.
  */
-void inverterTask(void *pvParameters) {
-  (void)pvParameters; // Unused parameter
-  const int setpoint = 512;  // Placeholder setpoint for the PI control
-  while (true) {
-    if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
-    if (inverter != nullptr) {
-      // Read the measurement (replace with actual sensor reading if needed)
-      float vMeasured = analogRead(A0);
-      // Update the inverter control loop
-      inverter->loop(setpoint, vMeasured);
-    }
-    xSemaphoreGive(inverterMutex);
-    }
-    // Small delay to avoid hogging the CPU
-    vTaskDelay(pdMS_TO_TICKS(CYCLETIME_PWM));
-  }
-}
+// void inverterTask(void *pvParameters) {
+//   (void)pvParameters; // Unused parameter
+//   const int setpoint = 512;  // Placeholder setpoint for the PI control
+//   while (true) {
+//     if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
+//     if (inverter != nullptr) {
+//       // Read the measurement (replace with actual sensor reading if needed)
+//       float vMeasured = 0.0; // Placeholder for actual measurement
+//       // Update the inverter control loop
+//       inverter->loop(setpoint, vMeasured);
+//     }
+//     xSemaphoreGive(inverterMutex);
+//     }
+//     // Small delay to avoid hogging the CPU
+//     vTaskDelay(pdMS_TO_TICKS(CYCLETIME_PWM));
+//   }
+// }
 
 /**
  * @brief Task for running the WebSocket loop.
@@ -77,10 +77,10 @@ void webSocketTask(void *pvParameters) {
 void webSocketUpdate(void *pvParameters) {
   (void)pvParameters; // Unused parameter
   while (true) {
-    float measurementin[3]={1,0,0};
-    //float* measurementin = InputMeasurement::measurementall();
-    float measurementout[7]={1,0,0,0,0,0,0};
-    //float* measurementout = OutputMeasurement::measurementall();
+    //float measurementin[3]={1,0,0};
+    float* measurementin = InputMeasurement::measurementall();
+    //float measurementout[7]={1,0,0,0,0,0,0};
+    float* measurementout = OutputMeasurement::measurementall();
     HBridgeWebServer::updateMeasurements(measurementin, measurementout);
     vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKETUPDATE)); // 500 ms delay between updates
   }
@@ -114,8 +114,8 @@ void setup() {
   measurementinMutex = xSemaphoreCreateMutex();
   measurementoutMutex = xSemaphoreCreateMutex();
 
-  //InputMeasurement::init();
-  //OutputMeasurement::init();
+  InputMeasurement::init();
+  OutputMeasurement::init();
 
 
   // Initialize WiFi and HTTP/WebSocket server
@@ -127,16 +127,16 @@ void setup() {
 
   // Note: The inverter is started/stopped via HTTP endpoints (/start, /stop)
 
-  // Create the inverter control task on core 1 with a 4KB stack and low priority (1)
-  xTaskCreatePinnedToCore(
-    inverterTask,        // Task function
-    "InverterTask",      // Name of task
-    4096,                // Stack size (in bytes)
-    NULL,                // Parameter to pass
-    1,                   // Task priority
-    &inverterTaskHandle, // Task handle
-    1                    // Core where the task should run
-  );
+  // // Create the inverter control task on core 1 with a 4KB stack and low priority (1)
+  // xTaskCreatePinnedToCore(
+  //   inverterTask,        // Task function
+  //   "InverterTask",      // Name of task
+  //   4096,                // Stack size (in bytes)
+  //   NULL,                // Parameter to pass
+  //   1,                   // Task priority
+  //   &inverterTaskHandle, // Task handle
+  //   1                    // Core where the task should run
+  // );
 
   // Create the WebSocket task on core 0 with a 4KB stack and low priority (1)
   xTaskCreatePinnedToCore(

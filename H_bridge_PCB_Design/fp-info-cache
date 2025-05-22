@@ -1,4 +1,4 @@
-24691189238122431
+24705140043909843
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -91063,12 +91063,26 @@ Test Point
 1
 1
 SamacSys_Parts
+17345101
+1734510-1-2
+Connector
+0
+7
+7
+SamacSys_Parts
 ACS37002LMCA050U5
 MC, 16-Pin SOICW-1
 Integrated Circuit
 0
 16
 16
+SamacSys_Parts
+B32776E4406J000
+B32776E4406J000
+Capacitor
+0
+2
+2
 SamacSys_Parts
 CP2102NA02GQFN20
 QFN20_FFW
@@ -91112,6 +91126,20 @@ Schottky Diode
 3
 3
 SamacSys_Parts
+HPZRC26X
+HPZR-C26X-2
+Diode
+0
+2
+2
+SamacSys_Parts
+IFDC3030EZER101M
+7.8mm x 7.8mm x 5mm
+Inductor
+0
+2
+2
+SamacSys_Parts
 IH15BQ5R0K
 34.93 x 17.78 mm
 Inductor
@@ -91154,6 +91182,13 @@ Integrated Circuit
 8
 8
 SamacSys_Parts
+PHBC24N2R0A0219V
+PHBC24N-2R0A0219V-2
+Filter
+0
+2
+2
+SamacSys_Parts
 QFN50P400X400X80-25N-D
 24-Pin QFN-1
 Integrated Circuit
@@ -91174,6 +91209,20 @@ Resistor
 0
 2
 2
+SamacSys_Parts
+SC1502J
+SC-15-02J-1
+Filter
+0
+4
+4
+SamacSys_Parts
+SOIC127P600X175-8N
+D
+Integrated Circuit
+0
+8
+8
 SamacSys_Parts
 SOIC127P1032X265-16N
 IR2110STRPBF
@@ -91251,6 +91300,13 @@ MOSFET (N-Channel)
 0
 3
 3
+SamacSys_Parts
+TSW-102-XX-YY-S
+TSW-102-XX-YY-S
+Connector
+0
+2
+2
 Sensor
 ASAIR_AM2302_P2.54mm_Lead2.75mm_TabDown
 Temperature and humidity module, http://akizukidenshi.com/download/ds/aosong/AM2302.pdf

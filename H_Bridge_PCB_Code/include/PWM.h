@@ -28,10 +28,12 @@
 #define PWM_CHANNEL_1 0
 #define PWM_CHANNEL_2 1
 #define RESOLUTION 10  // 10-Bit PWM
-#define CYCLETIME_PWM 0.2  //PWM-Zykluszeit in ms
+//#define CYCLETIME_PWM 0.5  //PWM-Zykluszeit in ms
 
 // Sinus-Tabelle für SPWM
 #define OUTPUT_FREQ 50   // Ausgangsfrequenz in Hz
+#define SINE_STEPS 100 // Anzahl der Schritte in der Sinus-Tabelle
+#define TIMER_INTERVAL_US (1000000 / (OUTPUT_FREQ * SINE_STEPS))
 
 /*************************************************************************
  * Enums and Structs
@@ -64,7 +66,7 @@ public:
     
 
 private:
-    int SINE_STEPS;    // Anzahl der Werte für eine Periode
+    
     int S_FREQ; // Startfrequenz in Hz
     std::vector<int> sineTable;
     PIController pi;

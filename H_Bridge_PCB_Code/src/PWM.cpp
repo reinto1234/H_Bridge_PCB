@@ -12,6 +12,17 @@
 // Global variable for the inverter
 // Ensures only one instance of the inverter is created
 HBridgeInverter* inverter = nullptr;
+hw_timer_t* spwmTimer = nullptr;
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+
+//Interrupt Service Routine (ISR) for the SPWM timer
+void IRAM_ATTR onSPWMTimer() {
+    if (inverter != nullptr) {
+        // Achtung: ISR → möglichst schnell! Kein Serial, keine Mutex!
+        inverter->generateSPWM();
+    }
+}
+
 
 // Function to start the inverter
 void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq) {
@@ -34,14 +45,16 @@ void stopInverter() {
     // Check if an inverter instance exists
     if (inverter != nullptr) {
         // Acquire mutex before modifying the inverter instance
-        if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
-            delete inverter; // Free memory
-            inverter = nullptr;
-            xSemaphoreGive(inverterMutex);
-        }
+       // if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
+        //   delete inverter; // Free memory
+        //    inverter = nullptr;
+        //    xSemaphoreGive(inverterMutex);
+        //}
         // Stop PWM signals and reset GPIOs
         ledcWrite(PWM_CHANNEL_1, 0);
         ledcWrite(PWM_CHANNEL_2, 0);
+        GPIO.func_out_sel_cfg[LIN1].inv_sel = 0;
+        GPIO.func_out_sel_cfg[HIN2].inv_sel = 0;
         digitalWrite(HIN1, LOW);
         digitalWrite(HIN2, LOW);
         digitalWrite(LIN1, LOW);
@@ -50,6 +63,13 @@ void stopInverter() {
     } else {
         Serial.println("No inverter is running!");
     }
+    if (spwmTimer != nullptr) {
+        timerAlarmDisable(spwmTimer);
+        timerDetachInterrupt(spwmTimer);
+        timerEnd(spwmTimer);
+        spwmTimer = nullptr;
+    }
+    Serial.println("SPWM Timer stopped!");    
 }
 
 // Constructor for HBridgeInverter class
@@ -66,12 +86,9 @@ HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outp
     modulationType = modType; // Store modulation type
     S_FREQ = freq;
     
-    // Compute sine table size based on output frequency and cycle time
-    SINE_STEPS = 500.0f / float(OUTPUT_FREQ) / (float(CYCLETIME_PWM));
-
-    // Resize sine table
-    sineTable.resize(SINE_STEPS);
+    
     Serial.println("Sine Table Size: " + String(SINE_STEPS));
+    sineTable.resize(SINE_STEPS); // Resize sine table to SINE_STEPS size
 
     // Precompute sine wave table based on modulation type
     for (int i = 0; i < SINE_STEPS; i++) {
@@ -81,6 +98,7 @@ HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outp
             Serial.println(sineTable[i]);
         } else {
             sineTable[i] = (uint16_t)(abs(sinValue) * 1023); // Unipolar: Only positive part
+            Serial.println(sineTable[i]);
         }
     }
 }
@@ -105,8 +123,12 @@ void HBridgeInverter::begin() {
         // Attach PWM to GPIOs
         ledcAttachPin(HIN2, PWM_CHANNEL_2);
 
-        pinMode(LIN1, OUTPUT);
-        pinMode(LIN2, OUTPUT);
+
+        ledcAttachPin(LIN1, PWM_CHANNEL_2);
+        ledcAttachPin(LIN2, PWM_CHANNEL_1);
+
+        GPIO.func_out_sel_cfg[LIN1].inv_sel = 0;
+        GPIO.func_out_sel_cfg[HIN2].inv_sel = 0;
         
     }
     else {
@@ -120,6 +142,12 @@ void HBridgeInverter::begin() {
         
         
     }
+    // Timer initialisieren
+    spwmTimer = timerBegin(0, 80, true); // Timer 0, prescaler 80 → 1 µs Takt (80 MHz / 80 = 1 MHz)
+    timerAttachInterrupt(spwmTimer, &onSPWMTimer, true);
+    timerAlarmWrite(spwmTimer, TIMER_INTERVAL_US, true); // Alle x µs auslösen
+    timerAlarmEnable(spwmTimer);
+
 
 
 }
@@ -175,14 +203,10 @@ void HBridgeInverter::generateSPWM() {
             // Set complementary outputs as digital
         if (stepIndex < SINE_STEPS / 2) {
             ledcWrite(PWM_CHANNEL_2, 0);
-            digitalWrite(LIN1, LOW);
-            digitalWrite(LIN2, HIGH);
             ledcWrite(PWM_CHANNEL_1, pwmValue);
 
         } else {
             ledcWrite(PWM_CHANNEL_1, 0);
-            digitalWrite(LIN2, LOW);
-            digitalWrite(LIN1, HIGH);
             ledcWrite(PWM_CHANNEL_2, pwmValue);
 
         }

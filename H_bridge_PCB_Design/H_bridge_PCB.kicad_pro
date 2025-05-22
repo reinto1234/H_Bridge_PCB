@@ -58,13 +58,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        "clearance|135000000|145635000|23f788e6-09c6-46f5-88f2-688c09b92999|249a9c7b-cf63-4eef-b531-2984fc633161",
-        "clearance|56500000|137135000|933a6df2-1839-4144-aabc-f6bc262d06cf|1d3864e2-0f1d-4e09-81af-bb5a3f6e240e",
-        "clearance|66250000|126385000|b33ced58-86c6-4273-97cc-6a63dc4f9920|82d1d0d2-f6cc-4f63-99fe-0c4523456a27",
-        "clearance|72865000|124750000|444cc0aa-80a7-4ada-be1d-71a4c00a0b82|b9b5b8b1-8311-4f9f-a9fc-2c2d215c592e",
-        "clearance|77865000|124550000|50a83064-860d-4de0-a285-74764f52eecc|cc9bb9dd-0bff-4f29-8fa6-79a5aaf8f98c"
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -188,6 +182,7 @@
         0.2,
         0.5,
         1.0,
+        2.0,
         2.5,
         4.0,
         5.0

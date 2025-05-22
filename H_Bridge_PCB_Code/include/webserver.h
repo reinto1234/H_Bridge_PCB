@@ -27,6 +27,7 @@ public:
     static void initServer();
     static void handleWebSocket();
     static void sendStatusUpdate();
+    static void resetDefaults();
 
     static void loopWebSocket() {
         webSocket.loop();

@@ -30,8 +30,15 @@ ModulationType HBridgeWebServer::getModulationType() {
     }
 }
 
+void HBridgeWebServer::resetDefaults() {
+    _switchingFrequency = 20000; // Hz
+    _modulationType = "BIPOLAR";
+    _isRunning = false;
+}
+
 // Initializes WiFi Access Point
 void HBridgeWebServer::initWiFi() {
+    resetDefaults();
     WiFi.softAP("HBridge_Control", "12345678");
     Serial.println("WiFi Access Point Started. Connect to 'HBridge_Control'");
     IPAddress IP = WiFi.softAPIP();
