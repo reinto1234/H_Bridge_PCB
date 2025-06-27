@@ -35,6 +35,8 @@
 #define SINE_STEPS 100 // Anzahl der Schritte in der Sinus-Tabelle
 #define TIMER_INTERVAL_US (1000000 / (OUTPUT_FREQ * SINE_STEPS))
 
+
+
 /*************************************************************************
  * Enums and Structs
  ************************************************************************/
@@ -76,6 +78,7 @@ private:
     void setModulationType(ModulationType type);      // Neu für Webserver
     void setSwitchingFrequency(int freq);            // Neu für Webserver
     float measurementBuffer[10];
+    intr_handle_t spwmIntrHandle;
 };
 
 void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq);

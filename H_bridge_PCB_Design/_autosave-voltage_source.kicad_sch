@@ -3810,6 +3810,28 @@
 		)
 		(uuid "f9fdfffd-fdb1-4e45-b18d-969dfeda1528")
 	)
+	(global_label "VIN(3.3V)"
+		(shape output)
+		(at 220.98 35.56 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "085187c9-8555-457a-9a04-acc0f5d657aa")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 220.98 23.7451 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SO1"
 		(shape input)
 		(at 63.5 40.64 0)
@@ -3829,72 +3851,6 @@
 				)
 				(justify left)
 				(hide yes)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 220.98 35.56 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "058f6544-086b-4dc6-a75a-ec2a2dfd51e6")
-		(property "Reference" "#PWR035"
-			(at 220.98 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 220.98 31.115 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 220.98 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 220.98 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 220.98 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1882810a-7722-4895-9a10-bc7b61513b41")
-		)
-		(instances
-			(project ""
-				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/5cd83469-f4dc-4d9b-8949-703722184d70"
-					(reference "#PWR035")
-					(unit 1)
-				)
 			)
 		)
 	)

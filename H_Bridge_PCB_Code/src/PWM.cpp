@@ -42,34 +42,63 @@ void startInverter(float kp, float ki, float outputMin, float outputMax, Modulat
 
 // Function to stop the inverter
 void stopInverter() {
-    // Check if an inverter instance exists
-    if (inverter != nullptr) {
-        // Acquire mutex before modifying the inverter instance
-       // if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
-        //   delete inverter; // Free memory
-        //    inverter = nullptr;
-        //    xSemaphoreGive(inverterMutex);
-        //}
-        // Stop PWM signals and reset GPIOs
-        ledcWrite(PWM_CHANNEL_1, 0);
-        ledcWrite(PWM_CHANNEL_2, 0);
-        GPIO.func_out_sel_cfg[LIN1].inv_sel = 0;
-        GPIO.func_out_sel_cfg[HIN2].inv_sel = 0;
-        digitalWrite(HIN1, LOW);
-        digitalWrite(HIN2, LOW);
-        digitalWrite(LIN1, LOW);
-        digitalWrite(LIN2, LOW);
-        Serial.println("H-Bridge Inverter stopped!");
-    } else {
+    if (inverter == nullptr) {
         Serial.println("No inverter is running!");
+        return;
     }
+
+    // Temporären Zeiger erstellen, um das Objekt später sicher löschen zu können
+    HBridgeInverter* inverter_to_delete = inverter;
+
+    // =================== KRITISCHER ABSCHNITT START ===================
+    // Dies pausiert vorübergehend die Interrupts auf dem aktuellen CPU-Kern,
+    // um die Race Condition mit der ISR absolut sicher zu verhindern.
+    portENTER_CRITICAL(&timerMux);
+
+    // 1. Den globalen Zeiger SOFORT auf nullptr setzen.
+    //    Selbst wenn ein Interrupt jetzt noch irgendwie durchkäme, würde seine
+    //    "if (inverter != nullptr)"-Prüfung fehlschlagen.
+    inverter = nullptr;
+
+    // 2. Den Timer stoppen, während die Interrupts pausiert sind.
     if (spwmTimer != nullptr) {
         timerAlarmDisable(spwmTimer);
         timerDetachInterrupt(spwmTimer);
         timerEnd(spwmTimer);
         spwmTimer = nullptr;
     }
-    Serial.println("SPWM Timer stopped!");    
+
+    // =================== KRITISCHER ABSCHNITT ENDE ====================
+    // Interrupts werden jetzt wieder zugelassen.
+    portEXIT_CRITICAL(&timerMux);
+
+
+    // --- Ab hier sind wir sicher vor der ISR ---
+
+    // 3. Pins von der LEDC-Hardware lösen
+    ledcDetachPin(HIN1);
+    ledcDetachPin(HIN2);
+    ledcDetachPin(LIN1);
+    ledcDetachPin(LIN2);
+
+    // 4. Hardware-Invertierung für alle Pins zurücksetzen
+    GPIO.func_out_sel_cfg[HIN1].inv_sel = 0;
+    GPIO.func_out_sel_cfg[HIN2].inv_sel = 0;
+    GPIO.func_out_sel_cfg[LIN1].inv_sel = 0;
+    GPIO.func_out_sel_cfg[LIN2].inv_sel = 0;
+
+    // 5. Alle Ansteuerungs-Pins auf LOW setzen
+    digitalWrite(HIN1, LOW);
+    digitalWrite(HIN2, LOW);
+    digitalWrite(LIN1, LOW);
+    digitalWrite(LIN2, LOW);
+    
+    // 6. Das Objekt über den temporären Zeiger sicher löschen.
+    //    Der Mutex ist hier nicht mehr zwingend nötig, da der globale Zeiger
+    //    bereits nullptr ist und kein anderer Task mehr zugreifen wird.
+    delete inverter_to_delete;
+
+    Serial.println("H-Bridge Inverter safely stopped.");
 }
 
 // Constructor for HBridgeInverter class
@@ -115,23 +144,25 @@ void HBridgeInverter::begin() {
     ledcSetup(PWM_CHANNEL_2, S_FREQ, RESOLUTION);
 
     ledcAttachPin(HIN1, PWM_CHANNEL_1);
-    
-    
 
     if (modulationType == UNIPOLAR) {
         // Set complementary outputs as digital
         // Attach PWM to GPIOs
         ledcAttachPin(HIN2, PWM_CHANNEL_2);
-
-
         ledcAttachPin(LIN1, PWM_CHANNEL_2);
         ledcAttachPin(LIN2, PWM_CHANNEL_1);
 
         GPIO.func_out_sel_cfg[LIN1].inv_sel = 0;
         GPIO.func_out_sel_cfg[HIN2].inv_sel = 0;
+
+
+    //Explizit einen sicheren Ausgangszustand herstellen ---
+    // Setzt beide PWM-Kanäle auf 0% Duty Cycle, bevor der Timer startet.
+    // Dies stellt sicher, dass HIN1/HIN2 auf LOW und LIN1/LIN2 auf HIGH sind.
+        ledcWrite(PWM_CHANNEL_1, 0);
+        ledcWrite(PWM_CHANNEL_2, 0);
         
-    }
-    else {
+    } else { // BIPOLAR
         // Attach PWM to GPIOs
         // Initialize MCPWM GPIOs for complementary outputs
         ledcAttachPin(HIN2, PWM_CHANNEL_1);
@@ -139,9 +170,10 @@ void HBridgeInverter::begin() {
         ledcAttachPin(LIN2, PWM_CHANNEL_1);
         GPIO.func_out_sel_cfg[LIN1].inv_sel = 1;
         GPIO.func_out_sel_cfg[HIN2].inv_sel = 1;
-        
-        
     }
+
+    
+
     // Timer initialisieren
     spwmTimer = timerBegin(0, 80, true); // Timer 0, prescaler 80 → 1 µs Takt (80 MHz / 80 = 1 MHz)
     timerAttachInterrupt(spwmTimer, &onSPWMTimer, true);
@@ -187,31 +219,28 @@ void HBridgeInverter::getmeasurements(float* measurementin, float* measurementou
 }
 
 // Generate sinusoidal PWM
+// In PWM.cpp
+
 void HBridgeInverter::generateSPWM() {
     uint16_t pwmValue = sineTable[stepIndex];
 
     if (modulationType == BIPOLAR) {
         // Bipolar modulation: both bridge arms switch simultaneously
-
-        //Serial.println(pwmValue);
         ledcWrite(PWM_CHANNEL_1, pwmValue);
-        
-        //ledcWrite(PWM_CHANNEL_2, 1023 - pwmValue);
-                
     } else {
         // Unipolar modulation: one bridge arm stays constant
-            // Set complementary outputs as digital
+        // Set complementary outputs as digital
         if (stepIndex < SINE_STEPS / 2) {
             ledcWrite(PWM_CHANNEL_2, 0);
             ledcWrite(PWM_CHANNEL_1, pwmValue);
-
         } else {
             ledcWrite(PWM_CHANNEL_1, 0);
             ledcWrite(PWM_CHANNEL_2, pwmValue);
-
         }
     }
-    // Increment sine wave step
+    
+
+    // Sinusschritt inkrementieren
     stepIndex = (stepIndex + 1) % SINE_STEPS;
 }
 

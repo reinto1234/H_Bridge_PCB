@@ -1,44 +1,73 @@
-// #include <Arduino.h>
-// #include "Output_meas.h"
-// #include "Input_meas.h"
-// #include "mutexdefinitions.h"
+// /*
+//   Library for the Allegro MicroSystems ACS37800 power monitor IC
+//   By: Paul Clark
+//   SparkFun Electronics
+//   Date: December 4th, 2021
+//   License: please see LICENSE.md for details
 
-// // Create instances of measurement classes
+//   Feel like supporting our work? Buy a board from SparkFun!
+//   https://www.sparkfun.com/products/17873
+// */
 
+// #include "SparkFun_ACS37800_Arduino_Library.h" // Click here to get the library: http://librarymanager/All#SparkFun_ACS37800
+// #include <Wire.h>
+// #include <I2C.h>
 
-// void setup() {
-//     Serial.begin(115200);
-    
-//     // Initialize mutexes
-//     measurementoutMutex = xSemaphoreCreateMutex();
-//     measurementinMutex = xSemaphoreCreateMutex();
-    
-//     Serial.println("Initializing Output Measurement...");
-//     OutputMeasurement::init();
-//     Serial.println("Output Measurement Initialization complete.");
-    
-//     Serial.println("Initializing Input Measurement...");
-//     InputMeasurement::init();
-//     Serial.println("Input Measurement Initialization complete.");
+// ACS37800 mySensor; //Create an object of the ACS37800 class
+
+// void setup()
+// {
+//   Serial.begin(115200);
+//   Serial.println(F("ACS37800 Example"));
+
+//   Wire.begin(SDA_PIN, SCL_PIN, I2CSpeed);
+
+//   //mySensor.enableDebugging(); // Uncomment this line to print useful debug messages to Serial
+
+//   //Initialize sensor using default I2C address
+//   if (mySensor.begin(ACaddress) == false)
+//   {
+//     Serial.print(F("ACS37800 not detected. Check connections and I2C address. Freezing..."));
+//     while (1)
+//       ; // Do nothing more
+//   }
+
+//   // From the ACS37800 datasheet:
+//   // CONFIGURING THE DEVICE FOR AC APPLICATIONS : DYNAMIC CALCULATION OF N
+//   // Set bypass_n_en = 0 (default). This setting enables the device to
+//   // dynamically calculate N based off the voltage zero crossings.
+//   mySensor.setBypassNenable(false, true); // Disable bypass_n in shadow memory and eeprom
+
+//   // We need to connect the LO pin to the 'low' side of the AC source.
+//   // So we need to set the divider resistance to 4M Ohms (instead of 2M).
+//   mySensor.setDividerRes(0); // Comment this line if you are using GND to measure the 'low' side of the AC voltage
+//   mySensor.setSenseRes(10000); // Set the sense resistor value to 1mOhm (default)
 // }
 
-// void loop() {
-//     Serial.println("\n--- Output Measurement Readings ---");
-//     float* outputMeasurements = OutputMeasurement::measurementall();
-//     Serial.print("Voltage: "); Serial.print(outputMeasurements[0]); Serial.println(" V");
-//     Serial.print("Current: "); Serial.print(outputMeasurements[1]); Serial.println(" A");
-//     Serial.print("Power: "); Serial.print(outputMeasurements[2]); Serial.println(" W");
-//     Serial.print("Power Factor: "); Serial.print(outputMeasurements[3]); Serial.println();
-//     Serial.print("Phase Angle: "); Serial.print(outputMeasurements[4]); Serial.println(" degrees");
-//     Serial.print("Imaginary Power: "); Serial.print(outputMeasurements[5]); Serial.println(" VAR");
-//     Serial.print("Frequency: "); Serial.print(outputMeasurements[6]); Serial.println(" Hz");
-    
-//     Serial.println("\n--- Input Measurement Readings ---");
-//     float* inputMeasurements = InputMeasurement::measurementall();
-//     Serial.print("Voltage: "); Serial.print(inputMeasurements[0]); Serial.println(" V");
-//     Serial.print("Current: "); Serial.print(inputMeasurements[1]); Serial.println(" A");
-//     Serial.print("Power: "); Serial.print(inputMeasurements[2]); Serial.println(" W");
-    
-//     Serial.println("------------------------------");
-//     delay(2000); // Wait 2 seconds before the next measurement
+// void loop()
+// {
+//   float volts = 0.0;
+//   float amps = 0.0;
+
+//   mySensor.readRMS(&volts, &amps); // Read the RMS voltage and current
+//   Serial.print(F("Volts: "));
+//   Serial.print(volts, 4);
+//   Serial.print(F(" Amps: "));
+//   Serial.println(amps, 2);
+//   ACS37800_REGISTER_2D_t errorFlags;
+//   mySensor.readErrorFlags(&errorFlags); // Read the error flags
+//   Serial.println(F("Error Flags:"));
+//   Serial.print(F("VZeroCrossOut: "));
+//     Serial.println(errorFlags.data.bits.vzerocrossout);    
+//     Serial.print(F("FaultOut: "));
+//     Serial.println(errorFlags.data.bits.faultout);
+//     Serial.print(F("FaultLatched: "));
+//     Serial.println(errorFlags.data.bits.faultlatched);
+//     Serial.print(F("OverVoltage: "));
+//     Serial.println(errorFlags.data.bits.overvoltage);
+//     Serial.print(F("UnderVoltage: "));
+//     Serial.println(errorFlags.data.bits.undervoltage);
+//     Serial.println(" ");
+
+//   delay(1000);
 // }

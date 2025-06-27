@@ -24,9 +24,11 @@ public:
     /* Initialize the sensor */
     static void init();
 
+
 private:
     static float measurementBufferout[7]; // [Voltage, Current, Power, Powerfactor, Phase, ImaginaryPower, Frequency]
     static ACS37800 acs37800;
+    static void parametrizeSensor();
 
     /* Get voltage measurement */
     static float getVoltage();

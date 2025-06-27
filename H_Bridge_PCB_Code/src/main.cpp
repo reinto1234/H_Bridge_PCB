@@ -89,13 +89,16 @@ void webSocketUpdate(void *pvParameters) {
 void measurementTask(void *pvParameters) {
   (void)pvParameters; // Unused parameter
     while (true) {
-      if (inverter != nullptr){
-        float measurementin[7]={1,0,0};
-        //float* measurementin = InputMeasurement::measurementall();
-        float measurementout[7]={0,0,0,0,0,0,0};
-        //float* measurementout = OutputMeasurement::measurementall();
-        inverter->getmeasurements(measurementin, measurementout);
+        //float measurementin[7]={1,0,0};
+        float* measurementin = InputMeasurement::measurementall();
+        //float measurementout[7]={0,0,0,0,0,0,0};
+        float* measurementout = OutputMeasurement::measurementall();
+        if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
+        if (inverter != nullptr){
+          inverter->getmeasurements(measurementin, measurementout);
         }
+        xSemaphoreGive(inverterMutex);
+      }
         vTaskDelay(pdMS_TO_TICKS(CYCLETIME_MEASUREMENT)); // 500 µs
 }
 }
