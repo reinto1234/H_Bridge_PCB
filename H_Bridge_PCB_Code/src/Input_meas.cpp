@@ -22,7 +22,7 @@ void InputMeasurement::init() {
     I2CINA.begin(SDA_PIN, SCL_PIN, I2CSpeed);
     sleep(1);   // Wait for the sensor to initialize
     scanI2C();
-    Serial.println("I2CINA initialized");
+    Serial.println("I2CINA scanned");
 
 
     if (!ina228.begin(0x40, &I2CINA)) {
@@ -31,7 +31,7 @@ void InputMeasurement::init() {
     Serial.println("INA228 found!");
 
     // Set the shunt resistor value
-    ina228.setShunt(ShuntResistor,1);
+    ina228.setShunt(ShuntResistor,10);
     ina228.setCurrentConversionTime(INA228_TIME_4120_us);
     ina228.setVoltageConversionTime(INA228_TIME_4120_us);
     ina228.setAveragingCount(INA228_COUNT_64);
@@ -50,7 +50,11 @@ float InputMeasurement::getCurrent() {
 }
 
 float InputMeasurement::getPower() {
-    return ina228.readPower()/1000;
+    float powertemp = ina228.readPower();
+    if (powertemp == 262144000.00) {
+        return getPower(); 
+    }
+    return powertemp / 1000;
 }
 
 float* InputMeasurement::measurementall() {
@@ -85,12 +89,12 @@ void InputMeasurement::scanI2C() {
     Serial.println("I2C scan complete.");
 
      //If fewer than two devices are found, restart the I2C bus
-    // if (deviceCount < 2) {
-    //     Serial.println("Less than two devices found, restarting I2C...");
-    //     I2CINA.end();  // End the current I2C bus communication
-    //     delay(1000);    // Small delay before restarting the bus
-    //     I2CINA.begin(SDA_PIN, SCL_PIN, I2CSpeed);  // Restart the I2C bus
-    //     delay(1000);
-    //     scanI2C();  // Scan again after restarting
-    // }
+     if (deviceCount < 2) {
+         Serial.println("Less than two devices found, restarting I2C...");
+         I2CINA.end();  // End the current I2C bus communication
+         delay(1000);    // Small delay before restarting the bus
+         I2CINA.begin(SDA_PIN, SCL_PIN, I2CSpeed);  // Restart the I2C bus
+         delay(1000);
+         scanI2C();  // Scan again after restarting
+     }
 }

@@ -32,7 +32,7 @@
 
 // Sinus-Tabelle für SPWM
 #define OUTPUT_FREQ 50   // Ausgangsfrequenz in Hz
-#define SINE_STEPS 100 // Anzahl der Schritte in der Sinus-Tabelle
+#define SINE_STEPS 200 // Anzahl der Schritte in der Sinus-Tabelle
 #define TIMER_INTERVAL_US (1000000 / (OUTPUT_FREQ * SINE_STEPS))
 
 

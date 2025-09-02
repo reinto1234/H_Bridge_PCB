@@ -92,6 +92,9 @@ void stopInverter() {
     digitalWrite(HIN2, LOW);
     digitalWrite(LIN1, LOW);
     digitalWrite(LIN2, LOW);
+
+    ledcWrite(PWM_CHANNEL_1, 0);
+    ledcWrite(PWM_CHANNEL_2, 0);
     
     // 6. Das Objekt über den temporären Zeiger sicher löschen.
     //    Der Mutex ist hier nicht mehr zwingend nötig, da der globale Zeiger
@@ -116,7 +119,7 @@ HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outp
     S_FREQ = freq;
     
     
-    Serial.println("Sine Table Size: " + String(SINE_STEPS));
+    //Serial.println("Sine Table Size: " + String(SINE_STEPS));
     sineTable.resize(SINE_STEPS); // Resize sine table to SINE_STEPS size
 
     // Precompute sine wave table based on modulation type
@@ -124,10 +127,10 @@ HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outp
         float sinValue = sin(2 * M_PI * i / SINE_STEPS);
         if (modulationType == BIPOLAR) {
             sineTable[i] = (uint16_t)((sinValue+1) * 511);  // Bipolar: Full sinus range#
-            Serial.println(sineTable[i]);
+            //Serial.println(sineTable[i]);
         } else {
             sineTable[i] = (uint16_t)(abs(sinValue) * 1023); // Unipolar: Only positive part
-            Serial.println(sineTable[i]);
+            //Serial.println(sineTable[i]);
         }
     }
 }
@@ -148,9 +151,11 @@ void HBridgeInverter::begin() {
     if (modulationType == UNIPOLAR) {
         // Set complementary outputs as digital
         // Attach PWM to GPIOs
+        ledcDetachPin(LIN1);
+        ledcDetachPin(LIN2);
         ledcAttachPin(HIN2, PWM_CHANNEL_2);
-        ledcAttachPin(LIN1, PWM_CHANNEL_2);
-        ledcAttachPin(LIN2, PWM_CHANNEL_1);
+        digitalWrite(LIN1, LOW);
+        digitalWrite(LIN2, LOW);
 
         GPIO.func_out_sel_cfg[LIN1].inv_sel = 0;
         GPIO.func_out_sel_cfg[HIN2].inv_sel = 0;
@@ -231,10 +236,14 @@ void HBridgeInverter::generateSPWM() {
         // Unipolar modulation: one bridge arm stays constant
         // Set complementary outputs as digital
         if (stepIndex < SINE_STEPS / 2) {
+            digitalWrite(LIN1, LOW);
             ledcWrite(PWM_CHANNEL_2, 0);
+            digitalWrite(LIN2, HIGH);
             ledcWrite(PWM_CHANNEL_1, pwmValue);
         } else {
+            digitalWrite(LIN2, LOW);
             ledcWrite(PWM_CHANNEL_1, 0);
+            digitalWrite(LIN1, HIGH);
             ledcWrite(PWM_CHANNEL_2, pwmValue);
         }
     }
