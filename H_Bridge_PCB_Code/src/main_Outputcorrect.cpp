@@ -1,15 +1,11 @@
-// ==== AMC1306 continuous capture via SPI DMA (Arduino-ESP32) ====
-// - Triple-buffer SPI DMA (no pauses), CIC3 per BYTE (fast), continuous state
-// - Analyzer task (100 ms): mean-removal, rising-ZC with hysteresis, freq & RMS
-// - Printer task (10 s): prints last full period CSV + freq_hz + rms_mV
-// - Watchdog-friendly; no large stacks; big buffers on heap/PSRAM
-//
-// Suggested decimation: OSR = 2048 (power-of-two; OSR % 8 == 0 required)
+/************************************************************************
+ * @file main.cpp
+ * @brief Multithreaded main for H-Bridge Inverter + AMC1306 SPI-DMA capture
+ ************************************************************************/
 
 #include <Arduino.h>
 #include <math.h>
 #include <string.h>
-#include <float.h>
 
 extern "C" {
   #include "freertos/FreeRTOS.h"
@@ -23,185 +19,89 @@ extern "C" {
   #include "esp_log.h"
 }
 
-#if __has_include(<esp32-hal-psram.h>)
-  #include <esp32-hal-psram.h>
-#endif
+// ---- Your app headers ----
+#include "PWM.h"
+#include "webserver.h"
+#include "mutexdefinitions.h"
+#include "Input_meas.h"
 
-// ---------- Pins (adjust to your wiring) ----------
-#define PIN_SCLK   17   // AMC1306 CLKIN  -> ESP32 SCLK
-#define PIN_MISO   18   // AMC1306 DOUT   -> ESP32 MISO
-#define PIN_MOSI   -1   // not used (we TX dummy)
-#define PIN_CS     -1   // no CS on AMC1306
+#define OM_DECIM_RING_DEFAULT 4096
+#define OM_MAX_SCAN_DEFAULT   2048
 
-// ---------- SPI / DMA ----------
-#define SPI_HOST_USE      VSPI_HOST
-#define DMA_CHAN          1
-#define F_CLK_HZ          5000000      // try 10-20 MHz; keep within board limits
-#define SPI_MODE          1             // if data looks wrong, try 0
+// ---- Output measurement engine (AMC1306 CIC/ZC/RMS) ----
+#include "Output_meas.h"   // provides OutputMeasurements + OM_* defines
 
-#define CHUNK_BYTES       4096          // per DMA transaction
-#define QUEUE_DEPTH       3             // triple-buffer
+// ---------- App cadence (web layer) ----------
+#define CYCLETIME_WEBSOCKET_UPDATE 500   // ms
+#define CYCLETIME_WEBSOCKET        10    // ms
+
+// ---------- SPI / DMA & Pins for two AMC1306 channels ----------
+#define CH1_PIN_SCLK   17
+#define CH1_PIN_MISO   18
+#define CH1_PIN_MOSI   -1
+#define CH1_PIN_CS     -1
+
+#define CH2_PIN_SCLK   25   // AMC1306 #2 CLKIN -> ESP32 SCLK (VSPI)
+#define CH2_PIN_MISO   26   // AMC1306 #2 DOUT  -> ESP32 MISO (VSPI)
+#define CH2_PIN_MOSI   -1
+#define CH2_PIN_CS     -1
+
+#define CH1_SPI_HOST      VSPI_HOST
+#define CH1_DMA_CHAN      1
+#define CH2_SPI_HOST      HSPI_HOST
+#define CH2_DMA_CHAN      2
+
+#define F_CLK_HZ          5000000      // SPI clk per host
+#define SPI_MODE          1
+
+#define CHUNK_BYTES       2048         // per DMA transaction
+#define QUEUE_DEPTH       2            // triple-buffer
 #define NUM_DMA_BUFS      3
 
-// ---------- Modulator polarity ----------
-#define BIT_ONE_IS_POSITIVE  1          // set 0 if your DOUT polarity is inverted
 
-// ---------- CIC / Decimation ----------
-#define OSR               2000u         // MUST be multiple of 8 (byte-step CIC)
-#define FS_MV             320.0f       // full-scale in mV
-
-// ---------- Analyzer cadence ----------
-#define ANALYZE_EVERY_MS  10           // compute freq/RMS every 100 ms
-#define PRINT_EVERY_MS    10000         // print CSV every 10 s
-
-// ---------- Decimated ring (heap) ----------
-#define DECIM_RING_DEFAULT   8192       // history of decimated samples
-#define MAX_SCAN_DEFAULT     4096       // window size for period search
-#define MAX_PERIOD_BUF       1024       // max samples to print for one period
+// Optional console printer (diagnostic)
+#define PRINT_EVERY_MS    10000
 
 #ifndef SPICOMMON_BUSFLAG_MASTER
 #define SPICOMMON_BUSFLAG_MASTER 0
 #endif
 
-static const char* TAG = "AMC1306";
+static float g_dummyInput[3] = {0.0f, 0.0f, 0.0f};
 
-// ===== CIC3 continuous state =====
-typedef struct {
-  long long i1, i2, i3;   // integrators
-  long long c1, c2, c3;   // comb delays (at decim instants)
-  uint16_t  osr_byte_phase; // 0..(OSR/8 - 1)
-} cic3_state_t;
+static const char* TAG = "HB-INV+AMC1306";
 
-static cic3_state_t g_cic;
+// ===== Channel-scoped measurement engines (dual AMC1306) =====
+static OutputMeasurements ch1_om(/*osr*/ OM_OSR, /*fs_mv*/ OM_FS_MV, /*init bitrate*/ (float)F_CLK_HZ);
+static OutputMeasurements ch2_om(/*osr*/ OM_OSR, /*fs_mv*/ OM_FS_MV, /*init bitrate*/ (float)F_CLK_HZ);
 
-// ===== Decimated ring in heap/PSRAM =====
-static size_t DECIM_RING = DECIM_RING_DEFAULT;
-static size_t MAX_SCAN   = MAX_SCAN_DEFAULT;
-static float* g_decim_ring = nullptr;
-static size_t g_widx = 0;
-static size_t g_count = 0;
-
-// Writer: push newest decimated sample
-static inline void push_decim(float v) {
-  g_decim_ring[g_widx] = v;
-  g_widx = (g_widx + 1) % DECIM_RING;
-  if (g_count < DECIM_RING) g_count++;
-}
-
-// ===== Measured bit-rate (for accurate freq) =====
-static double g_bit_rate_bps = (double)F_CLK_HZ; // moving average
-static inline void update_bit_rate_bps(uint64_t dt_us) {
-  if (dt_us == 0) return;
-  double inst = ((double)CHUNK_BYTES * 8.0) / ((double)dt_us * 1e-6);
-  // light smoothing
-  g_bit_rate_bps = 0.9 * g_bit_rate_bps + 0.1 * inst;
-}
-
-// ===== Byte-step CIC LUT =====
-typedef struct { int8_t S1; int16_t PS1; int16_t SS; } bytecic_t;
-static bytecic_t g_lut[256];
-
-static void build_byte_cic_lut() {
-  for (int b = 0; b < 256; ++b) {
-    int s[8];
-#if BIT_ONE_IS_POSITIVE
-    for (int k = 0; k < 8; ++k) s[k] = ((b >> (7 - k)) & 1) ? +1 : -1;
-#else
-    for (int k = 0; k < 8; ++k) s[k] = ((b >> (7 - k)) & 1) ? -1 : +1;
-#endif
-    int S1 = 0, prefix[8];
-    for (int k = 0; k < 8; ++k) { S1 += s[k]; prefix[k] = (k ? prefix[k-1] : 0) + s[k]; }
-    int PS1 = 0; for (int j = 0; j < 8; ++j) PS1 += prefix[j];
-    int SS = 0; for (int m = 0; m < 8; ++m) SS += (9 - (m + 1)) * prefix[m];
-    g_lut[b].S1 = (int8_t)S1; g_lut[b].PS1 = (int16_t)PS1; g_lut[b].SS = (int16_t)SS;
-  }
-}
-
-static inline float cic_to_mV(long long y) {
-  const double G = (double)OSR * (double)OSR * (double)OSR;
-  return (float)((double)y / G * (double)FS_MV);
-}
-
-// ===== Snapshot shared between analyzer and printer =====
-typedef struct {
-  float   freq_hz;
-  float   rms_mV;
-  uint16_t n_period;
-  // period samples copied here (heap buffer)
-} meas_snapshot_t;
-
-static float* g_period_buf = nullptr;  // size MAX_PERIOD_BUF
-static meas_snapshot_t g_snap = {NAN, NAN, 0};
-static SemaphoreHandle_t g_snap_mutex = nullptr;
-
-// ===== Utilities to copy a window from the ring with stats =====
-static size_t copy_recent_window_with_stats(float* dst /*size MAX_SCAN*/,
-                                            double& mean, float& vmin, float& vmax) {
-  size_t avail = g_count;
-  if (avail == 0) return 0;
-  size_t N = (MAX_SCAN > avail) ? avail : MAX_SCAN;
-
-  // Take a consistent snapshot of indices
-  size_t widx = g_widx;
-  size_t start = (widx + DECIM_RING - N) % DECIM_RING;
-
-  double acc = 0.0;
-  vmin = +FLT_MAX;
-  vmax = -FLT_MAX;
-  for (size_t i = 0; i < N; ++i) {
-    size_t idx = (start + i) % DECIM_RING;
-    float v = g_decim_ring[idx];
-    dst[i] = v;
-    acc += (double)v;
-    if (v < vmin) vmin = v;
-    if (v > vmax) vmax = v;
-  }
-  mean = acc / (double)N;
-  return N;
-}
-
-// ===== Rising ZC with hysteresis (streaming; tiny stack) =====
-static bool find_last_two_rising_zc_hyst(const float* win, size_t N,
-                                         double& t0, double& t1, int& zcCount,
-                                         float hyst_mV) {
-  t0 = t1 = NAN; zcCount = 0;
-  if (N < 4) return false;
-
-  bool below = (win[0] <= -hyst_mV);
-  double last2 = NAN, last1 = NAN;
-
-  for (size_t i = 1; i < N; ++i) {
-    float v = win[i];
-    if (below && v >= +hyst_mV) {
-      float a = win[i - 1], b = win[i];
-      float A = a + hyst_mV, B = b - hyst_mV;
-      double denom = (double)B - (double)A;
-      double frac  = (denom != 0.0) ? (-(double)A) / denom : 0.0;
-      if (frac < 0.0) frac = 0.0; if (frac > 1.0) frac = 1.0;
-      double idx = (double)(i - 1) + frac;
-      last2 = last1; last1 = idx; ++zcCount; below = false;
-    } else if (v <= -hyst_mV) {
-      below = true;
-    }
-  }
-
-  if (zcCount >= 2 && last2 < last1) { t0 = last2; t1 = last1; return true; }
-  return false;
-}
-
-// ===== SPI DMA sampler with CIC per BYTE =====
+// ===== Sampler (per SPI host) =====
 typedef struct {
   spi_device_handle_t dev;
   spi_transaction_t   trans[NUM_DMA_BUFS];
   uint8_t*            rxbuf[NUM_DMA_BUFS];
   uint8_t*            txdummy;
+  int pin_sclk, pin_miso, pin_mosi, pin_cs;
+  spi_host_device_t host;
+  int dma_chan;
 } sampler_ctx_t;
 
-static void spi_init_and_start(sampler_ctx_t* s) {
-  memset(s, 0, sizeof(*s));
-  build_byte_cic_lut();
-  memset(&g_cic, 0, sizeof(g_cic));
+static sampler_ctx_t g_sampler1 = { .pin_sclk=CH1_PIN_SCLK, .pin_miso=CH1_PIN_MISO,
+  .pin_mosi=CH1_PIN_MOSI, .pin_cs=CH1_PIN_CS, .host=CH1_SPI_HOST, .dma_chan=CH1_DMA_CHAN };
 
+static sampler_ctx_t g_sampler2 = { .pin_sclk=CH2_PIN_SCLK, .pin_miso=CH2_PIN_MISO,
+  .pin_mosi=CH2_PIN_MOSI, .pin_cs=CH2_PIN_CS, .host=CH2_SPI_HOST, .dma_chan=CH2_DMA_CHAN };
+
+// ---------- Task Handles ----------
+TaskHandle_t webSocketUpdateHandle = NULL;
+TaskHandle_t webSocketTaskHandle   = NULL;
+TaskHandle_t spiSampler1Handle     = NULL;
+TaskHandle_t spiSampler2Handle     = NULL;
+TaskHandle_t analyzer1Handle       = NULL;
+TaskHandle_t analyzer2Handle       = NULL;
+TaskHandle_t printerHandle         = NULL;
+
+// ===== SPI init/start (per sampler) =====
+static void spi_init_and_start(sampler_ctx_t* s) {
   // DMA buffers
   for (int i = 0; i < NUM_DMA_BUFS; ++i) {
     s->rxbuf[i] = (uint8_t*)heap_caps_malloc(CHUNK_BYTES, MALLOC_CAP_DMA | MALLOC_CAP_8BIT);
@@ -213,28 +113,28 @@ static void spi_init_and_start(sampler_ctx_t* s) {
 
   // SPI bus
   spi_bus_config_t buscfg = {};
-  buscfg.mosi_io_num     = PIN_MOSI;
-  buscfg.miso_io_num     = PIN_MISO;
-  buscfg.sclk_io_num     = PIN_SCLK;
+  buscfg.mosi_io_num     = s->pin_mosi;
+  buscfg.miso_io_num     = s->pin_miso;
+  buscfg.sclk_io_num     = s->pin_sclk;
   buscfg.quadwp_io_num   = -1;
   buscfg.quadhd_io_num   = -1;
   buscfg.max_transfer_sz = CHUNK_BYTES;
   buscfg.flags           = SPICOMMON_BUSFLAG_MASTER;
   buscfg.intr_flags      = 0;
-  ESP_ERROR_CHECK(spi_bus_initialize(SPI_HOST_USE, &buscfg, DMA_CHAN));
+  ESP_ERROR_CHECK(spi_bus_initialize(s->host, &buscfg, s->dma_chan));
 
   // Device
   spi_device_interface_config_t devcfg = {};
   devcfg.mode             = SPI_MODE;
   devcfg.clock_speed_hz   = F_CLK_HZ;
-  devcfg.spics_io_num     = PIN_CS;
+  devcfg.spics_io_num     = s->pin_cs;
 #ifdef SPI_DEVICE_NO_DUMMY
   devcfg.flags            = SPI_DEVICE_NO_DUMMY;
 #else
   devcfg.flags            = 0;
 #endif
   devcfg.queue_size       = QUEUE_DEPTH;
-  ESP_ERROR_CHECK(spi_bus_add_device(SPI_HOST_USE, &devcfg, &s->dev));
+  ESP_ERROR_CHECK(spi_bus_add_device(s->host, &devcfg, &s->dev));
 
   // Transactions
   for (int i = 0; i < NUM_DMA_BUFS; ++i) {
@@ -250,100 +150,13 @@ static void spi_init_and_start(sampler_ctx_t* s) {
     ESP_ERROR_CHECK(spi_device_queue_trans(s->dev, &s->trans[i], portMAX_DELAY));
 }
 
-// Byte-step CIC over one finished RX buffer; also update measured bit-rate
-static inline void cic_process_rx_bytes_and_bitrate(const uint8_t* buf, size_t nbytes, uint64_t dt_us) {
-  cic3_state_t& c = g_cic;
-  const uint16_t BYTES_PER_OSR = (uint16_t)(OSR / 8);
-
-  for (size_t i = 0; i < nbytes; ++i) {
-    const bytecic_t bc = g_lut[buf[i]];
-    long long p1 = c.i1, p2 = c.i2;
-
-    c.i1 = p1 + (long long)bc.S1;
-    c.i2 = p2 + 8LL * p1 + (long long)bc.PS1;
-    c.i3 = c.i3 + 8LL * p2 + 36LL * p1 + (long long)bc.SS;
-
-    if (++c.osr_byte_phase >= BYTES_PER_OSR) {
-      c.osr_byte_phase = 0;
-      long long y0 = c.i3;
-      long long d1 = y0 - c.c1; c.c1 = y0;
-      long long d2 = d1 - c.c2; c.c2 = d1;
-      long long d3 = d2 - c.c3; c.c3 = d2;
-      push_decim(cic_to_mV(d3));
-    }
-  }
-
-  update_bit_rate_bps(dt_us);
-}
-
-// --- tolerant fractional rising ZC with hysteresis ---
-static inline double frac_rising_zc_hyst(float a, float b, float h) {
-  const double A = (double)a + (double)h;
-  const double B = (double)b - (double)h;
-  const double denom = B - A;
-  if (denom == 0.0) return 0.5;        // flat line between samples
-  double f = -(A) / denom;              // ideal [0,1]
-  // Nudge off exact endpoints so partial dt isn't 0
-  if (f <= 0.0) f = 1e-6;
-  else if (f >= 1.0) f = 1.0 - 1e-6;
-  return f;
-}
-
-// --- exact RMS over one period using piecewise-linear y(t) (tolerant to edge cases) ---
-static float compute_rms_one_period_exact(const float* win, size_t N,
-                                          double t0, double t1, double fs_decim)
-{
-  if (!(fs_decim > 0.0) || !(t1 > t0)) return NAN;
-
-  const double Ts = 1.0 / fs_decim;
-  int i0 = (int)floor(t0);
-  int i1 = (int)floor(t1);
-
-  if (i0 < 0) i0 = 0;
-  if (i1 < 0) return NAN;
-  if (i0 + 1 >= (int)N || i1 >= (int)N) return NAN;
-
-  auto seg_int_y2 = [](double y0, double y1, double dt) -> double {
-    return (dt > 0.0) ? dt * ((y0*y0 + y0*y1 + y1*y1) / 3.0) : 0.0;
-  };
-
-  double integral = 0.0;
-
-  // first partial: t0 -> (i0+1)
-  {
-    const double y_end = (double)win[i0 + 1];
-    const double dt    = ((double)(i0 + 1) - t0) * Ts;
-    integral += seg_int_y2(0.0, y_end, dt);
-  }
-
-  // full segments
-  for (int k = i0 + 1; k <= i1 - 1; ++k) {
-    if (k + 1 >= (int)N) break;
-    integral += seg_int_y2((double)win[k], (double)win[k + 1], Ts);
-  }
-
-  // last partial: i1 -> t1
-  {
-    const double y_start = (double)win[i1];
-    const double dt      = (t1 - (double)i1) * Ts;
-    integral += seg_int_y2(y_start, 0.0, dt);
-  }
-
-  const double T = (t1 - t0) * Ts;
-  if (!(T > 0.0)) return NAN;
-
-  double ms = integral / T;
-  if (ms < 0.0) ms = 0.0;
-  return (float)sqrt(ms);
-}
-
-
-
-// Sampler task: process finished buffer then immediately re-queue it
+// ===== Sampler tasks (one per SPI host) =====
 static void spi_sampler_task(void* arg) {
-  sampler_ctx_t* s = (sampler_ctx_t*)arg;
-  uint64_t last_us = esp_timer_get_time();
+  auto* pack = (std::pair<sampler_ctx_t*, OutputMeasurements*>*)arg;
+  sampler_ctx_t* s = pack->first;
+  OutputMeasurements* OM = pack->second;
 
+  uint64_t last_us = esp_timer_get_time();
   while (true) {
     spi_transaction_t* rtrans = nullptr;
     esp_err_t e = spi_device_get_trans_result(s->dev, &rtrans, portMAX_DELAY);
@@ -353,183 +166,183 @@ static void spi_sampler_task(void* arg) {
     uint64_t dt_us  = now_us - last_us;
     last_us = now_us;
 
-    cic_process_rx_bytes_and_bitrate((const uint8_t*)rtrans->rx_buffer, CHUNK_BYTES, dt_us);
+    OM->processRxBytesAndUpdateBitrate((const uint8_t*)rtrans->rx_buffer, CHUNK_BYTES, dt_us);
     ESP_ERROR_CHECK(spi_device_queue_trans(s->dev, rtrans, portMAX_DELAY));
     taskYIELD();
   }
 }
 
-// ===== Analyzer task: compute freq/RMS & capture last period (no printing) =====
-static float* g_win = nullptr;  // size MAX_SCAN
-
+// ===== Analyzer task (per channel) =====
 static void analyzer_task(void* arg) {
-  (void)arg;
+  OutputMeasurements* OM = (OutputMeasurements*)arg;
   uint32_t last_ms = 0;
   while (true) {
     uint32_t now = millis();
-    if ((uint32_t)(now - last_ms) >= ANALYZE_EVERY_MS) {
+    if ((uint32_t)(now - last_ms) >= OM_ANALYZE_EVERY_MS) { // from Output_meas.h
       last_ms = now;
-
-      if (!g_win || g_count < 32) { vTaskDelay(1); continue; }
-
-      double mean = 0.0; float vmin = 0.0f, vmax = 0.0f;
-      size_t N = copy_recent_window_with_stats(g_win, mean, vmin, vmax);
-      if (N < 32) { vTaskDelay(1); continue; }
-
-      // Mean removal
-      for (size_t i = 0; i < N; ++i) g_win[i] = (float)((double)g_win[i] - mean);
-
-      // Hysteresis: 2% pp, clamped
-      float pp = vmax - vmin;
-      float hyst = max(2.0f, min(0.02f * pp, 50.0f));
-
-      double t0, t1; int zcCount = 0;
-      meas_snapshot_t snap = {NAN, NAN, 0};
-
-      if (find_last_two_rising_zc_hyst(g_win, N, t0, t1, zcCount, hyst)) {
-        int s = (int)floor(t0);
-        int e = (int)floor(t1);
-        if (s < 0) s = 0;
-        if (e >= (int)N) e = (int)N - 1;
-
-        if (e > s) {
-          const double fs_decim = g_bit_rate_bps / (double)OSR;
-          const double spp = (t1 - t0);
-          snap.freq_hz = (float)((spp > 0.0) ? (fs_decim / spp) : NAN);
-
-          // Copy integer samples for CSV (visualization only)
-        uint16_t count = (uint16_t)min((int)MAX_PERIOD_BUF, e - s + 1);
-        for (uint16_t i = 0; i < count; ++i) {
-        g_period_buf[i] = g_win[s + i];
-        }
-        snap.n_period = count;
-
-        // Compute RMS over the exact one-period [t0, t1] with linearized endpoints
-        const double fs_decim_temp = g_bit_rate_bps / (double)OSR;   // measured Fs
-        snap.rms_mV = compute_rms_one_period_exact(g_win, N, t0, t1, fs_decim_temp);
-
-        }
-      }
-
-      // Publish snapshot
-      if (xSemaphoreTake(g_snap_mutex, pdMS_TO_TICKS(5)) == pdTRUE) {
-        g_snap = snap; // struct copy
-        xSemaphoreGive(g_snap_mutex);
-      }
+      OM->analyzeStep();
     }
-    vTaskDelay(1); // let others run
+    vTaskDelay(1);
   }
 }
 
-// ===== Printer task: prints every PRINT_EVERY_MS =====
+// ===== Optional: console printer task (diagnostic) =====
 static void printer_task(void* arg) {
   (void)arg;
   uint32_t last_ms = 0;
+
+  static float tmp_period1[OM_MAX_PERIOD_BUF];
+  static float tmp_period2[OM_MAX_PERIOD_BUF];
+
   while (true) {
     uint32_t now = millis();
     if ((uint32_t)(now - last_ms) >= PRINT_EVERY_MS) {
       last_ms = now;
 
-      meas_snapshot_t snap;
-      if (xSemaphoreTake(g_snap_mutex, pdMS_TO_TICKS(50)) == pdTRUE) {
-        snap = g_snap;
-        xSemaphoreGive(g_snap_mutex);
-      } else {
-        snap.n_period = 0;
-        snap.freq_hz = NAN;
-        snap.rms_mV = NAN;
-      }
+      OutputMeasurements::Snapshot s1{}, s2{};
+      bool ok1 = ch1_om.getSnapshot(s1);
+      bool ok2 = ch2_om.getSnapshot(s2);
+      const int dt1 = ch1_om.analyzeEndUs() - ch1_om.analyzeStartUs();
+      const int dt2 = ch2_om.analyzeEndUs() - ch2_om.analyzeStartUs();
 
-      // CSV of last period
-      Serial.print("period_csv=");
-      if (snap.n_period == 0) {
+      // CH1
+      Serial.println("ch1_analyzer_dt_us=" + String(dt1));
+      Serial.print("ch1_period_csv=");
+      if (!ok1 || s1.n_period == 0) {
         Serial.println();
       } else {
-        for (uint16_t i = 0; i < snap.n_period; ++i) {
-          Serial.print(g_period_buf[i], 3);
-          Serial.print(',');
-          if ((i & 0x1FF) == 0x1FF) vTaskDelay(1); // keep WDT happy on long prints
+        uint16_t n = ch1_om.copyLastPeriod(tmp_period1, OM_MAX_PERIOD_BUF);
+        for (uint16_t i = 0; i < n; ++i) {
+          Serial.print(tmp_period1[i], 3); Serial.print(',');
+          if ((i & 0x1FF) == 0x1FF) vTaskDelay(1);
         }
         Serial.println();
       }
+      Serial.print("ch1_freq_hz="); if (ok1 && isfinite(s1.freq_hz)) Serial.println(s1.freq_hz, 2); else Serial.println("nan");
+      Serial.print("ch1_rms_mV=");  if (ok1 && s1.n_period)         Serial.println(s1.rms_mV, 3);   else Serial.println("nan");
 
-      Serial.print("freq_hz=");
-      if (isfinite(snap.freq_hz)) Serial.println(snap.freq_hz, 2);
-      else                        Serial.println("nan");
-
-      Serial.print("rms_mV=");
-      if (snap.n_period) Serial.println(snap.rms_mV, 3);
-      else               Serial.println("nan");
+      // CH2
+      Serial.println("ch2_analyzer_dt_us=" + String(dt2));
+      Serial.print("ch2_period_csv=");
+      if (!ok2 || s2.n_period == 0) {
+        Serial.println();
+      } else {
+        uint16_t n = ch2_om.copyLastPeriod(tmp_period2, OM_MAX_PERIOD_BUF);
+        for (uint16_t i = 0; i < n; ++i) {
+          Serial.print(tmp_period2[i], 3); Serial.print(',');
+          if ((i & 0x1FF) == 0x1FF) vTaskDelay(1);
+        }
+        Serial.println();
+      }
+      Serial.print("ch2_freq_hz="); if (ok2 && isfinite(s2.freq_hz)) Serial.println(s2.freq_hz, 2); else Serial.println("nan");
+      Serial.print("ch2_rms_mV=");  if (ok2 && s2.n_period)         Serial.println(s2.rms_mV, 3);   else Serial.println("nan");
     }
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+}
 
-    vTaskDelay(pdMS_TO_TICKS(10)); // chill
+// ===== WebSocket loop task =====
+static void webSocketTask(void *pvParameters) {
+  (void)pvParameters;
+  while (true) {
+    HBridgeWebServer::loopWebSocket();
+    vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKET));
+  }
+}
+
+// ===== Periodic WebSocket update task =====
+// Pulls Input measurements and AMC1306 OutputMeasurements (freq/RMS) and sends to clients.
+static void webSocketUpdate(void *pvParameters) {
+  (void)pvParameters;
+
+  // You can change the size/layout if your UI expects different fields.
+  static float outBuf[8]; // [0]=ch1_freq, [1]=ch1_rms_mV, [2]=ch2_freq, [3]=ch2_rms_mV, rest reserved
+
+  while (true) {
+    //float* inBuf = InputMeasurement::measurementall(); // your existing function
+    float* inBuf = g_dummyInput; // dummy if InputMeasurement is not used
+
+    // Build output array from AMC1306 analyzers
+    OutputMeasurements::Snapshot s1{}, s2{};
+    ch1_om.getSnapshot(s1);
+    ch2_om.getSnapshot(s2);
+
+    outBuf[0] = isfinite(s1.freq_hz) ? s1.freq_hz : NAN;
+    outBuf[1] = (s1.n_period > 0)    ? s1.rms_mV  : NAN;
+    outBuf[2] = isfinite(s2.freq_hz) ? s2.freq_hz : NAN;
+    outBuf[3] = (s2.n_period > 0)    ? s2.rms_mV  : NAN;
+    outBuf[4] = 0.0f;
+    outBuf[5] = 0.0f;
+    outBuf[6] = 0.0f;
+    outBuf[7] = 0.0f;
+
+    HBridgeWebServer::updateMeasurements(inBuf, outBuf);
+
+    vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKET_UPDATE));
   }
 }
 
 // ===== Arduino entry =====
-static sampler_ctx_t g_sampler;
-
-static void alloc_buffers_or_die() {
-  uint32_t caps = MALLOC_CAP_8BIT;
-#if defined(BOARD_HAS_PSRAM) || defined(CONFIG_SPIRAM_SUPPORT)
-  if (psramFound()) caps |= MALLOC_CAP_SPIRAM;
-#endif
-
-  // Decimated ring + windows + period buf (all heap)
-  size_t ring = DECIM_RING, scan = MAX_SCAN;
-  while (true) {
-    g_decim_ring = (float*)heap_caps_malloc(ring * sizeof(float), caps);
-    g_win        = (float*)heap_caps_malloc(scan * sizeof(float), caps);
-    g_period_buf = (float*)heap_caps_malloc(MAX_PERIOD_BUF * sizeof(float), caps);
-    if (g_decim_ring && g_win && g_period_buf) {
-      DECIM_RING = ring; MAX_SCAN = scan;
-      memset(g_decim_ring, 0, ring * sizeof(float));
-      memset(g_win,        0, scan * sizeof(float));
-      memset(g_period_buf, 0, MAX_PERIOD_BUF * sizeof(float));
-      ESP_LOGI(TAG, "Buffers: ring=%u (%.1f KB), win=%u (%.1f KB), period=%u (%.1f KB), caps=0x%x",
-               (unsigned)DECIM_RING, (DECIM_RING*sizeof(float))/1024.0f,
-               (unsigned)MAX_SCAN,   (MAX_SCAN*sizeof(float))/1024.0f,
-               (unsigned)MAX_PERIOD_BUF, (MAX_PERIOD_BUF*sizeof(float))/1024.0f, caps);
-      break;
-    }
-    if (g_decim_ring) { heap_caps_free(g_decim_ring); g_decim_ring = nullptr; }
-    if (g_win)        { heap_caps_free(g_win);        g_win = nullptr; }
-    if (g_period_buf) { heap_caps_free(g_period_buf); g_period_buf = nullptr; }
-    if (ring <= 2048 || scan <= 1024) {
-      Serial.println("FATAL: buffer alloc failed");
-      abort();
-    }
-    ring >>= 1; scan >>= 1;
-  }
-
-  g_snap_mutex = xSemaphoreCreateMutex();
-  if (!g_snap_mutex) { Serial.println("FATAL: snap mutex alloc failed"); abort(); }
-}
-
 void setup() {
   Serial.begin(115200);
   delay(100);
-  ESP_LOGI(TAG, "AMC1306: DMA triple-buffer + byte-step CIC + analyzer/print split");
+  ESP_LOGI(TAG, "Start H-Bridge + AMC1306 dual capture (DMA triple-buffer + analyzer + Web)");
 
-  alloc_buffers_or_die();
-  spi_init_and_start(&g_sampler);
+  // --- Your app init ---
+  inverterMutex      = xSemaphoreCreateMutex();
+  measurementinMutex = xSemaphoreCreateMutex();
+  measurementoutMutex= xSemaphoreCreateMutex();
 
-  // Sampler: high prio on Core 1
-  xTaskCreatePinnedToCore(
-      spi_sampler_task, "spi_sampler",
-      4096, &g_sampler, configMAX_PRIORITIES - 2, nullptr, 1);
+  //InputMeasurement::init();
 
-  // Analyzer: medium prio on Core 0
-  xTaskCreatePinnedToCore(
-      analyzer_task, "analyzer",
-      6144, nullptr, 2, nullptr, 0);
 
-  // Printer: low prio on Core 0
-  xTaskCreatePinnedToCore(
-      printer_task, "printer",
-      4096, nullptr, 1, nullptr, 0);
+
+  // --- WiFi / WebServer ---
+  HBridgeWebServer::initWiFi();
+  HBridgeWebServer::initServer();
+  Serial.println("WebServer initialized!");
+
+    // --- Init AMC1306 measurement engines ---
+  if (!ch1_om.init("CH1") || !ch2_om.init("CH2")) {
+    Serial.println("FATAL: OutputMeasurements init failed");
+    abort();
+  }
+
+  // --- Start SPI engines ---
+  spi_init_and_start(&g_sampler1);
+  spi_init_and_start(&g_sampler2);
+
+  // Pack for sampler tasks
+  static std::pair<sampler_ctx_t*, OutputMeasurements*> pack1 = { &g_sampler1, &ch1_om };
+  static std::pair<sampler_ctx_t*, OutputMeasurements*> pack2 = { &g_sampler2, &ch2_om };
+
+  Serial.println("Starting tasks...");
+
+  // --- Create tasks ---
+  // Samplers: high priority, separate core assignments are fine
+  xTaskCreatePinnedToCore(spi_sampler_task, "spi_sampler_ch1",
+                          4096, &pack1, configMAX_PRIORITIES - 2, &spiSampler1Handle, 1);
+  xTaskCreatePinnedToCore(spi_sampler_task, "spi_sampler_ch2",
+                          4096, &pack2, configMAX_PRIORITIES - 2, &spiSampler2Handle, 1);
+
+  // Analyzers: medium priority
+  xTaskCreatePinnedToCore(analyzer_task, "analyzer_ch1",
+                          6144, &ch1_om, 2, &analyzer1Handle, 1);
+  xTaskCreatePinnedToCore(analyzer_task, "analyzer_ch2",
+                          6144, &ch2_om, 2, &analyzer2Handle, 1);
+
+   //WebSocket loop + periodic updates (core 0 to keep WiFi stack happy)
+  xTaskCreatePinnedToCore(webSocketTask, "WebSocketTask",
+                          4096, NULL, 1, &webSocketTaskHandle, 0);
+  xTaskCreatePinnedToCore(webSocketUpdate, "WebSocketUpdate",
+                          4096, NULL, 1, &webSocketUpdateHandle, 0);
+
+  // Optional console printer (low prio)
+  xTaskCreatePinnedToCore(printer_task, "printer",
+                          4096, NULL, 2, &printerHandle, 0);
 }
 
 void loop() {
+  // nothing — everything runs in tasks
   vTaskDelay(pdMS_TO_TICKS(1000));
 }

@@ -1,383 +1,275 @@
 #include "Output_meas.h"
-#include <math.h>
 
-AMC1306Measurement::AMC1306Measurement(
-    SPIClass& spi, int pinSclk, int pinMiso,
-    uint32_t f_clk_hz, uint16_t osr, float fs_mV,
-    size_t ringBytes, size_t bytesPerCall)
-  : _spi(spi),
-    _pinSclk(pinSclk),
-    _pinMiso(pinMiso),
-    _F_CLK_HZ(f_clk_hz),
-    _OSR(osr),
-    _FS_mV(fs_mV),
-    _RING_BYTES(ringBytes),
-    _BYTES_PER_CALL(bytesPerCall),
-    _bit_rate_bps((double)f_clk_hz)
-{ }
+static const char* OM_TAG = "OutputMeasurements";
 
-void AMC1306Measurement::begin() {
-  if (!_ringbuf) {
-    _ringbuf = (uint8_t*)heap_caps_malloc(_RING_BYTES, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
-    if (!_ringbuf) _ringbuf = (uint8_t*)malloc(_RING_BYTES);
+// ----- Static LUT -----
+OutputMeasurements::bytecic_t OutputMeasurements::s_lut[256];
+bool OutputMeasurements::s_lut_built = false;
+
+void OutputMeasurements::buildByteCicLut() {
+  if (s_lut_built) return;
+  for (int b = 0; b < 256; ++b) {
+    int s[8];
+#if OM_BIT_ONE_IS_POSITIVE
+    for (int k = 0; k < 8; ++k) s[k] = ((b >> (7 - k)) & 1) ? +1 : -1;
+#else
+    for (int k = 0; k < 8; ++k) s[k] = ((b >> (7 - k)) & 1) ? -1 : +1;
+#endif
+    int S1 = 0, prefix[8];
+    for (int k = 0; k < 8; ++k) { S1 += s[k]; prefix[k] = (k ? prefix[k-1] : 0) + s[k]; }
+    int PS1 = 0; for (int j = 0; j < 8; ++j) PS1 += prefix[j];
+    int SS  = 0; for (int m = 0; m < 8; ++m) SS  += (9 - (m + 1)) * prefix[m];
+    s_lut[b].S1  = (int8_t)S1;
+    s_lut[b].PS1 = (int16_t)PS1;
+    s_lut[b].SS  = (int16_t)SS;
   }
-  _ring_write = 0;
-  _last_wrap_us = 0;
-  _bit_rate_bps = (double)_F_CLK_HZ;
-  _decim_count = 0;
-  _lastPeriodCount = 0;
-  _rms_mV = NAN;
-  _freqHz = NAN;
-  _cic.reset();
-
-  _spiInitIfNeeded();
-
-  for (int i = 0; i < 32; ++i) service();
+  s_lut_built = true;
 }
 
-void AMC1306Measurement::service() {
-  // SPI protection dedicated to AMC1306 path
-  if (measurementSpiMutex && xSemaphoreTake(measurementSpiMutex, portMAX_DELAY) == pdTRUE) {
-    _clockAndFillRing();
-    xSemaphoreGive(measurementSpiMutex);
-  } else {
-    _clockAndFillRing();
+// ----- ctor -----
+OutputMeasurements::OutputMeasurements(uint32_t osr,
+                                       float fs_mv,
+                                       float initial_bit_rate_bps,
+                                       size_t decim_ring_len,
+                                       size_t max_scan_len,
+                                       size_t max_period_len)
+: OSR(osr),
+  FS_mV(fs_mv),
+  bit_rate_bps(initial_bit_rate_bps),
+  DECIM_RING(decim_ring_len),
+  MAX_SCAN(max_scan_len),
+  MAX_PERIOD(max_period_len) {}
+
+// ----- init -----
+bool OutputMeasurements::init(const char* log_name) {
+  log_tag = log_name ? log_name : "OM";
+  buildByteCicLut();
+
+  uint32_t caps = MALLOC_CAP_8BIT;
+#if defined(BOARD_HAS_PSRAM) || defined(CONFIG_SPIRAM_SUPPORT)
+  if (psramFound()) caps |= MALLOC_CAP_SPIRAM;
+#endif
+
+  size_t ring = DECIM_RING, scan = MAX_SCAN, per = MAX_PERIOD;
+  while (true) {
+    decim_ring = (float*)heap_caps_malloc(ring * sizeof(float), caps);
+    win        = (float*)heap_caps_malloc(scan * sizeof(float), caps);
+    period_buf = (float*)heap_caps_malloc(per  * sizeof(float), caps);
+    if (decim_ring && win && period_buf) {
+      DECIM_RING = ring; MAX_SCAN = scan; MAX_PERIOD = per;
+      memset(decim_ring, 0, ring * sizeof(float));
+      memset(win,        0, scan * sizeof(float));
+      memset(period_buf, 0, per  * sizeof(float));
+      ESP_LOGI(OM_TAG, "%s buffers: ring=%u (%.1f KB), win=%u (%.1f KB), period=%u (%.1f KB), caps=0x%x",
+               log_tag,
+               (unsigned)DECIM_RING, (DECIM_RING*sizeof(float))/1024.0f,
+               (unsigned)MAX_SCAN,   (MAX_SCAN*sizeof(float))/1024.0f,
+               (unsigned)MAX_PERIOD, (MAX_PERIOD*sizeof(float))/1024.0f, caps);
+      break;
+    }
+    if (decim_ring) { heap_caps_free(decim_ring); decim_ring = nullptr; }
+    if (win)        { heap_caps_free(win);        win = nullptr; }
+    if (period_buf) { heap_caps_free(period_buf); period_buf = nullptr; }
+    if (ring <= 2048 || scan <= 1024 || per <= 512) {
+      ESP_LOGE(OM_TAG, "FATAL: buffer alloc failed");
+      return false;
+    }
+    ring >>= 1; scan >>= 1; per >>= 1;
   }
+
+  snap_mutex = xSemaphoreCreateMutex();
+  if (!snap_mutex) {
+    ESP_LOGE(OM_TAG, "FATAL: snapshot mutex alloc failed");
+    return false;
+  }
+
+  memset(&cic, 0, sizeof(cic));
+  // keep bit_rate_bps as provided
+  widx = 0; count = 0;
+  t_us_start = t_us_end = 0;
+
+  return true;
 }
 
-bool AMC1306Measurement::compute() {
+// ----- ring window copy & stats -----
+size_t OutputMeasurements::copyRecentWindowWithStats(
+    const float* ring, size_t ring_len, size_t widx, size_t count, size_t max_scan,
+    float* dst, float& mean, float& vmin, float& vmax)
+{
+  size_t avail = count;
+  if (avail == 0) return 0;
+  size_t N = (max_scan > avail) ? avail : max_scan;
+
+  size_t start = (widx + ring_len - N) % ring_len;
+
+  float acc = 0.0f;
+  vmin = +FLT_MAX; vmax = -FLT_MAX;
+  for (size_t i = 0; i < N; ++i) {
+    size_t idx = (start + i) % ring_len;
+    float v = ring[idx];
+    dst[i] = v;
+    acc += v;
+    if (v < vmin) vmin = v;
+    if (v > vmax) vmax = v;
+  }
+  mean = acc / (float)N;
+  return N;
+}
+
+// ----- rising ZC with hysteresis -----
+bool OutputMeasurements::findLastTwoRisingZcHyst(const float* win, size_t N,
+                                                  float& t0, float& t1, int& zcCount,
+                                                  float hyst_mV)
+{
+  t0 = t1 = NAN; zcCount = 0;
+  if (N < 4) return false;
+  bool below = (win[0] <= -hyst_mV);
+  float last2 = NAN, last1 = NAN;
+  for (size_t i = 1; i < N; ++i) {
+    float v = win[i];
+    if (below && v >= +hyst_mV) {
+      float a = win[i - 1], b = win[i];
+      float A = a + hyst_mV, B = b - hyst_mV;
+      float denom = B - A;
+      float frac  = (denom != 0.0f) ? (-(A)) / denom : 0.0f;
+      if (frac < 0.0f) frac = 0.0f; if (frac > 1.0f) frac = 1.0f;
+      float idx = (float)(i - 1) + frac;
+      last2 = last1; last1 = idx; ++zcCount; below = false;
+    } else if (v <= -hyst_mV) {
+      below = true;
+    }
+  }
+  if (zcCount >= 2 && last2 < last1) { t0 = last2; t1 = last1; return true; }
+  return false;
+}
+
+// ----- exact RMS over one period (piecewise linear) -----
+float OutputMeasurements::computeRmsOnePeriodExact(const float* win, size_t N,
+                                                   float t0, float t1, float fs_decim)
+{
+  if (!(fs_decim > 0.0f) || !(t1 > t0)) return NAN;
+  const float Ts = 1.0f / fs_decim;
+  int i0 = (int)floorf(t0);
+  int i1 = (int)floorf(t1);
+  if (i0 < 0) i0 = 0;
+  if (i1 < 0) return NAN;
+  if (i0 + 1 >= (int)N || i1 >= (int)N) return NAN;
+
+  auto seg_int_y2 = [](float y0, float y1, float dt) -> float {
+    return (dt > 0.0f) ? dt * ((y0*y0 + y0*y1 + y1*y1) / 3.0f) : 0.0f;
+  };
+
+  float integral = 0.0f;
+  { // first partial (assume y(t0)=0 at rising ZC)
+    const float y_end = win[i0 + 1];
+    const float dt    = ((float)(i0 + 1) - t0) * Ts;
+    integral += seg_int_y2(0.0f, y_end, dt);
+  }
+  for (int k = i0 + 1; k <= i1 - 1; ++k) {
+    if (k + 1 >= (int)N) break;
+    integral += seg_int_y2(win[k], win[k + 1], Ts);
+  }
+  { // last partial (assume y(t1)=0 at rising ZC)
+    const float y_start = win[i1];
+    const float dt      = (t1 - (float)i1) * Ts;
+    integral += seg_int_y2(y_start, 0.0f, dt);
+  }
+
+  const float T = (t1 - t0) * Ts;
+  if (!(T > 0.0f)) return NAN;
+  float ms = integral / T;
+  if (ms < 0.0f) ms = 0.0f;
+  return sqrtf(ms);
+}
+
+// ----- processing -----
+void OutputMeasurements::processRxBytesAndUpdateBitrate(const uint8_t* buf, size_t nbytes, uint64_t dt_us) {
+  const uint16_t BYTES_PER_OSR = (uint16_t)(OSR / 8);
+
+  for (size_t i = 0; i < nbytes; ++i) {
+    const bytecic_t bc = s_lut[buf[i]];
+    long long p1 = cic.i1, p2 = cic.i2;
+
+    cic.i1 = p1 + (long long)bc.S1;
+    cic.i2 = p2 + 8LL * p1 + (long long)bc.PS1;
+    cic.i3 = cic.i3 + 8LL * p2 + 36LL * p1 + (long long)bc.SS;
+
+    if (++cic.osr_byte_phase >= BYTES_PER_OSR) {
+      cic.osr_byte_phase = 0;
+      long long y0 = cic.i3;
+      long long d1 = y0 - cic.c1; cic.c1 = y0;
+      long long d2 = d1 - cic.c2; cic.c2 = d1;
+      long long d3 = d2 - cic.c3; cic.c3 = d2;
+      pushDecim(cicToMilliVolts(d3, OSR, FS_mV));
+    }
+  }
+  updateBitRate(bit_rate_bps, dt_us, nbytes);
+}
+
+// ----- analyze -----
+void OutputMeasurements::analyzeStep() {
+  t_us_start = micros();
+
+  if (!win || count < 32) { t_us_end = micros(); return; }
+
+  float mean = 0.0f, vmin = 0.0f, vmax = 0.0f;
+  size_t N = copyRecentWindowWithStats(decim_ring, DECIM_RING, widx, count, MAX_SCAN, win, mean, vmin, vmax);
+  if (N < 32) { t_us_end = micros(); return; }
+
+  for (size_t i = 0; i < N; ++i) win[i] = win[i] - mean;
+
+  const float pp = vmax - vmin;
+  const float hyst = max(2.0f, min(0.02f * pp, 50.0f));
+
+  float t0, t1; int zcCount = 0;
+  Snapshot newsnap {NAN, NAN, 0};
+
+  if (findLastTwoRisingZcHyst(win, N, t0, t1, zcCount, hyst)) {
+    int s = (int)floorf(t0);
+    int e = (int)floorf(t1);
+    if (s < 0) s = 0;
+    if (e >= (int)N) e = (int)N - 1;
+
+    if (e > s) {
+      const float fs_decim = bit_rate_bps / (float)OSR;
+      const float spp = (t1 - t0);
+      newsnap.freq_hz = (spp > 0.0f) ? (fs_decim / spp) : NAN;
+
+      uint16_t countCopy = (uint16_t)min((int)MAX_PERIOD, e - s + 1);
+      for (uint16_t i = 0; i < countCopy; ++i) period_buf[i] = win[s + i];
+      newsnap.n_period = countCopy;
+
+      newsnap.rms_mV = computeRmsOnePeriodExact(win, N, t0, t1, fs_decim);
+    }
+  }
+
+  if (xSemaphoreTake(snap_mutex, pdMS_TO_TICKS(5)) == pdTRUE) {
+    snap = newsnap;
+    xSemaphoreGive(snap_mutex);
+  }
+
+  t_us_end = micros();
+}
+
+// ----- snapshot -----
+bool OutputMeasurements::getSnapshot(Snapshot& out) const {
   bool ok = false;
-
-
-  
-  // Post-processing protection
-  if (measurementoutMutex && xSemaphoreTake(measurementoutMutex, portMAX_DELAY) == pdTRUE) {
-    if (measurementSpiMutex && xSemaphoreTake(measurementSpiMutex, portMAX_DELAY) == pdTRUE) {
-      _decimateFromRing();
-      xSemaphoreGive(measurementSpiMutex);
-    } else {
-      _decimateFromRing();
-    }
-    const double fs_decim_meas = _bit_rate_bps / (double)_OSR;
-    _freqHz = _estimateFreqHzPrecise(fs_decim_meas);
-
-    if (_extractLastFullPeriod()) {
-      //_computeRms();
-      _rms_mV = _computeRmsOnePeriodExact();
-      ok = true;
-    } else {
-      _rms_mV = NAN;
-    }
-    xSemaphoreGive(measurementoutMutex);
-  } else {
-    _decimateFromRing();
-    const double fs_decim_meas = _bit_rate_bps / (double)_OSR;
-    _freqHz = _estimateFreqHzPrecise(fs_decim_meas);
-    if (_extractLastFullPeriod()) {
-      //_computeRms();
-      _rms_mV = _computeRmsOnePeriodExact();
-      ok = true;
-    } else {
-      _rms_mV = NAN;
-    }
+  if (xSemaphoreTake(snap_mutex, pdMS_TO_TICKS(10)) == pdTRUE) {
+    out = snap;
+    ok = (isfinite(out.freq_hz) || out.n_period > 0);
+    xSemaphoreGive(snap_mutex);
   }
   return ok;
 }
 
-void AMC1306Measurement::_spiInitIfNeeded() {
-  _spi.begin(_pinSclk, _pinMiso, -1, -1);
-  _spi.beginTransaction(SPISettings(_F_CLK_HZ, MSBFIRST, SPI_MODE1));
+uint16_t OutputMeasurements::copyLastPeriod(float* dst, uint16_t dst_len) const {
+  if (!dst || dst_len == 0) return 0;
+  uint16_t copied = 0;
+  if (xSemaphoreTake(snap_mutex, pdMS_TO_TICKS(10)) == pdTRUE) {
+    const uint16_t n = min((uint16_t)dst_len, snap.n_period);
+    for (uint16_t i = 0; i < n; ++i) dst[i] = period_buf[i];
+    copied = n;
+    xSemaphoreGive(snap_mutex);
+  }
+  return copied;
 }
-
-void AMC1306Measurement::_clockAndFillRing() {
-  uint32_t w = _ring_write;
-  uint32_t spaceToEnd = _RING_BYTES - w;
-
-  if (spaceToEnd > _BYTES_PER_CALL) {
-    _spi.transferBytes(nullptr, &_ringbuf[w], _BYTES_PER_CALL);
-    w += _BYTES_PER_CALL;
-
-  } else if (spaceToEnd == _BYTES_PER_CALL) {
-    _spi.transferBytes(nullptr, &_ringbuf[w], _BYTES_PER_CALL);
-    w += _BYTES_PER_CALL; // == _RING_BYTES
-    const uint32_t t = micros();
-    if (_last_wrap_us) {
-      const uint32_t dt = _usdiff(t, _last_wrap_us);
-      if (dt) _bit_rate_bps = ((double)_RING_BYTES * 8.0) / ((double)dt * 1e-6);
-    }
-    _last_wrap_us = t;
-    w = 0;
-
-  } else {
-    const size_t n1 = spaceToEnd;
-    const size_t n2 = _BYTES_PER_CALL - n1;
-
-    _spi.transferBytes(nullptr, &_ringbuf[w], n1);
-
-    const uint32_t t = micros();
-    if (_last_wrap_us) {
-      const uint32_t dt = _usdiff(t, _last_wrap_us);
-      if (dt) _bit_rate_bps = ((double)_RING_BYTES * 8.0) / ((double)dt * 1e-6);
-    }
-    _last_wrap_us = t;
-
-    _spi.transferBytes(nullptr, &_ringbuf[0], n2);
-    w = n2;
-  }
-
-  _ring_write = w;
-}
-
-float AMC1306Measurement::_cicToMilliVolts(long long y) const {
-  const double G = (double)_OSR * (double)_OSR * (double)_OSR;
-  return (float)((double)y / G * (double)_FS_mV);
-}
-
-void AMC1306Measurement::_decimateFromRing() {
-  _cic.reset();
-  _decim_count = 0;
-
-  const uint32_t w_end = _ring_write;
-  uint32_t bit_mod = 0;
-
-  auto process_byte = [&](uint8_t b) {
-    for (int k = 7; k >= 0; --k) {
-      const int sgn = ((b >> k) & 1) ? +1 : -1;
-      _cic.push(sgn);
-      if (++bit_mod == _OSR) {
-        bit_mod = 0;
-        if (_decim_count < DECIM_MAX) {
-          _decim[_decim_count++] = _cicToMilliVolts(_cic.decimate());
-        }
-      }
-    }
-  };
-
-  const uint32_t first_len = _RING_BYTES - w_end;
-  const uint8_t* p = &_ringbuf[w_end];
-  for (uint32_t i = 0; i < first_len; ++i) process_byte(p[i]);
-
-  p = &_ringbuf[0];
-  for (uint32_t i = 0; i < w_end; ++i) process_byte(p[i]);
-}
-
-// Output_meas.cpp
-
-float AMC1306Measurement::_estimateFreqHzPrecise(double fs_decim) const {
-  if (_decim_count < 4) return NAN;
-  const int MAXZ = 64;
-  double zc[MAXZ]; int zcN = 0;
-  for (uint32_t i=1; i<_decim_count && zcN<MAXZ; ++i) {
-    float a=_decim[i-1], b=_decim[i];
-    if (a < 0.0f && b >= 0.0f) {
-      double frac = (b!=a) ? (-a)/(b-a) : 0.0;
-      zc[zcN++] = (double)(i-1) + frac;
-    }
-  }
-  if (zcN < 2) return NAN;
-  int use = min(10, zcN-1);
-  double sum=0.0;
-  for (int k=zcN-1-use; k<zcN-1; ++k) sum += (zc[k+1]-zc[k]);
-  double spp = sum / use;
-  if (51.0f < (float)(2420 / spp) || (float)(2420 / spp) < 49.0f) {
-    // outlier clamp
-    Serial.println((float)(2420 / spp));
-  }
-  return (float)(2420 / spp);
-}
-
-bool AMC1306Measurement::_extractLastFullPeriod() {
-  _lastPeriodCount = 0;
-  if (_decim_count < 8) return false;
-
-  const float  HYST = 2.0f;
-  const double fs_decim_meas = _bit_rate_bps / (double)_OSR;
-  const double fTarget = isfinite(_freqHz) ? (double)_freqHz : 50.0;
-  const uint16_t EXP  = (uint16_t)(fs_decim_meas / fTarget + 0.5);
-  const uint16_t MINP = (uint16_t)((double)EXP * 0.60);
-  const uint16_t MAXP = (uint16_t)((double)EXP * 1.40);
-
-  // Collect rising zero-crossings (with hysteresis)
-  int zc[32]; int zcN = 0;
-  bool below = (_decim[0] <= -HYST);
-  for (uint32_t i = 1; i < _decim_count && zcN < 32; ++i) {
-    const float v = _decim[i];
-    if (below && v >= +HYST) { zc[zcN++] = (int)i; below = false; }
-    else if (v <= -HYST) { below = true; }
-  }
-
-  // Choose the last plausible period between two rising crossings
-  int i0 = -1, i1 = -1;
-  for (int k = zcN - 2; k >= 0; --k) {
-    const int d = zc[k + 1] - zc[k];
-    if (d >= (int)MINP && d <= (int)MAXP) { i0 = zc[k]; i1 = zc[k + 1]; break; }
-  }
-  if (i0 < 0 && zcN >= 2) {
-    int bestK = zcN - 2, bestErr = 0x7FFFFFFF;
-    for (int k = zcN - 2; k >= 0; --k) {
-      const int d = zc[k + 1] - zc[k];
-      const int err = abs(d - (int)EXP);
-      if (err < bestErr) { bestErr = err; bestK = k; }
-    }
-    i0 = zc[bestK]; i1 = zc[bestK + 1];
-  }
-
-  if (i0 >= 0 && i1 > i0) {
-    // Shift start left to the last non-positive sample BEFORE i0
-    int s = i0 - 1;
-    while (s > 0 && _decim[s] > 0.0f) --s;   // walk left until ≤ 0 or index 0
-
-    // End at i1 (already ≥ +HYST, i.e., positive)
-    const int e = i1;
-
-    const int N = e - s + 1;
-    if (s < 0 || N <= 0 || N > (int)DECIM_MAX) return false;
-
-    for (int i = 0; i < N; ++i) _lastPeriodBuf[i] = _decim[s + i];
-    _lastPeriodCount = (size_t)N;
-    return true;
-
-  } else {
-    // Fallback: use ~one period from the tail, but try to start on a negative sample.
-    const uint32_t exp = (uint32_t)EXP ? (uint32_t)EXP : 50U;
-    uint32_t start = (_decim_count > exp) ? (_decim_count - exp) : 0;
-
-    // Nudge 'start' forward to a non-positive sample if possible
-    uint32_t s = start;
-    while (s + 1 < _decim_count && _decim[s] > 0.0f) ++s;
-
-    const uint32_t N = _decim_count - s;
-    if (N == 0 || N > DECIM_MAX) return false;
-
-    for (uint32_t i = 0; i < N; ++i) _lastPeriodBuf[i] = _decim[s + i];
-    _lastPeriodCount = (size_t)N;
-    return true;
-  }
-}
-
-
-void AMC1306Measurement::_computeRms() {
-  if (_lastPeriodCount == 0) { _rms_mV = NAN; return; }
-  double acc = 0.0;
-  for (size_t i = 0; i < _lastPeriodCount; ++i) {
-    const double x = (double)_lastPeriodBuf[i];
-    acc += x * x;
-  }
-  _rms_mV = (float)sqrt(acc / (double)_lastPeriodCount);
-}
-
-// Find the last two *rising* zero-crossings (y crosses from <=0 to >0)
-// Returns true on success and sets t0 and t1 as *fractional sample indices*.
-bool AMC1306Measurement::_findLastTwoRisingZC(double& t0, double& t1) const {
-  t0 = t1 = NAN;
-  if (_decim_count < 4) return false;
-
-  // Collect fractional rising zero-crossings across the current decimated buffer
-  const int MAXZ = 64;
-  double zc[MAXZ]; int zcN = 0;
-  for (uint32_t i = 1; i < _decim_count && zcN < MAXZ; ++i) {
-    const float a = _decim[i-1], b = _decim[i];
-    if (a <= 0.0f && b > 0.0f) {
-      const double denom = (double)b - (double)a;
-      const double frac  = (denom != 0.0) ? (-(double)a) / denom : 0.0; // in [0,1)
-      zc[zcN++] = (double)(i - 1) + frac; // fractional sample index
-    }
-  }
-  if (zcN < 2) return false;
-
-  t1 = zc[zcN - 1];
-  t0 = zc[zcN - 2];
-  return (t1 > t0);
-}
-
-// Compute exact RMS over *one period* between last two rising zero-crossings.
-// Uses piecewise-linear y(t) between decimated samples and integrates y^2 exactly.
-float AMC1306Measurement::_computeRmsOnePeriodExact() const {
-  double t0, t1;
-  if (!_findLastTwoRisingZC(t0, t1)) return NAN;
-
-  // Sampling rate of the decimated stream
-  const double fs = _bit_rate_bps / (double)_OSR;
-  if (!(fs > 0.0)) return NAN;
-
-  // If the period is too short, bail
-  if (t1 <= t0 + 1e-9) return NAN;
-
-  // Helper: integral of y^2 over a linear segment y0->y1 during duration dt
-  auto seg_int_y2 = [](double y0, double y1, double dt) -> double {
-    // Exact: dt * (y0^2 + y0*y1 + y1^2) / 3
-    return dt * ( (y0*y0 + y0*y1 + y1*y1) / 3.0 );
-  };
-
-  // Build integral from t0 to t1
-  const int i0 = (int)floor(t0);
-  const int i1 = (int)floor(t1);
-
-  double integral = 0.0;          // ∫ y^2 dt
-  const double Ts = 1.0 / fs;
-
-  // FIRST partial segment: from t0 (y=0) to (i0+1)
-  if (i0 + 1 < (int)_decim_count) {
-    const double y_end = (double)_decim[i0 + 1];
-    const double dt    = ((double)(i0 + 1) - t0) * Ts;   // seconds
-    integral += seg_int_y2(0.0, y_end, dt);
-  } else {
-    return NAN; // not enough samples to the right
-  }
-
-  // FULL segments: from k to k+1, for k = i0+1 .. i1-1
-  for (int k = i0 + 1; k <= i1 - 1; ++k) {
-    if (k + 1 >= (int)_decim_count) return NAN;
-    const double y0 = (double)_decim[k];
-    const double y1 = (double)_decim[k + 1];
-    integral += seg_int_y2(y0, y1, Ts);
-  }
-
-  // LAST partial segment: from i1 to t1 (ending at y=0)
-  if (i1 >= 0 && i1 < (int)_decim_count) {
-    const double y_start = (double)_decim[i1];
-    const double dt      = (t1 - (double)i1) * Ts;       // seconds
-    integral += seg_int_y2(y_start, 0.0, dt);
-  } else {
-    return NAN;
-  }
-
-  // Period duration
-  const double T = (t1 - t0) * Ts;  // seconds
-  if (!(T > 0.0)) return NAN;
-
-  // RMS over exactly one period
-  const double mean_square = integral / T;
-  return (mean_square > 0.0) ? (float)sqrt(mean_square) : 0.0f;
-}
-
-
-float AMC1306Measurement::calcFreqFast() {
-  // Fast frequency estimate based on last period length.
-  // Less accurate than _estimateFreqHzPrecise(), but very cheap.
-  if (_lastPeriodCount < 8) return NAN;
-  const double fs_decim_meas = _bit_rate_bps / (double)_OSR;
-  const double spp = (double)_lastPeriodCount; // samples per period
-  float zerotozero=0.0f;
-  bool inperiod=false;
-  for (size_t i = 1; i < _lastPeriodCount; ++i) {
-    if (inperiod==true){
-      zerotozero += 1.0f;
-    }
-    if ((_lastPeriodBuf[i-1] <= 0.0f && _lastPeriodBuf[i] > 0.0f) && inperiod==false) {
-      zerotozero += _lastPeriodBuf[i]/(_lastPeriodBuf[i] - _lastPeriodBuf[i-1]);
-      inperiod = true;
-    }
-    else if ((_lastPeriodBuf[i-1] <= 0.0f && _lastPeriodBuf[i] > 0.0f) && inperiod==true) {
-      zerotozero += _lastPeriodBuf[i-1]/(_lastPeriodBuf[i-1] - _lastPeriodBuf[i]);
-      inperiod = false;
-    }
-
-  }
-  Serial.println(zerotozero);
-  Serial.println(spp);
-  Serial.println(fs_decim_meas);
-  return (float)( fs_decim_meas / (double)zerotozero);
-}
-
-

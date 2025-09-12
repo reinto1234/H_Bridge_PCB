@@ -88,9 +88,9 @@ void InputMeasurement::scanI2C() {
     }
     Serial.println("I2C scan complete.");
 
-     //If fewer than two devices are found, restart the I2C bus
-     if (deviceCount < 2) {
-         Serial.println("Less than two devices found, restarting I2C...");
+     //If fewer than one device is found, restart the I2C bus
+     if (deviceCount < 1) {
+         Serial.println("Less than one device found, restarting I2C...");
          I2CINA.end();  // End the current I2C bus communication
          delay(1000);    // Small delay before restarting the bus
          I2CINA.begin(SDA_PIN, SCL_PIN, I2CSpeed);  // Restart the I2C bus
