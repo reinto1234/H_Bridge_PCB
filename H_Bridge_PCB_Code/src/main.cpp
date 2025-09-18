@@ -1,120 +1,90 @@
-// /************************************************************************
-//  * @file main.cpp
-//  * @brief Multithreaded main file for the H-Bridge Inverter System
-//  ************************************************************************/
+// *************************************************************************
+//  @file main.cpp
+//  @brief Minimal main: just initialization + task creation + loop
+// *************************************************************************
 
-// #include <Arduino.h>
-// #include "PWM.h"
-// #include "webserver.h"
-// #include "mutexdefinitions.h"
-// #include "Input_meas.h"
-// #include "Output_meas.h"
+#include <Arduino.h>
 
-// #define CYCLETIME_MEASUREMENT 1     // Measurement cycle time in ms
-// #define CYCLETIME_WEBSOCKET_UPDATE 500 // WebSocket update cycle time in ms
-// #define CYCLETIME_WEBSOCKET 10  // WebSocket cycle time in ms
+extern "C" {
+  #include "freertos/FreeRTOS.h"
+  #include "freertos/task.h"
+  #include "freertos/semphr.h"
+  #include "esp_log.h"
+}
 
-// // --- Task Handles ---
-// TaskHandle_t measurementTaskHandle = NULL;
-// TaskHandle_t webSocketUpdateHandle = NULL;
-// TaskHandle_t webSocketTaskHandle = NULL;
+#include "spi_sampler.h"      // new: sampler/analyzer/web tasks + contexts
+#include "mutexdefinitions.h" // your existing mutex externs/defs
+#include "Input_meas.h"
+#include "webserver.h"
 
+static const char* TAG = "HB-INV+AMC1306";
 
+TaskHandle_t webSocketUpdateHandle = NULL;
+TaskHandle_t webSocketTaskHandle   = NULL;
+TaskHandle_t spiSampler1Handle     = NULL;
+TaskHandle_t spiSampler2Handle     = NULL;
+TaskHandle_t analyzer1Handle       = NULL;
+TaskHandle_t analyzer2Handle       = NULL;
+TaskHandle_t printerHandle         = NULL;
 
-// /**
-//  * @brief Task to periodically read sensor data into global buffers.
-//  * This is the ONLY task that should call the measurement functions.
-//  */
-// void measurementTask(void *pvParameters) {
-//     for (;;) {
-//         if (OutputMeasurement::sampleNow) {
-//             OutputMeasurement::sampleNow = false;
-//             // Safe to call I2C here
-//             float vInst = OutputMeasurement::getinstantaneous();
-//             OutputMeasurement::vInstCSV += String(vInst, 6) + "\n"; // Append instantaneous voltage to CSV string
-//         }
+void setup() {
+  Serial.begin(115200);
+  delay(100);
+  ESP_LOGI(TAG, "Start H-Bridge + AMC1306 dual capture (DMA triple-buffer + analyzer + Web)");
 
-//         vTaskDelay(100); // Let lower-priority tasks run
-//     }
-// }
+  // --- Your app init ---
+  inverterMutex       = xSemaphoreCreateMutex();
+  measurementinMutex  = xSemaphoreCreateMutex();
+  measurementoutMutex = xSemaphoreCreateMutex();
 
-// void webSocketTask(void *pvParameters) {
-//   (void)pvParameters; // Unused parameter
-//   while (true) {
-//     // Use the public function to call the private webSocket.loop()
-//     HBridgeWebServer::loopWebSocket();
-//     vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKET)); // 10 ms delay between updates
-//   }
-// }
+  InputMeasurement::init();
 
-// /**
-//  * @brief Task to periodically send data from global buffers via WebSocket.
-//  * This task READS data that measurementTask WRITES.
-//  */
-// void webSocketUpdate(void *pvParameters) {
-//   (void)pvParameters; // Unused parameter
-//   while (true) {
-//     //float measurementin[3]={1,0,0};
-//     float* measurementin = InputMeasurement::measurementall();
-//     //float measurementout[7]={1,0,0,0,0,0,0};
-//     float* measurementout = OutputMeasurement::measurementall();
-//     HBridgeWebServer::updateMeasurements(measurementin, measurementout);
-//     Serial.println(OutputMeasurement::vInstCSV); // Print the CSV string for debugging
-//     OutputMeasurement::vInstCSV = ""; // Clear the CSV string after sending
-//     vTaskDelay(pdMS_TO_TICKS(CYCLETIME_WEBSOCKET_UPDATE)); // 500 ms delay between updates
-//   }
-// }
+  // --- WiFi / WebServer ---
+  HBridgeWebServer::initWiFi();
+  HBridgeWebServer::initServer();
+  Serial.println("WebServer initialized!");
 
-// void setup() {
-//   Serial.begin(115200);
-//   Serial.println("Starting H-Bridge Inverter System with Multithreading...");
+  // --- Init AMC1306 measurement engines ---
+  if (!spiSamplerInitMeasurements()) {
+    Serial.println("FATAL: OutputMeasurements init failed");
+    abort();
+  }
 
-//   inverterMutex = xSemaphoreCreateMutex();
-//   measurementinMutex = xSemaphoreCreateMutex();
-//   measurementoutMutex = xSemaphoreCreateMutex();
+  // --- Start SPI engines (both) ---
+  spiInitAndStart(&g_sampler1);
+  spiInitAndStart(&g_sampler2);
 
-//   InputMeasurement::init();
-//   OutputMeasurement::init();
+  Serial.println("Starting tasks...");
 
-//   HBridgeWebServer::initWiFi();
-//   HBridgeWebServer::initServer();
-//   Serial.println("WebServer initialized!");
+  // --- Create tasks ---
+  // Samplers: high priority
+  xTaskCreatePinnedToCore(spiSamplerTask, "spi_sampler_ch1",
+                          4096, &g_pack1, configMAX_PRIORITIES - 2, &spiSampler1Handle, 1);
+  xTaskCreatePinnedToCore(spiSamplerTask, "spi_sampler_ch2",
+                          4096, &g_pack2, configMAX_PRIORITIES - 2, &spiSampler2Handle, 1);
 
-//   // Create the measurement task on core 0
-//   xTaskCreatePinnedToCore(
-//     measurementTask,
-//     "MeasurementTask",
-//     4096,
-//     NULL,
-//     2, // Higher priority to ensure it gets data first
-//     &measurementTaskHandle,
-//     0
-//   );
+  // Analyzers: medium priority
+  xTaskCreatePinnedToCore(analyzerTask, "analyzer_ch1",
+                          6144, &g_ch1_om, 2, &analyzer1Handle, 1);
+  xTaskCreatePinnedToCore(analyzerTask, "analyzer_ch2",
+                          6144, &g_ch2_om, 2, &analyzer2Handle, 1);
 
-//   // Create the WebSocket update task on core 0
-//   xTaskCreatePinnedToCore(
-//     webSocketUpdate,
-//     "WebSocketUpdate",
-//     4096,
-//     NULL,
-//     1, // Lower priority
-//     &webSocketUpdateHandle,
-//     0
-//   );
+  // WebSocket loop + periodic updates (core 0 to keep WiFi stack happy)
+  xTaskCreatePinnedToCore(webSocketTask, "WebSocketTask",
+                          4096, NULL, 1, &webSocketTaskHandle, 0);
+  xTaskCreatePinnedToCore(webSocketUpdate, "WebSocketUpdate",
+                          4096, NULL, 1, &webSocketUpdateHandle, 0);
 
-//    // Create the WebSocket task on core 0 with a 4KB stack and low priority (1)
-//   xTaskCreatePinnedToCore(
-//     webSocketTask,       // Task function
-//     "WebSocketTask",     // Name of task
-//     4096,                // Stack size (in bytes)
-//     NULL,                // Parameter to pass
-//     1,                   // Task priority
-//     &webSocketTaskHandle,// Task handle
-//     0                    // Core where the task should run
-//   );
-// }
+  xTaskCreatePinnedToCore(printerTask, "printer",
+                                  4096, NULL, 2, &printerHandle, 0);
+Serial.printf("heap free=%u  (8bit=%u  dma=%u  internal=%u)\n",
+  esp_get_free_heap_size(),
+  heap_caps_get_free_size(MALLOC_CAP_8BIT),
+  heap_caps_get_free_size(MALLOC_CAP_DMA),
+  heap_caps_get_free_size(MALLOC_CAP_INTERNAL));
+}
 
-// void loop() {
-//   // Nothing to do here
-// }
-
+void loop() {
+  // nothing — everything runs in tasks
+  vTaskDelay(pdMS_TO_TICKS(1000));
+}

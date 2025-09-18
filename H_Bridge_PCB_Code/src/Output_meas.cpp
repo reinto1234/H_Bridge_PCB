@@ -200,7 +200,7 @@ void OutputMeasurements::processRxBytesAndUpdateBitrate(const uint8_t* buf, size
       long long d1 = y0 - cic.c1; cic.c1 = y0;
       long long d2 = d1 - cic.c2; cic.c2 = d1;
       long long d3 = d2 - cic.c3; cic.c3 = d2;
-      pushDecim(cicToMilliVolts(d3, OSR, FS_mV));
+      pushDecim(cicToVolts(d3, OSR, FS_mV));
     }
   }
   updateBitRate(bit_rate_bps, dt_us, nbytes);
@@ -219,7 +219,7 @@ void OutputMeasurements::analyzeStep() {
   for (size_t i = 0; i < N; ++i) win[i] = win[i] - mean;
 
   const float pp = vmax - vmin;
-  const float hyst = max(2.0f, min(0.02f * pp, 50.0f));
+  const float hyst = max(0.002f, min(0.02f * pp, 50.0f));
 
   float t0, t1; int zcCount = 0;
   Snapshot newsnap {NAN, NAN, 0};

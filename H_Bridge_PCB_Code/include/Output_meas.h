@@ -42,11 +42,11 @@ extern "C" {
 
 // Default buffer sizes for the measurement engine
 #ifndef OM_DECIM_RING_DEFAULT
-#define OM_DECIM_RING_DEFAULT 8192
+#define OM_DECIM_RING_DEFAULT 4096
 #endif
 
 #ifndef OM_MAX_SCAN_DEFAULT
-#define OM_MAX_SCAN_DEFAULT 4096
+#define OM_MAX_SCAN_DEFAULT 2048
 #endif
 
 #ifndef OM_MAX_PERIOD_BUF
@@ -110,9 +110,9 @@ private:
   static void buildByteCicLut();
 
   // Helpers
-  static inline float cicToMilliVolts(long long y, uint32_t OSR, float FS_mV) {
+  static inline float cicToVolts(long long y, uint32_t OSR, float FS_mV) {
     const float G = (float)((double)OSR * (double)OSR * (double)OSR);
-    return ((float)y / G) * FS_mV;
+    return ((float)y / G) * FS_mV * 1e-3f;
   }
 
   static inline void updateBitRate(float& smoothed_bps, uint64_t dt_us, size_t nbytes) {
