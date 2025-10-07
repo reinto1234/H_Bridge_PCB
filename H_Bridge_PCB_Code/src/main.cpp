@@ -11,11 +11,12 @@ extern "C" {
   #include "freertos/semphr.h"
   #include "esp_log.h"
 }
-
-#include "spi_sampler.h"      // new: sampler/analyzer/web tasks + contexts
+      // new: sampler/analyzer/web tasks + contexts
 #include "mutexdefinitions.h" // your existing mutex externs/defs
 #include "Input_meas.h"
 #include "webserver.h"
+#include "spi_sampler.h"
+#include "Tasks.h"
 
 static const char* TAG = "HB-INV+AMC1306";
 
@@ -26,6 +27,7 @@ TaskHandle_t spiSampler2Handle     = NULL;
 TaskHandle_t analyzer1Handle       = NULL;
 TaskHandle_t analyzer2Handle       = NULL;
 TaskHandle_t printerHandle         = NULL;
+TaskHandle_t ControllerTaskHandle  = NULL;
 
 void setup() {
   Serial.begin(115200);
@@ -71,12 +73,16 @@ void setup() {
 
   // WebSocket loop + periodic updates (core 0 to keep WiFi stack happy)
   xTaskCreatePinnedToCore(webSocketTask, "WebSocketTask",
-                          4096, NULL, 1, &webSocketTaskHandle, 0);
+                          4096, NULL, 3, &webSocketTaskHandle, 0);
   xTaskCreatePinnedToCore(webSocketUpdate, "WebSocketUpdate",
-                          4096, NULL, 1, &webSocketUpdateHandle, 0);
+                          4096, NULL, 2, &webSocketUpdateHandle, 0);
 
   xTaskCreatePinnedToCore(printerTask, "printer",
-                                  4096, NULL, 2, &printerHandle, 0);
+                                  4096, NULL, 1, &printerHandle, 0);
+
+  xTaskCreatePinnedToCore(ControllerTask, "ControllerTask",
+                          4096, NULL, 4, &ControllerTaskHandle, 0);
+  
 Serial.printf("heap free=%u  (8bit=%u  dma=%u  internal=%u)\n",
   esp_get_free_heap_size(),
   heap_caps_get_free_size(MALLOC_CAP_8BIT),

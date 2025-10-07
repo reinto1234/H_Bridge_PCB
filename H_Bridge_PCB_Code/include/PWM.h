@@ -14,6 +14,7 @@
 #include <math.h>
 #include <iostream>
 #include <vector>
+#include "Controller.h"
 
 /*************************************************************************
  * Defines
@@ -33,55 +34,35 @@
 // Sinus-Tabelle für SPWM
 #define OUTPUT_FREQ 50   // Ausgangsfrequenz in Hz
 #define SINE_STEPS 200 // Anzahl der Schritte in der Sinus-Tabelle
+
+
 #define TIMER_INTERVAL_US (1000000 / (OUTPUT_FREQ * SINE_STEPS))
+#define S_FREQ 35000    // Schaltfrequenz in Hz (35 kHz)
 
 
 
-/*************************************************************************
- * Enums and Structs
- ************************************************************************/
-enum ModulationType {
-    UNIPOLAR,
-    BIPOLAR
-};
-
-struct PIController {
-    float kp;
-    float ki;
-    float integral;
-    float prevError;
-    float outputMin;
-    float outputMax;
-};
 
 /*************************************************************************
  * Class
  ************************************************************************/
 class HBridgeInverter {
 public:
-    HBridgeInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq);
+    HBridgeInverter(float vrms);
     void begin();
-    float computePI(float setpoint, float measurement);
     void generateSPWM();
-    void loop(float vRef, float vMeasured);
-    void getmeasurements(float* measurementin, float* measurementout);
-    
+    PIController controller; // Example gains and output limits
 
 private:
     
-    int S_FREQ; // Startfrequenz in Hz
-    std::vector<int> sineTable;
-    PIController pi;
+    int16_t sineTable[SINE_STEPS];
     float pwmDutyCycle;
     uint16_t stepIndex;
-    ModulationType modulationType;
-    void setModulationType(ModulationType type);      // Neu für Webserver
-    void setSwitchingFrequency(int freq);            // Neu für Webserver
     float measurementBuffer[10];
     intr_handle_t spwmIntrHandle;
+    
 };
 
-void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq);
+void startInverter(float vrms);
 void stopInverter();
 
 // Declare global inverter instance so other files can use it

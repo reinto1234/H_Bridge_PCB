@@ -40,7 +40,7 @@ private:
     static void onWebSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length);
     static void broadcastStatus();
     
-    static uint32_t _switchingFrequency;
+    static float_t _VRMS;
     static String _modulationType;
     static bool _isRunning;
     
@@ -48,7 +48,6 @@ private:
     static WebSocketsServer webSocket;
     static StaticJsonDocument<512> doc;
 
-    static ModulationType getModulationType(); // New helper function
 };
 
 #endif // WEBSERVER_H

@@ -1,86 +1,58 @@
+/* style.css */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-    width: 50%;
-    margin: 20px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1, h2 {
-    color: #333;
+  color: #333;
 }
 
 .parameters {
-    background: #eee;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+  background: #eee;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 .parameters p {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 input, button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px;
-    font-size: 16px;
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  font-size: 16px;
 }
 
 input {
-    width: 80%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 button {
-    background: green;
-    color: white;
-    border: none;
-    cursor: pointer;
-    width: 100px;
-    border-radius: 5px;
+  background: green;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  border-radius: 5px;
 }
 
 button.stopped {
-    background: red;
-}
-
-/* Container for the modulation radio options */
-.radio-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-/* Each radio option container */
-.radio-option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Align radio button and label text in one line */
-.radio-option label {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-}
-
-/* Image styling */
-.modulation-img {
-    width: 150px;
-    height: 60px;
-    object-fit: contain;
-    margin-top: 0px;
+  background: red;
 }

@@ -1,8 +1,4 @@
 #pragma once
-
-// Centralizes SPI sampler definitions, structs, and task entry points.
-// Keeps main clean so it only wires up tasks and loop.
-
 #include <Arduino.h>
 #include <utility>
 
@@ -17,10 +13,10 @@ extern "C" {
   #include "esp_log.h"
 }
 
-// ---- App headers used by the task implementations ----
-#include "Output_meas.h"   // OutputMeasurements (already in your project)
-#include "webserver.h"     // HBridgeWebServer::*
-#include "Input_meas.h"    // InputMeasurement::measurementall()
+#include "Output_meas.h"
+#include "webserver.h"
+#include "Input_meas.h"
+#include "PWM.h"
 
 #ifndef SPICOMMON_BUSFLAG_MASTER
 #define SPICOMMON_BUSFLAG_MASTER 0
@@ -99,29 +95,18 @@ typedef struct {
   int dma_chan;
 } sampler_ctx_t;
 
-// ===== Public globals (created in spi_sampler.cpp) =====
+// Public globals
 extern sampler_ctx_t g_sampler1;
 extern sampler_ctx_t g_sampler2;
 
-// pair<sampler_ctx_t*, OutputMeasurements*> packs used by sampler tasks
 extern std::pair<sampler_ctx_t*, OutputMeasurements*> g_pack1;
 extern std::pair<sampler_ctx_t*, OutputMeasurements*> g_pack2;
 
-// Expose analyzers if you want to occasionally peek from main (optional)
 extern OutputMeasurements g_ch1_om;
 extern OutputMeasurements g_ch2_om;
 
-// ===== One-time init helpers =====
-// Initializes both OutputMeasurements engines.
-// Returns false if any fatal allocation failed.
+// Init helpers
 bool spiSamplerInitMeasurements();
-
-// Initializes and starts the SPI engines (DMA buffers, bus, device, queue seed).
 void spiInitAndStart(sampler_ctx_t* s);
 
-// ===== Task entry points (create these from main) =====
-void spiSamplerTask(void* arg);   // arg = &g_pack1 or &g_pack2
-void analyzerTask(void* arg);     // arg = &g_ch1_om or &g_ch2_om
-void printerTask(void* arg);      // optional diagnostics; arg ignored
-void webSocketTask(void* arg);    // arg ignored
-void webSocketUpdate(void* arg);  // arg ignored
+

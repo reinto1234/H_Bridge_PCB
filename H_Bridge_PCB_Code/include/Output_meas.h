@@ -17,8 +17,8 @@ extern "C" {
   #include <esp32-hal-psram.h>
 #endif
 
-#ifndef SPICOMMON_BUSFLAG_MASTER
-#define SPICOMMON_BUSFLAG_MASTER 0
+#ifndef SPICOMMON_BUSFLAG_MASTERMODE
+#define SPICOMMON_BUSFLAG_MASTERMODE 0
 #endif
 
 // --- Tweakables specific to output measurements (moved here) ---
@@ -37,20 +37,20 @@ extern "C" {
 
 // Analyzer cadence defaults (kept here so the class can use them if needed)
 #ifndef OM_ANALYZE_EVERY_MS
-#define OM_ANALYZE_EVERY_MS 5
+#define OM_ANALYZE_EVERY_MS 1
 #endif
 
 // Default buffer sizes for the measurement engine
 #ifndef OM_DECIM_RING_DEFAULT
-#define OM_DECIM_RING_DEFAULT 4096
+#define OM_DECIM_RING_DEFAULT 256
 #endif
 
 #ifndef OM_MAX_SCAN_DEFAULT
-#define OM_MAX_SCAN_DEFAULT 2048
+#define OM_MAX_SCAN_DEFAULT 128
 #endif
 
 #ifndef OM_MAX_PERIOD_BUF
-#define OM_MAX_PERIOD_BUF 1024
+#define OM_MAX_PERIOD_BUF 128
 #endif
 
 class OutputMeasurements {
@@ -93,6 +93,17 @@ public:
   inline float bitRateBps() const { return bit_rate_bps; }
   inline uint32_t osr()     const { return OSR; }
 
+  // Max samples returned per incremental pull
+  static constexpr uint16_t OM_SEQ_MAX_CHUNK = 50;
+  inline float    getDecimFsHz() const { return bit_rate_bps / (float)OSR; }
+  inline uint32_t getSeq32() const { return decim_seq32; }
+
+  // Copy up to the last 50 *newest* samples produced since `last_seq` into `dst`.
+  // Returns #copied and sets *next_seq = current producer sequence (i.e., "now").
+  // Order: newest-first (dst[0] is the newest).
+  uint16_t copySinceSeq32(uint32_t last_seq, float* dst, uint16_t dst_len, uint32_t* next_seq) const;
+
+
 private:
   // ----- CIC3 continuous state -----
   struct cic3_state_t {
@@ -100,6 +111,8 @@ private:
     long long c1 = 0, c2 = 0, c3 = 0;   // comb delays (at decim instants)
     uint16_t  osr_byte_phase = 0;       // 0..(OSR/8 - 1)
   };
+
+  volatile uint32_t decim_seq32 = 0; // ++ in pushDecim() per decimated sample
 
   // Per-byte CIC LUT entry
   struct bytecic_t { int8_t S1; int16_t PS1; int16_t SS; };
@@ -125,6 +138,7 @@ private:
     decim_ring[widx] = v;
     widx = (widx + 1) % DECIM_RING;
     if (count < DECIM_RING) count++;
+    __atomic_fetch_add(&decim_seq32, 1u, __ATOMIC_RELEASE);
   }
 
   static size_t copyRecentWindowWithStats(

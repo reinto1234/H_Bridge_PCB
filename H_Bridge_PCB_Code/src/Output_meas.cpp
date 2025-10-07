@@ -219,7 +219,7 @@ void OutputMeasurements::analyzeStep() {
   for (size_t i = 0; i < N; ++i) win[i] = win[i] - mean;
 
   const float pp = vmax - vmin;
-  const float hyst = max(0.002f, min(0.02f * pp, 50.0f));
+  const float hyst = fmaxf(0.002f, fminf(0.02f * pp, 50.0f));
 
   float t0, t1; int zcCount = 0;
   Snapshot newsnap {NAN, NAN, 0};
@@ -235,15 +235,29 @@ void OutputMeasurements::analyzeStep() {
       const float spp = (t1 - t0);
       newsnap.freq_hz = (spp > 0.0f) ? (fs_decim / spp) : NAN;
 
-      uint16_t countCopy = (uint16_t)min((int)MAX_PERIOD, e - s + 1);
-      for (uint16_t i = 0; i < countCopy; ++i) period_buf[i] = win[s + i];
+      const int span = e - s + 1;
+      uint16_t countCopy = (uint16_t)min((int)MAX_PERIOD, span);
+
+      // 1) mean of the EXACT period
+      float sum = 0.0f;
+      for (int i = 0; i < span; ++i) sum += win[s + i];
+      float mu = (float)(sum / (float)span);
+
+      // 2) copy centered samples into period_buf
+      for (uint16_t i = 0; i < countCopy; ++i)
+        period_buf[i] = win[s + i] - mu;
+
       newsnap.n_period = countCopy;
 
-      newsnap.rms_mV = computeRmsOnePeriodExact(win, N, t0, t1, fs_decim);
+      // 3) RMS from the centered period (simple and fast)
+      float acc = 0.0f;
+      for (uint16_t i = 0; i < countCopy; ++i) acc += period_buf[i] * period_buf[i];
+      newsnap.rms_mV = (float)sqrt(acc / (float)countCopy);
+
     }
   }
 
-  if (xSemaphoreTake(snap_mutex, pdMS_TO_TICKS(5)) == pdTRUE) {
+  if (xSemaphoreTake(snap_mutex, pdMS_TO_TICKS(OM_ANALYZE_EVERY_MS)) == pdTRUE) {
     snap = newsnap;
     xSemaphoreGive(snap_mutex);
   }
@@ -272,4 +286,46 @@ uint16_t OutputMeasurements::copyLastPeriod(float* dst, uint16_t dst_len) const 
     xSemaphoreGive(snap_mutex);
   }
   return copied;
+}
+
+
+uint16_t OutputMeasurements::copySinceSeq32(uint32_t last_seq,
+                                            float* dst, uint16_t dst_len, uint32_t* next_seq) const
+{
+  if (!dst || dst_len == 0 || !decim_ring) {
+    if (next_seq) *next_seq = last_seq;
+    return 0;
+  }
+
+  uint32_t seq1, seq2;
+  size_t widx_local, count_local;
+  do {
+    seq1        = __atomic_load_n(&decim_seq32, __ATOMIC_ACQUIRE);
+    widx_local  = widx;
+    count_local = count;
+    seq2        = __atomic_load_n(&decim_seq32, __ATOMIC_ACQUIRE);
+  } while (seq1 != seq2);
+
+  uint32_t produced = (uint32_t)(seq1 - last_seq); // wrap-safe
+  size_t N = produced;
+  if (N > count_local)      N = count_local;
+  if (N > dst_len)          N = dst_len;
+  if (N > OM_SEQ_MAX_CHUNK) N = OM_SEQ_MAX_CHUNK;  // 25
+
+  if (N == 0) {
+    if (next_seq) *next_seq = last_seq; // nothing new
+    return 0;
+  }
+
+  // Newest element is at (widx_local - 1); copy newest-first
+  size_t newest_idx = (widx_local + DECIM_RING - 1) % DECIM_RING;
+
+  for (size_t i = 0; i < N; ++i) {
+    size_t idx = (newest_idx + DECIM_RING - i) % DECIM_RING;
+    dst[i] = decim_ring[idx];  // dst[0] = newest, dst[N-1] = older
+  }
+
+  // We intentionally *jump* the consumer to "now" (drop backlog), per your spec.
+  if (next_seq) *next_seq = seq1;
+  return (uint16_t)N;
 }

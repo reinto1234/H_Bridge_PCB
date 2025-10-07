@@ -15,6 +15,7 @@ HBridgeInverter* inverter = nullptr;
 hw_timer_t* spwmTimer = nullptr;
 portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 
+
 //Interrupt Service Routine (ISR) for the SPWM timer
 void IRAM_ATTR onSPWMTimer() {
     if (inverter != nullptr) {
@@ -25,12 +26,12 @@ void IRAM_ATTR onSPWMTimer() {
 
 
 // Function to start the inverter
-void startInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq) {
+void startInverter(float vrms) {
     // Check if an inverter instance already exists
     if (inverter == nullptr) {
         // Acquire mutex before modifying the inverter instance
         if (xSemaphoreTake(inverterMutex, portMAX_DELAY) == pdTRUE) {
-            inverter = new HBridgeInverter(kp, ki, outputMin, outputMax, modType, freq);
+            inverter = new HBridgeInverter(vrms);
             inverter->begin();
             Serial.println("H-Bridge Inverter started!");
             xSemaphoreGive(inverterMutex);
@@ -105,34 +106,20 @@ void stopInverter() {
 }
 
 // Constructor for HBridgeInverter class
-HBridgeInverter::HBridgeInverter(float kp, float ki, float outputMin, float outputMax, ModulationType modType, int freq) {
-    // Initialize PI controller parameters
-    pi.kp = kp;
-    pi.ki = ki;
-    pi.integral = 0;
-    pi.prevError = 0;
-    pi.outputMin = outputMin;
-    pi.outputMax = outputMax;
-    pwmDutyCycle = 0.5;
-    stepIndex = 0;
-    modulationType = modType; // Store modulation type
-    S_FREQ = freq;
-    
-    
+HBridgeInverter::HBridgeInverter(float vrms)
+    : pwmDutyCycle(0.5),
+      stepIndex(0),
+      controller(/*kp=*/0.03f, /*ki=*/0.02f, /*outputMin=*/0.2f, /*outputMax=*/1.0f, /*vrms=*/vrms)
+{
     //Serial.println("Sine Table Size: " + String(SINE_STEPS));
-    sineTable.resize(SINE_STEPS); // Resize sine table to SINE_STEPS size
+    //sineTable.resize(SINE_STEPS); // Resize sine table to SINE_STEPS size
 
     // Precompute sine wave table based on modulation type
     for (int i = 0; i < SINE_STEPS; i++) {
         float sinValue = sin(2 * M_PI * i / SINE_STEPS);
-        if (modulationType == BIPOLAR) {
-            sineTable[i] = (uint16_t)((sinValue+1) * 511);  // Bipolar: Full sinus range#
-            //Serial.println(sineTable[i]);
-        } else {
-            sineTable[i] = (uint16_t)(abs(sinValue) * 1023); // Unipolar: Only positive part
-            //Serial.println(sineTable[i]);
-        }
+        sineTable[i] = (int16_t)((sinValue) * 511);  // Bipolar: Full sinus range
     }
+ 
 }
 
 // Initialize the inverter
@@ -144,38 +131,17 @@ void HBridgeInverter::begin() {
     
     // PWM setup
     ledcSetup(PWM_CHANNEL_1, S_FREQ, RESOLUTION);
-    ledcSetup(PWM_CHANNEL_2, S_FREQ, RESOLUTION);
 
     ledcAttachPin(HIN1, PWM_CHANNEL_1);
 
-    if (modulationType == UNIPOLAR) {
-        // Set complementary outputs as digital
-        // Attach PWM to GPIOs
-        ledcDetachPin(LIN1);
-        ledcDetachPin(LIN2);
-        ledcAttachPin(HIN2, PWM_CHANNEL_2);
-        digitalWrite(LIN1, LOW);
-        digitalWrite(LIN2, LOW);
-
-        GPIO.func_out_sel_cfg[LIN1].inv_sel = 0;
-        GPIO.func_out_sel_cfg[HIN2].inv_sel = 0;
-
-
-    //Explizit einen sicheren Ausgangszustand herstellen ---
-    // Setzt beide PWM-Kanäle auf 0% Duty Cycle, bevor der Timer startet.
-    // Dies stellt sicher, dass HIN1/HIN2 auf LOW und LIN1/LIN2 auf HIGH sind.
-        ledcWrite(PWM_CHANNEL_1, 0);
-        ledcWrite(PWM_CHANNEL_2, 0);
-        
-    } else { // BIPOLAR
-        // Attach PWM to GPIOs
-        // Initialize MCPWM GPIOs for complementary outputs
-        ledcAttachPin(HIN2, PWM_CHANNEL_1);
-        ledcAttachPin(LIN1, PWM_CHANNEL_1);
-        ledcAttachPin(LIN2, PWM_CHANNEL_1);
-        GPIO.func_out_sel_cfg[LIN1].inv_sel = 1;
-        GPIO.func_out_sel_cfg[HIN2].inv_sel = 1;
-    }
+    // BIPOLAR
+    // Attach PWM to GPIOs
+    // Initialize MCPWM GPIOs for complementary outputs
+    ledcAttachPin(HIN2, PWM_CHANNEL_1);
+    ledcAttachPin(LIN1, PWM_CHANNEL_1);
+    ledcAttachPin(LIN2, PWM_CHANNEL_1);
+    GPIO.func_out_sel_cfg[LIN1].inv_sel = 1;
+    GPIO.func_out_sel_cfg[HIN2].inv_sel = 1;
 
     
 
@@ -189,73 +155,34 @@ void HBridgeInverter::begin() {
 
 }
 
-// Compute PI controller output
-float HBridgeInverter::computePI(float setpoint, float measurement) {
-    float error = setpoint - measurement;
-    pi.integral += error;
-
-    float output = (pi.kp * error) + (pi.ki * pi.integral);
-    if (output > pi.outputMax) output = pi.outputMax;
-    if (output < pi.outputMin) output = pi.outputMin;
-
-    return setpoint; // Doesnt return output because PI Controller is not implemented correctly yet
-}
-
-// Retrieve measurement data
-void HBridgeInverter::getmeasurements(float* measurementin, float* measurementout) {
-    // Store input measurements
-    if (xSemaphoreTake(measurementinMutex, portMAX_DELAY) == pdTRUE) {
-        measurementBuffer[0] = measurementin[0];
-        measurementBuffer[1] = measurementin[1];
-        measurementBuffer[2] = measurementin[2];
-        xSemaphoreGive(measurementinMutex);
-    }
-    // Store output measurements
-    if (xSemaphoreTake(measurementoutMutex, portMAX_DELAY) == pdTRUE) {
-        measurementBuffer[3] = measurementout[0];
-        measurementBuffer[4] = measurementout[1];
-        measurementBuffer[5] = measurementout[2];
-        measurementBuffer[6] = measurementout[3];
-        measurementBuffer[7] = measurementout[4];
-        measurementBuffer[8] = measurementout[5];
-        measurementBuffer[9] = measurementout[6];
-        xSemaphoreGive(measurementoutMutex);
-    }
-}
-
-// Generate sinusoidal PWM
-// In PWM.cpp
 
 void HBridgeInverter::generateSPWM() {
-    uint16_t pwmValue = sineTable[stepIndex];
+    // In ISR-safe code
+    // 0) read base sample (keep it unsigned)
+    int16_t base = sineTable[stepIndex];          // -512..511
+    __atomic_store_n(&controller.stepindexPWM, stepIndex , __ATOMIC_RELEASE);
 
-    if (modulationType == BIPOLAR) {
-        // Bipolar modulation: both bridge arms switch simultaneously
-        ledcWrite(PWM_CHANNEL_1, pwmValue);
-    } else {
-        // Unipolar modulation: one bridge arm stays constant
-        // Set complementary outputs as digital
-        if (stepIndex < SINE_STEPS / 2) {
-            digitalWrite(LIN1, LOW);
-            ledcWrite(PWM_CHANNEL_2, 0);
-            digitalWrite(LIN2, HIGH);
-            ledcWrite(PWM_CHANNEL_1, pwmValue);
-        } else {
-            digitalWrite(LIN2, LOW);
-            ledcWrite(PWM_CHANNEL_1, 0);
-            digitalWrite(LIN1, HIGH);
-            ledcWrite(PWM_CHANNEL_2, pwmValue);
-        }
-    }
-    
+    // 1) load amplitude (Q10: 0..1023)
+    int16_t amp = __atomic_load_n(&PIController::g_amp_q10, __ATOMIC_ACQUIRE);
+
+    // 2) fixed-point multiply (keep 32-bit), then scale back to 10 bits
+    int32_t prod = (int16_t)base * amp;          // 0..~1,046,529
+    int16_t scaled = prod >> 10;                  // -512..511
+
+    uint16_t final_val = (uint16_t)(scaled + 512); // 0... 1023
+
+    // 3) clamp without constrain() (ISR-safe)
+    uint16_t pwmValue = (final_val > 1023u) ? 1023u : (uint16_t)final_val;
+
+    // Bipolar modulation: both bridge arms switch simultaneously
+    ledcWrite(PWM_CHANNEL_1, pwmValue);
+        
 
     // Sinusschritt inkrementieren
     stepIndex = (stepIndex + 1) % SINE_STEPS;
 }
 
-// Main control loop
-void HBridgeInverter::loop(float vRef, float vMeasured) {
-    float dutyCycle = computePI(vRef, vMeasured);
-    pwmDutyCycle = dutyCycle;
-    generateSPWM();
-}
+
+
+
+
