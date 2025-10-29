@@ -27,42 +27,40 @@ The project consists of two main components:
 ## Directory Structure
 
 H_Bridge_PCB_Project/
-│-- H_Bridge_PCB_Design/ # KiCad design files
-│-- H_Bridge_PCB_Code/ # ESP32 firmware
-│ │-- include/ # Header files
-│ │ │-- Controller.h
-│ │ │-- I2C.h
-│ │ │-- Input_meas.h
-│ │ │-- mutexdefinitions.h
-│ │ │-- Output_meas.h
-│ │ │-- PWM.h
-│ │ │-- spi_sampler.h
-│ │ │-- Tasks.h
-│ │ │-- webserver.h
+├── H_Bridge_PCB_Design/ # KiCad design files
+├── H_Bridge_PCB_Code/ # ESP32 firmware
+│ ├── include/ # Header files
+│ │ ├── Controller.h
+│ │ ├── I2C.h
+│ │ ├── Input_meas.h
+│ │ ├── mutexdefinitions.h
+│ │ ├── Output_meas.h
+│ │ ├── PWM.h
+│ │ ├── spi_sampler.h
+│ │ ├── Tasks.h
+│ │ └── webserver.h
 │ │
-│ │-- src/ # Source files
-│ │ │-- Controller.cpp
-│ │ │-- I2C.cpp
-│ │ │-- Input_meas.cpp
-│ │ │-- Output_meas.cpp
-│ │ │-- PWM.cpp
-│ │ │-- spi_sampler.cpp
-│ │ │-- Tasks.cpp
-│ │ │-- webserver.cpp
-│ │ │-- main.cpp
+│ ├── src/ # Source files
+│ │ ├── Controller.cpp
+│ │ ├── I2C.cpp
+│ │ ├── Input_meas.cpp
+│ │ ├── Output_meas.cpp
+│ │ ├── PWM.cpp
+│ │ ├── spi_sampler.cpp
+│ │ ├── Tasks.cpp
+│ │ ├── webserver.cpp
+│ │ └── main.cpp
 │ │
-│ │-- data/ # Webserver files (LittleFS)
-│ │ │-- index.html
-│ │ │-- script.js
-│ │ │-- style.css
+│ ├── data/ # Webserver files (LittleFS)
+│ │ ├── index.html
+│ │ ├── script.js
+│ │ └── style.css
 │
-│-- lib/ # Optional local libraries
-│-- platformio.ini # PlatformIO configuration
-│-- images/ # Flowchart and figures
-│-- README.md # This file
+├── lib/ # Optional local libraries
+├── platformio.ini # PlatformIO configuration
+├── images/ # Flowchart and figures
+└── README.md # This file
 
-markdown
-Code kopieren
 
 ---
 
@@ -103,30 +101,6 @@ The ESP32 provides a **built-in Wi-Fi access point** and hosts a **web-based int
 ## Code
 The firmware is implemented in **C++** (Arduino / FreeRTOS).  
 The web interface is built with **HTML**, **JavaScript**, and **CSS**.
-
-### Structure
-H_Bridge_PCB_Code/
-│-- data/ # Web UI (LittleFS)
-│ │-- index.html # User interface
-│ │-- script.js # WebSocket control & live data
-│ │-- style.css # UI styling
-│
-│-- src/ # Core application
-│ │-- Controller.cpp # PI control loop for VRMS tracking
-│ │-- I2C.cpp # Shared INA228 I²C communication
-│ │-- Input_meas.cpp # Input voltage, current, power via INA228
-│ │-- Output_meas.cpp # RMS, phase, PF, and frequency calculation
-│ │-- PWM.cpp # SPWM generation (bipolar, 35 kHz)
-│ │-- webserver.cpp # HTTP/WebSocket server
-│ │-- spi_sampler.cpp # High-rate output sampling
-│ │-- Tasks.cpp # Task scheduling and inter-task sync
-│ │-- main.cpp # System initialization and control logic
-│
-│-- include/ # All header files
-│-- platformio.ini # PlatformIO configuration
-
-yaml
-Code kopieren
 
 ---
 
