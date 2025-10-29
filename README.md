@@ -1,113 +1,198 @@
 # H-Bridge PCB Project
 
 ## Project Description
-This project involves the design and implementation of an H-Bridge using an Espressif ESP32 controller. The H-Bridge can control loads with the following specifications:
+This project involves the design and implementation of an **educational single-phase H-Bridge inverter** controlled by an **Espressif ESP32**.  
+The system demonstrates **bipolar sinusoidal PWM (SPWM)** operation with **closed-loop VRMS amplitude control** and a **browser-based interface** for monitoring and control.  
+The H-Bridge can drive loads with the following ratings:
 
-- **Input Voltage:** 24V  
-- **Input Current:** 10A  
-- **Power:** 240W
+- **Input Voltage:** 24 V  
+- **Input Current:** up to 10 A  
+- **Power:** ≈ 240 W  
+
 ### Features
-- Customizable switching frequency 1kHz - 45kHz
-- unipolar or bipolar modulation
-- Input and output power measurement
+- Fixed **switching frequency:** 35 kHz  
+- Fixed **output frequency:** 50 Hz  
+- **Bipolar SPWM modulation** (only)  
+- **Closed-loop VRMS control** using PI regulation  
+- **Web-based UI** (HTTP + WebSocket) for control and telemetry  
+- **Input/Output power measurement**  
+- **Overcurrent protection** using INA228 (auto driver shutdown + UI fault latch)  
 
 The project consists of two main components:  
-1. **H_Bridge_PCB_Design:** Contains the complete PCB design in KiCad.  
-2. **H_Bridge_PCB_Code:** Contains the code for the ESP32 to control the H-Bridge.  
+1. **H_Bridge_PCB_Design** — KiCad PCB layout and schematic.  
+2. **H_Bridge_PCB_Code** — Firmware for the ESP32 controller.
 
 ---
 
 ## Directory Structure
 
-```
 H_Bridge_PCB_Project/
-│-- H_Bridge_PCB_Design/   # PCB design (KiCad files)
-│-- H_Bridge_PCB_Code/     # Source code for the ESP32
-│-- images/                # images used in the README.md
-│-- README.md              # This file
-```
+│-- H_Bridge_PCB_Design/ # KiCad design files
+│-- H_Bridge_PCB_Code/ # ESP32 firmware
+│ │-- include/ # Header files
+│ │ │-- Controller.h
+│ │ │-- I2C.h
+│ │ │-- Input_meas.h
+│ │ │-- mutexdefinitions.h
+│ │ │-- Output_meas.h
+│ │ │-- PWM.h
+│ │ │-- spi_sampler.h
+│ │ │-- Tasks.h
+│ │ │-- webserver.h
+│ │
+│ │-- src/ # Source files
+│ │ │-- Controller.cpp
+│ │ │-- I2C.cpp
+│ │ │-- Input_meas.cpp
+│ │ │-- Output_meas.cpp
+│ │ │-- PWM.cpp
+│ │ │-- spi_sampler.cpp
+│ │ │-- Tasks.cpp
+│ │ │-- webserver.cpp
+│ │ │-- main.cpp
+│ │
+│ │-- data/ # Webserver files (LittleFS)
+│ │ │-- index.html
+│ │ │-- script.js
+│ │ │-- style.css
+│
+│-- lib/ # Optional local libraries
+│-- platformio.ini # PlatformIO configuration
+│-- images/ # Flowchart and figures
+│-- README.md # This file
+
+markdown
+Code kopieren
 
 ---
 
 ## Requirements
-Before starting the project, the following software and hardware components should be available:
 
 ### Hardware:
-- PCB according to the KiCad design
-- Voltage source 24V and 10A
-- Load Resistor
+- PCB based on KiCad design  
+- 24 V DC power supply (≥ 10 A)  
+- Resistive or inductive load (max ≈ 240 W)  
+- Gate drivers with integrated dead-time  
+- INA228 current/voltage monitor for input sensing  
 
 ### Software:
-- [KiCad](https://www.kicad.org/) (for PCB design)  
-- [PlatformIO](https://platformio.org/) (for ESP32 development)  
-- [VS Code](https://code.visualstudio.com/) (recommended for code development)
+- [KiCad](https://www.kicad.org/) — PCB design  
+- [PlatformIO](https://platformio.org/) — firmware build  
+- [VS Code](https://code.visualstudio.com/) — recommended IDE  
+
+---
 
 ## Webserver
-Webserver (based on WebSocket) to display all measurements and configure the controller.
+The ESP32 provides a **built-in Wi-Fi access point** and hosts a **web-based interface** for control and measurement visualization.
 
-### Connect to WLAN Access Point with default credentials:
+### Connect to WLAN Access Point
+- **SSID:** `H_Bridge_Control`  
+- **Password:** `12345678`
 
-**SSID:** H_Bridge_Control  
-**Password:** 12345678  
+### Open the web interface:
+👉 [http://192.168.4.1/](http://192.168.4.1/)
 
-### Navigate to the web interface:
+**Functions:**
+- Start/Stop the inverter  
+- Set VRMS target  
+- Display live telemetry (Vin, Iin, VRMS, IRMS, PF, P, Q, f)  
+- View and acknowledge overcurrent faults  
 
-[http://192.168.4.1/](http://192.168.4.1/)
+---
 
 ## Code
-The project is mostly written in C++. For the Website jss, html and css was used.
-### Structure
-```
+The firmware is implemented in **C++** (Arduino / FreeRTOS).  
+The web interface is built with **HTML**, **JavaScript**, and **CSS**.
 
-H_Bridge_PCB_Code/           
-│-- data/                    # Server data directory
-│   │-- index.html           # html file for webserver
-│   │-- script.js            # js file for webserver
-│   │-- style.css            # css file for webserver
-│-- src/                 # Main code directory
-│   │-- I2C.cpp              #file for output and input measurement that both can work with the same I2C bus
-│   │-- Input_meas.cpp       #Input measurement of voltage, current and power 
-│   │-- main_OutputTest.cpp  #Testfile for calibration of Output sensor (should be outcommented in normal use)
-│   │-- main.cpp             #implementation of the Multithreading
-│   │-- mutexdefinitions.cpp #mutex definitions prevent concurrent memory access in measurement and inverter tasks
-│   │-- Output_meas.cpp      #Output measurement of VRMS, IRMS, active and reactive Power, Frequency and Phase
-│   │-- PWM.cpp              #class with all inverter functions
-│   │-- webserver.cpp        #webserver cpp file
-│-- include/           # Header files directory
-│-- lib/               # Additional libraries
-│-- platformio.ini     # Configuration file for PlatformIO
-```
+### Structure
+H_Bridge_PCB_Code/
+│-- data/ # Web UI (LittleFS)
+│ │-- index.html # User interface
+│ │-- script.js # WebSocket control & live data
+│ │-- style.css # UI styling
+│
+│-- src/ # Core application
+│ │-- Controller.cpp # PI control loop for VRMS tracking
+│ │-- I2C.cpp # Shared INA228 I²C communication
+│ │-- Input_meas.cpp # Input voltage, current, power via INA228
+│ │-- Output_meas.cpp # RMS, phase, PF, and frequency calculation
+│ │-- PWM.cpp # SPWM generation (bipolar, 35 kHz)
+│ │-- webserver.cpp # HTTP/WebSocket server
+│ │-- spi_sampler.cpp # High-rate output sampling
+│ │-- Tasks.cpp # Task scheduling and inter-task sync
+│ │-- main.cpp # System initialization and control logic
+│
+│-- include/ # All header files
+│-- platformio.ini # PlatformIO configuration
+
+yaml
+Code kopieren
+
+---
+
 ### Flowchart
-![Flowchart of the programm](images/Flowchart.png)
+![Flowchart of the program](images/Flowchart.png)
+
+---
 
 ## Code Documentation
-Brief documentation of the most important functions.
+Brief overview of the most relevant components.
 
-### Inverter implementation
+### Inverter Implementation (`PWM.cpp`)
+Implements the real-time control of the full-bridge inverter:
 
-The Inverter is implemented in `PWM.cpp`.
+- **startInverter()** — Initializes and enables PWM output.  
+- **stopInverter()** — Stops PWM and resets inverter state.  
+- **generateSPWM()** — Produces bipolar SPWM using a sine table.  
+- **begin()** — Configures LEDC channels, frequency, and timers.  
+- **getMeasurements()** — Retrieves latest measurement snapshot.  
+- **computePI()** — Executes PI algorithm to maintain VRMS target.  
+- **loop()** — Runs the inverter control logic at fixed timing intervals.  
 
-The `HBridgeInverter` class handles the control of an H-Bridge inverter using the ESP32. Below is a breakdown of its main functionalities:
+---
 
-- **startInverter()**: Initializes the inverter if it is not already running.
-- **stopInverter()**: Stops the inverter and resets all PWM outputs.
-- **HBridgeInverter() constructor**: Initializes the PI controller and precomputes a sine wave table.
-- **begin()**: Configures PWM channels and GPIOs.
-- **computePI()**: Implements a PI control algorithm. (Not done yet)
-- **getmeasurements()**: Retrieves input and output measurements.
-- **generateSPWM()**: Generates the sinusoidal PWM signal for bipolar and unipolar modulation.
-- **loop()**: Runs the main control loop, adjusting the PWM duty cycle based on the reference voltage.
+### Controller and Measurement
+- **Controller.cpp** — PI regulator adjusts modulation amplitude based on measured VRMS.  
+- **Input_meas.cpp** — INA228 sensor readings (Vin, Iin, Pin).  
+- **Output_meas.cpp / spi_sampler.cpp** — Sample and compute RMS, power, phase, PF, frequency.  
+- **Tasks.cpp** — FreeRTOS task structure separating PWM, controller, measurement, and web updates.  
 
-### Web Server and WebSocket Implementation
-The `webserver.cpp` file contains the implementation of a web server and WebSocket functionalities, allowing remote control and monitoring of the inverter system. Below are its key components:
+---
 
-- **initWiFi()**: Sets up an access point for the ESP32.
-- **initServer()**: Starts the HTTP server and WebSocket server, serving static files like HTML, CSS, and JavaScript.
-- **getModulationType()**: Converts a string input to a modulation type (bipolar or unipolar).
-- **updateMeasurements()**: Retrieves real-time inverter measurements and broadcasts them via WebSocket.
-- **HTTP Endpoints:**
-  - `/`: Serves the main HTML page.
-  - `/start`: Starts the inverter with specified parameters.
-  - `/stop`: Stops the inverter.
-  - `/update`: Updates inverter settings like frequency and modulation type.
-  - `/bipolar.png`, `/unipolar.png`: Serves images representing modulation types.
+### Web Server and WebSocket Implementation (`webserver.cpp`)
+Handles all network communication and UI updates:
+
+- **initWiFi()** — Starts Wi-Fi access point.  
+- **initServer()** — Serves static files and opens WebSocket connection.  
+- **updateMeasurements()** — Periodically broadcasts input/output data.  
+- **handleUserCommand()** — Parses user actions (Start/Stop/VRMS set).  
+- **faultNotify()** — Sends overcurrent/fault messages to the UI.  
+
+**HTTP Endpoints:**
+- `/` – Main HTML page  
+- `/start` – Start inverter  
+- `/stop` – Stop inverter  
+- `/update` – Update VRMS target  
+- `/bipolar.png` – Waveform reference  
+
+---
+
+## Overcurrent Protection
+Overcurrent protection is implemented through the **INA228** fault pin:  
+1. When a current threshold is exceeded, **drivers are disabled immediately**.  
+2. A **fault message** is sent to the web interface.  
+3. After user acknowledgment, the inverter can be restarted safely.  
+
+---
+
+## Safety
+- Always operate with **dead-time** and isolated gate drivers.  
+- Use **current-limited** power supplies during development.  
+- Verify **MOSFET temperature and load** ratings.  
+- For **educational/laboratory use only**.
+
+---
+
+## License
+Released for **educational and research purposes**.  
+Use responsibly.
