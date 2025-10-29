@@ -26,40 +26,42 @@ The project consists of two main components:
 
 ## Directory Structure
 
-H_Bridge_PCB_Project/
-├── H_Bridge_PCB_Design/ # KiCad design files
-├── H_Bridge_PCB_Code/ # ESP32 firmware
-│ ├── include/ # Header files
-│ │ ├── Controller.h
-│ │ ├── I2C.h
-│ │ ├── Input_meas.h
-│ │ ├── mutexdefinitions.h
-│ │ ├── Output_meas.h
-│ │ ├── PWM.h
-│ │ ├── spi_sampler.h
-│ │ ├── Tasks.h
-│ │ └── webserver.h
-│ │
-│ ├── src/ # Source files
-│ │ ├── Controller.cpp
-│ │ ├── I2C.cpp
-│ │ ├── Input_meas.cpp
-│ │ ├── Output_meas.cpp
-│ │ ├── PWM.cpp
-│ │ ├── spi_sampler.cpp
-│ │ ├── Tasks.cpp
-│ │ ├── webserver.cpp
-│ │ └── main.cpp
-│ │
-│ ├── data/ # Webserver files (LittleFS)
-│ │ ├── index.html
-│ │ ├── script.js
-│ │ └── style.css
+<h2>Directory Structure</h2>
+<pre><code>H_Bridge_PCB_Project/
+├── H_Bridge_PCB_Design/        # KiCad design files
+├── H_Bridge_PCB_Code/          # ESP32 firmware
+│   ├── include/                # Header files
+│   │   ├── Controller.h
+│   │   ├── I2C.h
+│   │   ├── Input_meas.h
+│   │   ├── mutexdefinitions.h
+│   │   ├── Output_meas.h
+│   │   ├── PWM.h
+│   │   ├── spi_sampler.h
+│   │   ├── Tasks.h
+│   │   └── webserver.h
+│   │
+│   ├── src/                    # Source files
+│   │   ├── Controller.cpp
+│   │   ├── I2C.cpp
+│   │   ├── Input_meas.cpp
+│   │   ├── Output_meas.cpp
+│   │   ├── PWM.cpp
+│   │   ├── spi_sampler.cpp
+│   │   ├── Tasks.cpp
+│   │   ├── webserver.cpp
+│   │   └── main.cpp
+│   │
+│   ├── data/                   # Webserver files (LittleFS)
+│   │   ├── index.html
+│   │   ├── script.js
+│   │   └── style.css
 │
-├── lib/ # Optional local libraries
-├── platformio.ini # PlatformIO configuration
-├── images/ # Flowchart and figures
-└── README.md # This file
+├── lib/                        # Optional local libraries
+├── platformio.ini              # PlatformIO configuration
+├── images/                     # Flowchart and figures
+└── README.md                   # This file
+</code></pre>
 
 
 ---
