@@ -1,12 +1,14 @@
 (kicad_sch
-	(version 20231120)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "a1157398-148a-4131-8453-a302303ef78d")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Device:C"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0.254)
 			)
@@ -79,7 +81,7 @@
 			(symbol "C_0_1"
 				(polyline
 					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
+						(xy -2.032 0.762) (xy 2.032 0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -91,7 +93,7 @@
 				)
 				(polyline
 					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -140,9 +142,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:R"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0)
 			)
@@ -261,6 +266,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Driver_FET:IR2110S"
 			(exclude_from_sim no)
@@ -344,60 +350,6 @@
 				)
 			)
 			(symbol "IR2110S_1_1"
-				(pin output line
-					(at 7.62 -7.62 180)
-					(length 2.54)
-					(name "LO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 5.08 2.54 180)
-					(length 2.54) hide
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 12.7 270)
-					(length 2.54)
-					(name "VDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin input line
 					(at -7.62 0 0)
 					(length 2.54)
@@ -409,24 +361,6 @@
 						)
 					)
 					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -7.62 -5.08 0)
-					(length 2.54)
-					(name "SD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -452,6 +386,81 @@
 						)
 					)
 				)
+				(pin input line
+					(at -7.62 -5.08 0)
+					(length 2.54)
+					(name "SD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 7.62 0)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 5.08 0)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 2.54 0)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 				(pin power_in line
 					(at -2.54 -12.7 90)
 					(length 2.54)
@@ -470,17 +479,17 @@
 						)
 					)
 				)
-				(pin no_connect line
-					(at 5.08 0 180)
-					(length 2.54) hide
-					(name "NC"
+				(pin power_in line
+					(at 0 12.7 270)
+					(length 2.54)
+					(name "VDD"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "16"
+					(number "11"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -506,17 +515,18 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at 7.62 -5.08 180)
+				(pin no_connect line
+					(at 5.08 2.54 180)
 					(length 2.54)
-					(name "VCC"
+					(hide yes)
+					(name "NC"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "3"
+					(number "10"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -525,52 +535,17 @@
 					)
 				)
 				(pin no_connect line
-					(at -5.08 7.62 0)
-					(length 2.54) hide
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at -5.08 5.08 0)
-					(length 2.54) hide
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 7.62 -2.54 180)
+					(at 5.08 0 180)
 					(length 2.54)
-					(name "VS"
+					(hide yes)
+					(name "NC"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "6"
+					(number "16"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -614,17 +589,53 @@
 						)
 					)
 				)
-				(pin no_connect line
-					(at -5.08 2.54 0)
-					(length 2.54) hide
-					(name "NC"
+				(pin passive line
+					(at 7.62 -2.54 180)
+					(length 2.54)
+					(name "VS"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "9"
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 7.62 -5.08 180)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 7.62 -7.62 180)
+					(length 2.54)
+					(name "LO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -633,6 +644,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:575-4"
 			(exclude_from_sim no)
@@ -766,9 +778,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:B32776E4406J000"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -896,7 +911,7 @@
 				)
 				(polyline
 					(pts
-						(xy 7.112 0) (xy 7.62 0)
+						(xy 7.112 2.54) (xy 7.112 -2.54)
 					)
 					(stroke
 						(width 0.254)
@@ -908,7 +923,7 @@
 				)
 				(polyline
 					(pts
-						(xy 7.112 2.54) (xy 7.112 -2.54)
+						(xy 7.112 0) (xy 7.62 0)
 					)
 					(stroke
 						(width 0.254)
@@ -955,6 +970,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:FSV2060L"
 			(exclude_from_sim no)
@@ -1070,6 +1086,24 @@
 					)
 				)
 				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "CATHODE"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
 					(at 35.56 0 180)
 					(length 5.08)
 					(name "ANODE_1"
@@ -1105,28 +1139,13 @@
 						)
 					)
 				)
-				(pin passive line
-					(at 0 0 0)
-					(length 5.08)
-					(name "CATHODE"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:IPD90N10S4L06ATMA1"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1254,7 +1273,31 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 -0.508) (xy 5.842 0.508)
+						(xy 5.842 5.588) (xy 5.842 4.572)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.032) (xy 5.842 3.048)
 					)
 					(stroke
 						(width 0.254)
@@ -1278,7 +1321,7 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.032) (xy 5.842 3.048)
+						(xy 5.842 -0.508) (xy 5.842 0.508)
 					)
 					(stroke
 						(width 0.254)
@@ -1288,34 +1331,9 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy 5.842 5.588) (xy 5.842 4.572)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 5.842 2.54)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 7.62 -2.54)
-					)
+				(circle
+					(center 6.35 2.54)
+					(radius 3.81)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1350,19 +1368,20 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+						(xy 7.62 2.54) (xy 5.842 2.54)
 					)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
-				(circle
-					(center 6.35 2.54)
-					(radius 3.81)
+				(polyline
+					(pts
+						(xy 7.62 2.54) (xy 7.62 -2.54)
+					)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1426,9 +1445,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:IRLB4030PBF"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1556,7 +1578,31 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 -0.508) (xy 5.842 0.508)
+						(xy 5.842 5.588) (xy 5.842 4.572)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.032) (xy 5.842 3.048)
 					)
 					(stroke
 						(width 0.254)
@@ -1580,7 +1626,7 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.032) (xy 5.842 3.048)
+						(xy 5.842 -0.508) (xy 5.842 0.508)
 					)
 					(stroke
 						(width 0.254)
@@ -1590,34 +1636,9 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy 5.842 5.588) (xy 5.842 4.572)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 5.842 2.54)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 7.62 -2.54)
-					)
+				(circle
+					(center 6.35 2.54)
+					(radius 3.81)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1652,19 +1673,20 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+						(xy 7.62 2.54) (xy 5.842 2.54)
 					)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
-				(circle
-					(center 6.35 2.54)
-					(radius 3.81)
+				(polyline
+					(pts
+						(xy 7.62 2.54) (xy 7.62 -2.54)
+					)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1728,6 +1750,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:PHBC24N-2R0A0219V"
 			(exclude_from_sim no)
@@ -1879,9 +1902,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:S210"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2029,18 +2055,6 @@
 				)
 				(polyline
 					(pts
-						(xy 10.16 0) (xy 12.7 0)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy 5.08 0) (xy 10.16 2.54) (xy 10.16 -2.54) (xy 5.08 0)
 					)
 					(stroke
@@ -2049,6 +2063,18 @@
 					)
 					(fill
 						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 10.16 0) (xy 12.7 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 				(pin passive line
@@ -2088,6 +2114,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:TSW-102-15-T-S"
 			(exclude_from_sim no)
@@ -2239,12 +2266,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+12V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2316,7 +2348,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2328,7 +2360,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2359,12 +2391,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+24V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2436,7 +2473,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2448,7 +2485,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2479,12 +2516,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+5V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2556,7 +2598,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2568,7 +2610,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2599,12 +2641,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:GND"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2695,6 +2742,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 	)
 	(junction
@@ -2732,12 +2780,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0a792b06-51e4-4ff6-80f9-e7bf9e72fa02")
-	)
-	(junction
-		(at 35.56 114.3)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "12ef1b20-b911-4ba4-a1bb-9d05bbd71784")
 	)
 	(junction
 		(at 238.76 98.425)
@@ -2780,12 +2822,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "330ccad6-93ca-4723-bec8-5e403056ef62")
-	)
-	(junction
-		(at 264.16 113.03)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "339c573f-2fbb-4fe7-8158-f7839f96177b")
 	)
 	(junction
 		(at 73.025 99.06)
@@ -3775,16 +3811,6 @@
 	)
 	(wire
 		(pts
-			(xy 35.56 114.3) (xy 40.64 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6272008d-46e0-4d96-9523-03aac5d81f1e")
-	)
-	(wire
-		(pts
 			(xy 242.57 90.805) (xy 242.57 83.185)
 		)
 		(stroke
@@ -3852,6 +3878,16 @@
 			(type default)
 		)
 		(uuid "6a0b2c01-a1be-47c3-b466-47644bc06fd6")
+	)
+	(wire
+		(pts
+			(xy 24.13 101.6) (xy 35.56 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6a87b37d-33da-48ef-bea9-72e595939ecc")
 	)
 	(wire
 		(pts
@@ -3925,7 +3961,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 114.3) (xy 35.56 114.3)
+			(xy 29.21 114.3) (xy 40.64 114.3)
 		)
 		(stroke
 			(width 0)
@@ -4125,6 +4161,16 @@
 	)
 	(wire
 		(pts
+			(xy 264.16 100.965) (xy 269.875 100.965)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "99cbe9c9-c5de-4b0f-8e0d-16eed2acdddf")
+	)
+	(wire
+		(pts
 			(xy 215.265 103.505) (xy 222.885 103.505)
 		)
 		(stroke
@@ -4132,16 +4178,6 @@
 			(type default)
 		)
 		(uuid "99f16ee0-5640-437b-86b4-d60b4a605044")
-	)
-	(wire
-		(pts
-			(xy 264.16 100.965) (xy 264.16 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9a3f8802-1686-4cce-bc66-205e060700e7")
 	)
 	(wire
 		(pts
@@ -5003,16 +5039,6 @@
 		)
 		(uuid "fdbe5e2d-abd6-4432-8024-41056d52a7ca")
 	)
-	(wire
-		(pts
-			(xy 35.56 101.6) (xy 35.56 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "febc474c-7aa7-46f4-ad83-bad02a8a4850")
-	)
 	(global_label "Out-"
 		(shape input)
 		(at 92.075 189.865 180)
@@ -5070,6 +5096,28 @@
 		(uuid "2c15048a-d513-423f-a4ea-013a5ba00955")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 14.1295 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "Shutoff"
+		(shape input)
+		(at 24.13 101.6 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2f0493f0-b53b-4754-a825-751b0d2176ab")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 14.3112 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5365,6 +5413,28 @@
 			)
 		)
 	)
+	(global_label "Shutoff"
+		(shape input)
+		(at 227.33 136.525 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "af478c09-c328-4908-a6e3-f0343b6d0533")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 217.5112 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SI1"
 		(shape output)
 		(at 159.385 67.31 0)
@@ -5405,6 +5475,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "Shutoff"
+		(shape input)
+		(at 269.875 100.965 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bdcf122c-82b6-4024-9378-639c6552b0fa")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 279.6938 100.965 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -5616,26 +5708,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 211.455 103.505 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 211.455 103.505 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 211.455 103.505 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5713,25 +5787,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 265.43 81.915 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 265.43 81.915 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 265.43 81.915 0)
 			(effects
 				(font
@@ -6072,26 +6128,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C25301"
+		(property "LCSC Part #" "C25301"
 			(at 238.125 62.23 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 238.125 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 238.125 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6166,26 +6204,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 104.775 88.9 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 104.775 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 104.775 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6315,24 +6335,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 112.395 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 112.395 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "3"
 			(uuid "9b4bc401-2ff9-45c6-8bca-a0ecb7a96d7e")
 		)
@@ -6403,26 +6405,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 90.805 83.185 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 90.805 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 90.805 83.185 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6550,34 +6534,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 168.275 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 168.275 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 168.275 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 168.275 24.13 0)
 			(effects
 				(font
@@ -6725,25 +6682,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 29.21 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 29.21 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 29.21 87.63 0)
 			(effects
 				(font
@@ -6894,34 +6833,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 230.505 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 230.505 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 230.505 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 230.505 80.01 0)
 			(effects
 				(font
@@ -6997,26 +6909,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C25301"
+		(property "LCSC Part #" "C25301"
 			(at 67.945 62.23 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 67.945 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 67.945 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7282,25 +7176,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 126.365 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 126.365 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C28323"
 			(at 126.365 69.215 0)
 			(effects
 				(font
@@ -7431,16 +7307,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 123.825 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 123.825 83.185 0)
 			(effects
 				(font
@@ -7574,24 +7441,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 148.59 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 148.59 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "1"
 			(uuid "cc4a8e81-3d80-4d7b-8601-f1ec05330b7f")
 		)
@@ -7658,25 +7507,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 230.505 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 230.505 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 230.505 94.615 0)
 			(effects
 				(font
@@ -7708,7 +7539,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "5a488064-a071-4f06-ac0d-96513e9ea7a5")
 		(property "Reference" "Q4"
 			(at 167.64 111.7601 0)
@@ -7807,16 +7638,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 179.07 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 179.07 113.03 0)
 			(effects
 				(font
@@ -7896,26 +7718,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 200.66 118.11 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 200.66 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 200.66 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8129,34 +7933,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 84.455 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 84.455 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 84.455 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 84.455 113.03 0)
 			(effects
 				(font
@@ -8285,34 +8062,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 120.015 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 120.015 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 120.015 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 120.015 48.26 0)
 			(effects
 				(font
@@ -8393,25 +8143,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C2181592"
-			(at 238.76 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 238.76 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2181592"
 			(at 238.76 94.615 0)
 			(effects
 				(font
@@ -8430,6 +8162,73 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 234.95 136.525 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6a319aa4-ecfa-466a-90bd-697203239094")
+		(property "Reference" "#PWR054"
+			(at 241.3 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 238.76 136.5249 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 234.95 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 234.95 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 234.95 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "86b5e2a7-360b-4128-9ff1-49e7b8ce4ae6")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "#PWR054")
 					(unit 1)
 				)
 			)
@@ -8553,26 +8352,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 102.87 118.11 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 102.87 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 102.87 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8648,26 +8429,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 211.455 83.185 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 211.455 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 211.455 83.185 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8685,6 +8448,83 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 231.14 136.525 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "76a3f97c-7036-42c0-badb-2f6622a9341f")
+		(property "Reference" "R20"
+			(at 231.14 142.875 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0"
+			(at 231.14 140.335 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 231.14 138.303 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 231.14 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 231.14 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C2074219"
+			(at 231.14 136.525 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ae749272-f858-4ba5-b5f9-9926b4aaa551")
+		)
+		(pin "2"
+			(uuid "4fcee2b9-c4a0-42a6-bd3d-4a38b07f1a51")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -8861,34 +8701,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 168.91 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 168.91 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 168.91 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 168.91 48.26 0)
 			(effects
 				(font
@@ -8923,7 +8736,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "8d23cc19-8da6-4052-b96b-fb65198d4f3a")
 		(property "Reference" "Q3"
 			(at 167.64 81.9151 0)
@@ -9022,16 +8835,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 179.07 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 179.07 83.185 0)
 			(effects
 				(font
@@ -9183,34 +8987,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 219.075 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 219.075 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 219.075 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 219.075 113.03 0)
 			(effects
 				(font
@@ -9287,26 +9064,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 200.66 89.535 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 200.66 89.535 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 200.66 89.535 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9502,16 +9261,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 123.825 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 123.825 113.03 0)
 			(effects
 				(font
@@ -9642,24 +9392,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 191.77 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 191.77 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 				(hide yes)
 			)
 		)
@@ -9805,34 +9537,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 83.82 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 83.82 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 83.82 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 83.82 91.44 0)
 			(effects
 				(font
@@ -9963,24 +9668,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 148.59 150.495 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 148.59 150.495 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "1"
 			(uuid "b5347fe5-80ca-4777-a7cd-b3752e5b6a13")
 		)
@@ -10048,25 +9735,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 133.985 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 133.985 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C49678"
 			(at 133.985 69.215 0)
 			(effects
 				(font
@@ -10145,25 +9814,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 177.8 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 177.8 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C49678"
 			(at 177.8 69.215 0)
 			(effects
 				(font
@@ -10242,25 +9893,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C2181592"
-			(at 81.28 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 81.28 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2181592"
 			(at 81.28 95.25 0)
 			(effects
 				(font
@@ -10406,34 +10039,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 43.18 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C2968 "
-			(at 43.18 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 43.18 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2968 "
 			(at 43.18 96.52 0)
 			(effects
 				(font
@@ -10604,34 +10210,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 119.38 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 119.38 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 119.38 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 119.38 24.13 0)
 			(effects
 				(font
@@ -10765,24 +10344,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 113.03 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 113.03 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "3"
 			(uuid "f56b27e1-8201-44b7-b736-7c2a2de28642")
 		)
@@ -10857,34 +10418,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 256.54 95.885 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C2968 "
-			(at 256.54 95.885 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 256.54 95.885 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2968 "
 			(at 256.54 95.885 0)
 			(effects
 				(font
@@ -11077,34 +10611,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 81.28 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 81.28 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 81.28 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 81.28 81.28 0)
 			(effects
 				(font
@@ -11180,26 +10687,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 91.44 104.14 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 91.44 104.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 91.44 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11710,25 +11199,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 244.475 109.855 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 244.475 109.855 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C513763"
 			(at 244.475 109.855 0)
 			(effects
 				(font
@@ -11807,25 +11278,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 73.025 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 73.025 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 73.025 95.25 0)
 			(effects
 				(font
@@ -12027,25 +11480,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 53.975 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 53.975 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C513763"
 			(at 53.975 110.49 0)
 			(effects
 				(font
@@ -12124,25 +11559,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 170.18 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 170.18 69.215 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C28323"
 			(at 170.18 69.215 0)
 			(effects
 				(font
@@ -12413,34 +11830,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 219.075 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 219.075 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 219.075 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 219.075 93.98 0)
 			(effects
 				(font
@@ -12568,24 +11958,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 188.595 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 188.595 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 				(hide yes)
 			)
 		)

@@ -1,12 +1,14 @@
 (kicad_sch
-	(version 20231120)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "21b27d87-55cd-4308-8865-ff4d013d960b")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Device:C"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0.254)
 			)
@@ -79,7 +81,7 @@
 			(symbol "C_0_1"
 				(polyline
 					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
+						(xy -2.032 0.762) (xy 2.032 0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -91,7 +93,7 @@
 				)
 				(polyline
 					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -140,11 +142,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:C_Polarized_Small_US"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -249,9 +256,9 @@
 					)
 				)
 				(arc
-					(start 1.524 -0.762)
+					(start -1.524 -0.762)
 					(mid 0 -0.3734)
-					(end -1.524 -0.762)
+					(end 1.524 -0.762)
 					(stroke
 						(width 0.3048)
 						(type default)
@@ -299,9 +306,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:R"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0)
 			)
@@ -420,6 +430,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Regulator_Linear:LD1086DT50TR"
 			(exclude_from_sim no)
@@ -498,6 +509,24 @@
 						(type background)
 					)
 				)
+				(pin power_in line
+					(at -10.16 0 0)
+					(length 2.54)
+					(name "IN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 				(pin input line
 					(at 0 -7.62 90)
 					(length 2.54)
@@ -534,25 +563,8 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at -10.16 0 0)
-					(length 2.54)
-					(name "IN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Regulator_Linear:LT1963AxST-3.3"
 			(exclude_from_sim no)
@@ -690,213 +702,7 @@
 					)
 				)
 			)
-		)
-		(symbol "SamacSys_Parts:3544-2"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at 16.51 7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-				)
-			)
-			(property "Value" "3544-2"
-				(at 16.51 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-				)
-			)
-			(property "Footprint" "3544-2"
-				(at 16.51 -94.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "http://www.keyelco.com/product-pdf.cfm?p=1376"
-				(at 16.51 -194.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Description" "KEYSTONE - 3544-2 - FUSE HOLDER, 20A"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Height" ""
-				(at 16.51 -394.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer_Name" "Keystone Electronics"
-				(at 16.51 -494.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer_Part_Number" "3544-2"
-				(at 16.51 -594.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Mouser Part Number" "534-3544-2"
-				(at 16.51 -694.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Keystone-Electronics/3544-2?qs=zfzUrXoPZmgpv1XvMy4yHg%3D%3D"
-				(at 16.51 -794.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Arrow Part Number" "3544-2"
-				(at 16.51 -894.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Arrow Price/Stock" "https://www.arrow.com/en/products/3544-2/keystone-electronics?utm_currency=USD&region=europe"
-				(at 16.51 -994.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(symbol "3544-2_1_1"
-				(rectangle
-					(start 5.08 2.54)
-					(end 15.24 -10.16)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin passive line
-					(at 0 0 0)
-					(length 5.08)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -2.54 0)
-					(length 5.08)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -5.08 0)
-					(length 5.08)
-					(name "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -7.62 0)
-					(length 5.08)
-					(name "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:575-4"
 			(exclude_from_sim no)
@@ -1030,9 +836,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:HPZR-C26X"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1160,18 +969,6 @@
 				)
 				(polyline
 					(pts
-						(xy 10.16 0) (xy 12.7 0)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy 5.08 0) (xy 10.16 2.54) (xy 10.16 -2.54) (xy 5.08 0)
 					)
 					(stroke
@@ -1180,6 +977,18 @@
 					)
 					(fill
 						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 10.16 0) (xy 12.7 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 				(pin passive line
@@ -1219,6 +1028,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:L7812ABD2T-TR"
 			(exclude_from_sim no)
@@ -1354,16 +1164,16 @@
 					)
 				)
 				(pin passive line
-					(at 35.56 0 180)
+					(at 0 0 0)
 					(length 5.08)
-					(name "OUTPUT"
+					(name "INPUT"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1390,16 +1200,16 @@
 					)
 				)
 				(pin passive line
-					(at 0 0 0)
+					(at 35.56 0 180)
 					(length 5.08)
-					(name "INPUT"
+					(name "OUTPUT"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1408,9 +1218,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:TLMG1100-GS15"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1538,42 +1351,6 @@
 				)
 				(polyline
 					(pts
-						(xy 6.35 2.54) (xy 3.81 5.08)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 8.89 2.54) (xy 6.35 5.08)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 10.16 0) (xy 12.7 0)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy 5.08 0) (xy 10.16 2.54) (xy 10.16 -2.54) (xy 5.08 0)
 					)
 					(stroke
@@ -1598,6 +1375,18 @@
 				)
 				(polyline
 					(pts
+						(xy 6.35 2.54) (xy 3.81 5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
 						(xy 7.874 4.318) (xy 7.112 3.556) (xy 6.35 5.08) (xy 7.874 4.318)
 					)
 					(stroke
@@ -1606,6 +1395,30 @@
 					)
 					(fill
 						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 8.89 2.54) (xy 6.35 5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 10.16 0) (xy 12.7 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 				(pin passive line
@@ -1645,6 +1458,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:TSW-102-15-T-S"
 			(exclude_from_sim no)
@@ -1796,12 +1610,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+12V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1873,7 +1692,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -1885,7 +1704,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -1916,12 +1735,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+24V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1993,7 +1817,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2005,7 +1829,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2036,12 +1860,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+3.3V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2113,7 +1942,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2125,7 +1954,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2156,12 +1985,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+5V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2233,7 +2067,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2245,7 +2079,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2276,12 +2110,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:GND"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2372,6 +2211,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 	)
 	(junction
@@ -2379,18 +2219,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1eb3c4bc-f9fa-4412-bae0-cfae2b85111d")
-	)
-	(junction
-		(at 222.25 67.31)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "275395ac-20d5-4e2c-8bf4-bb1e3e46a3fb")
-	)
-	(junction
-		(at 222.25 74.93)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "361e2cd7-e25f-43bc-ae75-8c5b5a912175")
 	)
 	(junction
 		(at 216.535 50.8)
@@ -2492,7 +2320,7 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 58.42) (xy 222.25 67.31)
+			(xy 222.25 58.42) (xy 222.25 89.535)
 		)
 		(stroke
 			(width 0)
@@ -2722,16 +2550,6 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 72.39) (xy 222.25 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7bc9af9d-d868-48be-81a1-35406336418b")
-	)
-	(wire
-		(pts
 			(xy 113.665 97.79) (xy 121.285 97.79)
 		)
 		(stroke
@@ -2852,16 +2670,6 @@
 	)
 	(wire
 		(pts
-			(xy 222.25 67.31) (xy 222.25 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a231d6b1-a7be-499c-9c0f-d3755204aa7b")
-	)
-	(wire
-		(pts
 			(xy 141.605 81.915) (xy 154.94 81.915)
 		)
 		(stroke
@@ -2959,16 +2767,6 @@
 			(type default)
 		)
 		(uuid "d4ef08e4-383e-426a-87a5-8f5fe121e4d3")
-	)
-	(wire
-		(pts
-			(xy 222.25 74.93) (xy 222.25 89.535)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d55bf94c-0609-4f46-994a-63d0c70f6731")
 	)
 	(wire
 		(pts
@@ -3313,25 +3111,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C95781"
-			(at 82.55 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 82.55 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C95781"
 			(at 82.55 163.83 0)
 			(effects
 				(font
@@ -3473,26 +3253,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C28323"
+		(property "LCSC Part #" "C28323"
 			(at 128.27 75.565 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 128.27 75.565 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 128.27 75.565 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3706,34 +3468,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 121.92 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C186698"
-			(at 121.92 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 121.92 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C186698"
 			(at 121.92 97.79 0)
 			(effects
 				(font
@@ -4078,34 +3813,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 141.605 70.485 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C164853"
-			(at 141.605 70.485 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 141.605 70.485 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C164853"
 			(at 141.605 70.485 0)
 			(effects
 				(font
@@ -4187,25 +3895,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C4129769"
-			(at 109.855 164.465 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 109.855 164.465 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C4129769"
 			(at 109.855 164.465 0)
 			(effects
 				(font
@@ -4296,172 +3986,6 @@
 		)
 	)
 	(symbol
-		(lib_id "SamacSys_Parts:3544-2")
-		(at 222.25 67.31 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "46bbf7e7-e320-4954-ac0c-095d6afdb7bb")
-		(property "Reference" "U8"
-			(at 238.76 69.8499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "3544-2"
-			(at 238.76 72.3899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "SamacSys_Parts:3544-2"
-			(at 238.76 162.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.keyelco.com/product-pdf.cfm?p=1376"
-			(at 238.76 262.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "KEYSTONE - 3544-2 - FUSE HOLDER, 20A"
-			(at 222.25 67.31 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Height" ""
-			(at 238.76 462.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "Keystone Electronics"
-			(at 238.76 562.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "3544-2"
-			(at 238.76 662.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "534-3544-2"
-			(at 238.76 762.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Keystone-Electronics/3544-2?qs=zfzUrXoPZmgpv1XvMy4yHg%3D%3D"
-			(at 238.76 862.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Arrow Part Number" "3544-2"
-			(at 238.76 962.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Arrow Price/Stock" "https://www.arrow.com/en/products/3544-2/keystone-electronics?utm_currency=USD&region=europe"
-			(at 238.76 1062.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 222.25 67.31 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 222.25 67.31 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "88d3cbb2-b5a9-48f2-a029-94c439ff751d")
-		)
-		(pin "2"
-			(uuid "6a29a0a2-65c3-458c-8240-8cdcf045eac0")
-		)
-		(pin "4"
-			(uuid "7362dfd2-3eb7-4ed1-9989-caf861fd4855")
-		)
-		(pin "1"
-			(uuid "5872ca0e-2061-4dd3-b123-516883a3e5f0")
-		)
-		(instances
-			(project ""
-				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/5cd83469-f4dc-4d9b-8949-703722184d70"
-					(reference "U8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 43.18 40.64 270)
 		(unit 1)
@@ -4514,26 +4038,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C4129769"
-			(at 43.18 40.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 43.18 40.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 43.18 40.64 0)
+		(property "LCSC Part #" "C4129769"
+			(at 43.18 40.64 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4611,34 +4117,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 208.915 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C128464"
-			(at 208.915 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 208.915 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C128464"
 			(at 208.915 45.72 0)
 			(effects
 				(font
@@ -4783,25 +4262,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C115423"
-			(at 34.925 161.925 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 34.925 161.925 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C115423"
 			(at 34.925 161.925 0)
 			(effects
 				(font
@@ -5068,25 +4529,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C115423"
-			(at 57.785 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 57.785 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C115423"
 			(at 57.785 162.56 0)
 			(effects
 				(font
@@ -5231,34 +4674,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 157.48 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C128464"
-			(at 157.48 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 157.48 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C128464"
 			(at 157.48 105.41 0)
 			(effects
 				(font
@@ -5389,35 +4805,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
+		(property "LCSC Part #" "C434436"
 			(at 109.855 160.655 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C434436"
-			(at 109.855 160.655 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 109.855 160.655 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 109.855 160.655 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5678,26 +5067,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C28323"
+		(property "LCSC Part #" "C28323"
 			(at 220.98 45.085 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 220.98 45.085 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 220.98 45.085 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5893,24 +5264,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 238.76 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 238.76 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "1"
 			(uuid "1681ece2-1207-4cd2-b2ee-083b77838365")
 		)
@@ -6035,6 +5388,15 @@
 			)
 		)
 		(property "Description" "3.3V, 1.5A, Low Noise, Fast Transient Response LDO Regulator, SOT-223"
+			(at 182.88 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C459918"
 			(at 182.88 41.91 0)
 			(effects
 				(font
@@ -6234,35 +5596,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
+		(property "LCSC Part #" "C434436"
 			(at 82.55 160.02 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C434436"
-			(at 82.55 160.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 82.55 160.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 82.55 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6337,26 +5672,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C28323"
+		(property "LCSC Part #" "C28323"
 			(at 201.93 45.72 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 201.93 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 201.93 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6434,34 +5751,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 154.94 75.565 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C128464"
-			(at 154.94 75.565 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 154.94 75.565 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C128464"
 			(at 154.94 75.565 0)
 			(effects
 				(font
@@ -6592,26 +5882,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C434436"
+		(property "LCSC Part #" "C434436"
 			(at 57.785 158.75 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 57.785 158.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 57.785 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6873,26 +6145,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C434436"
+		(property "LCSC Part #" "C434436"
 			(at 34.925 158.115 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 34.925 158.115 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 34.925 158.115 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7019,24 +6273,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 238.76 89.535 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 238.76 89.535 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 				(hide yes)
 			)
 		)
@@ -7170,26 +6406,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C28323"
+		(property "LCSC Part #" "C28323"
 			(at 170.815 104.775 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 170.815 104.775 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 170.815 104.775 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7264,26 +6482,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C28323"
+		(property "LCSC Part #" "C28323"
 			(at 170.18 74.93 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 170.18 74.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 170.18 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7358,26 +6558,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C28323"
+		(property "LCSC Part #" "C28323"
 			(at 121.285 103.505 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 121.285 103.505 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 121.285 103.505 0)
 			(effects
 				(font
 					(size 1.27 1.27)
