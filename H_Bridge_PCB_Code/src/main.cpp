@@ -17,6 +17,7 @@ extern "C" {
 #include "webserver.h"
 #include "spi_sampler.h"
 #include "Tasks.h"
+#include "safety.h"
 
 static const char* TAG = "HB-INV+AMC1306";
 
@@ -28,6 +29,7 @@ TaskHandle_t analyzer1Handle       = NULL;
 TaskHandle_t analyzer2Handle       = NULL;
 TaskHandle_t printerHandle         = NULL;
 TaskHandle_t ControllerTaskHandle  = NULL;
+TaskHandle_t estopTaskHandle       = NULL;
 
 void setup() {
   Serial.begin(115200);
@@ -56,6 +58,18 @@ void setup() {
   spiInitAndStart(&g_sampler1);
   spiInitAndStart(&g_sampler2);
 
+  pinMode(ALERT_PIN, INPUT);  // external 3k3 pull-up present, don't use INPUT_PULLUP
+  attachInterrupt(digitalPinToInterrupt(ALERT_PIN), onAlertISR, RISING);
+  pinMode(ESTOP_OUTPUT_PIN, OUTPUT);
+  digitalWrite(ESTOP_OUTPUT_PIN, HIGH); // active HIGH
+  delay(500);
+  digitalWrite(ESTOP_OUTPUT_PIN, LOW);  // deactivate estop output after delay
+  delay(500);
+  digitalWrite(ESTOP_OUTPUT_PIN, HIGH); // active HIGH
+  delay(500);
+  digitalWrite(ESTOP_OUTPUT_PIN, LOW);  // deactivate estop output after delay
+
+
   Serial.println("Starting tasks...");
 
   // --- Create tasks ---
@@ -82,6 +96,11 @@ void setup() {
 
   xTaskCreatePinnedToCore(ControllerTask, "ControllerTask",
                           4096, NULL, 4, &ControllerTaskHandle, 0);
+
+  xTaskCreatePinnedToCore(EmergencyStopTask, "EmergencyStop",
+                            2048, nullptr, configMAX_PRIORITIES-1,
+                            &estopTaskHandle, 0);
+
   
 Serial.printf("heap free=%u  (8bit=%u  dma=%u  internal=%u)\n",
   esp_get_free_heap_size(),

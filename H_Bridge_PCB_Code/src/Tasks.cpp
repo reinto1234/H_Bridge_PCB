@@ -1,5 +1,6 @@
 #include "Tasks.h"
 
+
 extern "C" {
   #include "freertos/FreeRTOS.h"
   #include "freertos/task.h"
@@ -9,6 +10,7 @@ extern "C" {
 
 #include "Output_meas.h"
 #include "webserver.h"
+#include "safety.h"
 #include "Input_meas.h"
 #include "PWM.h"   // for inverter (declared elsewhere)
 
@@ -157,4 +159,17 @@ void ControllerTask(void* pvParameters) {
     }
     vTaskDelay(pdMS_TO_TICKS(Controller_Timecycle));
   }
+}
+
+void EmergencyStopTask(void*) {
+    for (;;) {
+        if (g_emergency_stop) {
+            g_emergency_stop = false;
+            stopInverter();
+            HBridgeWebServer::broadcastTrip("INA228 Overcurrent detected \n Emergency Stop Activated \n Change Load and click OK to continue");
+            digitalWrite(ESTOP_OUTPUT_PIN, HIGH);
+            Serial.println("Emergency Stop Triggered!");
+        }
+        vTaskDelay(pdMS_TO_TICKS(1));
+    }
 }

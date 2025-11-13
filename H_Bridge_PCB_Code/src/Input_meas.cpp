@@ -9,6 +9,10 @@
 #include "Input_meas.h"
 #include "mutexdefinitions.h"
 #include "I2C.h"
+#include "safety.h"
+
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_I2CRegister.h>
 
 
 Adafruit_INA228 InputMeasurement::ina228;
@@ -16,6 +20,46 @@ Adafruit_INA228 InputMeasurement::ina228;
 #define ShuntResistor 0.015
 
 float InputMeasurement::measurementBufferin[3] = {0.0, 0.0, 0.0}; // [Voltage, Current, Power]
+
+
+
+// Call this once after ina228.begin(...)
+void InputMeasurement::configure_overcurrent_alert_only(float I_limit_A, float R_shunt_ohm) {
+  // 1) Transparent ALERT (deasserts automatically when condition clears)
+  ina228.setAlertLatch(INA228_ALERT_LATCH_ENABLED);
+
+  // 2) Compute raw SOVL threshold from I_limit * R_shunt
+  //    Adafruit readShuntVoltage() does: volts = (raw/16) * scale / 1e6
+  //    => raw = volts * 1e6 / scale * 16
+  float scale_uV = ina228.getADCRange() ? 78.125f : 312.5f; // per Adafruit lib
+  float v_limit_V = I_limit_A * R_shunt_ohm;                 // desired Vshunt
+  long  sovl_raw  = lroundf((v_limit_V * 1e6f / scale_uV) * 16.0f);
+
+  // 3) Write SOVL (shunt over-voltage limit) register
+  Adafruit_I2CDevice diag_dev(0x40, &I2CINA);
+  Adafruit_I2CRegister SOVL(&diag_dev, INA228_REG_SOVL, 2, MSBFIRST);
+  SOVL.write((uint16_t)sovl_raw);  // fits in 16 bits for typical limits
+
+  // 4) Enable ONLY SHNTOL as an alert source, disable others, keep transparent
+  Adafruit_I2CRegister DIAG(&diag_dev, INA228_REG_DIAGALRT, 2, MSBFIRST);
+  uint16_t v = DIAG.read();
+
+  // Clear all alert source enables (bits 0..11) and CNVR (bit 14), keep polarity bit as-is.
+  v &= ~0x4FFFu;
+
+  // Enable SHNTOL (bit 6)
+  v |= (1u << 6);
+
+  // Transparent: ensure latch bit (15) = 0
+  v &= ~(1u << 15);
+
+  DIAG.write(v);
+
+  // 5) Clear any stale flags once
+  (void)ina228.alertFunctionFlags();
+}
+
+
 
 void InputMeasurement::init() {
 
@@ -30,11 +74,35 @@ void InputMeasurement::init() {
     }
     Serial.println("INA228 found!");
 
+    configure_overcurrent_alert_only(I_Shutdown, ShuntResistor); // Configure overcurrent alert at 2A
+
+    
+
     // Set the shunt resistor value
     ina228.setShunt(ShuntResistor,10);
-    ina228.setCurrentConversionTime(INA228_TIME_4120_us);
-    ina228.setVoltageConversionTime(INA228_TIME_4120_us);
+    ina228.setCurrentConversionTime(INA228_TIME_1052_us);
+    ina228.setVoltageConversionTime(INA228_TIME_1052_us);
     ina228.setAveragingCount(INA228_COUNT_64);
+    ina228.setAlertPolarity(INA228_ALERT_POLARITY_INVERTED);
+    
+
+    delay(5);
+    uint16_t flags = ina228.alertFunctionFlags();
+
+    Serial.print("Flags: 0x");
+    Serial.println(flags, HEX);
+
+    if (flags & (1 << 0)) Serial.println("MEMSTAT fault");
+    if (flags & (1 << 1)) Serial.println("Conversion Ready");
+    if (flags & (1 << 2)) Serial.println("Power over-limit");
+    if (flags & (1 << 3)) Serial.println("Bus under-limit");
+    if (flags & (1 << 4)) Serial.println("Bus over-limit");
+    if (flags & (1 << 5)) Serial.println("Shunt under-limit");
+    if (flags & (1 << 6)) Serial.println("Shunt over-limit");
+    if (flags & (1 << 7)) Serial.println("Temp over-limit");
+    if (flags & (1 << 9)) Serial.println("Math overflow");
+    if (flags & (1 << 10)) Serial.println("Charge overflow");
+    if (flags & (1 << 11)) Serial.println("Energy overflow");
 }
 
 void InputMeasurement::init1(){
@@ -62,6 +130,7 @@ float* InputMeasurement::measurementall() {
     float voltage = getVoltage();
     float current = getCurrent();
     float power = getPower();
+    
 
     if (xSemaphoreTake(measurementinMutex, portMAX_DELAY) == pdTRUE) {
         measurementBufferin[0] = voltage;

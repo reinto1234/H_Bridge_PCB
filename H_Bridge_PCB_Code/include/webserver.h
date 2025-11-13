@@ -35,6 +35,8 @@ public:
 
     static void updateMeasurements(float* input, float* output);
 
+    static void broadcastTrip(const char* reason);
+
 private:
     static String processor(const String& var);
     static void onWebSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length);

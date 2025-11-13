@@ -1,12 +1,14 @@
 (kicad_sch
-	(version 20231120)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "a1157398-148a-4131-8453-a302303ef78d")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Device:C"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0.254)
 			)
@@ -79,7 +81,7 @@
 			(symbol "C_0_1"
 				(polyline
 					(pts
-						(xy -2.032 -0.762) (xy 2.032 -0.762)
+						(xy -2.032 0.762) (xy 2.032 0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -91,7 +93,7 @@
 				)
 				(polyline
 					(pts
-						(xy -2.032 0.762) (xy 2.032 0.762)
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
 					)
 					(stroke
 						(width 0.508)
@@ -140,9 +142,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:R"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0)
 			)
@@ -261,6 +266,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Driver_FET:IR2110S"
 			(exclude_from_sim no)
@@ -344,60 +350,6 @@
 				)
 			)
 			(symbol "IR2110S_1_1"
-				(pin output line
-					(at 7.62 -7.62 180)
-					(length 2.54)
-					(name "LO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 5.08 2.54 180)
-					(length 2.54) hide
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 12.7 270)
-					(length 2.54)
-					(name "VDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin input line
 					(at -7.62 0 0)
 					(length 2.54)
@@ -409,24 +361,6 @@
 						)
 					)
 					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -7.62 -5.08 0)
-					(length 2.54)
-					(name "SD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -452,6 +386,81 @@
 						)
 					)
 				)
+				(pin input line
+					(at -7.62 -5.08 0)
+					(length 2.54)
+					(name "SD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 7.62 0)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 5.08 0)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 2.54 0)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 				(pin power_in line
 					(at -2.54 -12.7 90)
 					(length 2.54)
@@ -470,17 +479,17 @@
 						)
 					)
 				)
-				(pin no_connect line
-					(at 5.08 0 180)
-					(length 2.54) hide
-					(name "NC"
+				(pin power_in line
+					(at 0 12.7 270)
+					(length 2.54)
+					(name "VDD"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "16"
+					(number "11"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -506,17 +515,18 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at 7.62 -5.08 180)
+				(pin no_connect line
+					(at 5.08 2.54 180)
 					(length 2.54)
-					(name "VCC"
+					(hide yes)
+					(name "NC"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "3"
+					(number "10"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -525,52 +535,17 @@
 					)
 				)
 				(pin no_connect line
-					(at -5.08 7.62 0)
-					(length 2.54) hide
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at -5.08 5.08 0)
-					(length 2.54) hide
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 7.62 -2.54 180)
+					(at 5.08 0 180)
 					(length 2.54)
-					(name "VS"
+					(hide yes)
+					(name "NC"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "6"
+					(number "16"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -614,17 +589,53 @@
 						)
 					)
 				)
-				(pin no_connect line
-					(at -5.08 2.54 0)
-					(length 2.54) hide
-					(name "NC"
+				(pin passive line
+					(at 7.62 -2.54 180)
+					(length 2.54)
+					(name "VS"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "9"
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 7.62 -5.08 180)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 7.62 -7.62 180)
+					(length 2.54)
+					(name "LO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -633,6 +644,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:575-4"
 			(exclude_from_sim no)
@@ -766,9 +778,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:B32776E4406J000"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -896,7 +911,7 @@
 				)
 				(polyline
 					(pts
-						(xy 7.112 0) (xy 7.62 0)
+						(xy 7.112 2.54) (xy 7.112 -2.54)
 					)
 					(stroke
 						(width 0.254)
@@ -908,7 +923,7 @@
 				)
 				(polyline
 					(pts
-						(xy 7.112 2.54) (xy 7.112 -2.54)
+						(xy 7.112 0) (xy 7.62 0)
 					)
 					(stroke
 						(width 0.254)
@@ -955,6 +970,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:FSV2060L"
 			(exclude_from_sim no)
@@ -1070,6 +1086,24 @@
 					)
 				)
 				(pin passive line
+					(at 0 0 0)
+					(length 5.08)
+					(name "CATHODE"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
 					(at 35.56 0 180)
 					(length 5.08)
 					(name "ANODE_1"
@@ -1105,28 +1139,13 @@
 						)
 					)
 				)
-				(pin passive line
-					(at 0 0 0)
-					(length 5.08)
-					(name "CATHODE"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:IPD90N10S4L06ATMA1"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1254,7 +1273,31 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 -0.508) (xy 5.842 0.508)
+						(xy 5.842 5.588) (xy 5.842 4.572)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.032) (xy 5.842 3.048)
 					)
 					(stroke
 						(width 0.254)
@@ -1278,7 +1321,7 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.032) (xy 5.842 3.048)
+						(xy 5.842 -0.508) (xy 5.842 0.508)
 					)
 					(stroke
 						(width 0.254)
@@ -1288,34 +1331,9 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy 5.842 5.588) (xy 5.842 4.572)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 5.842 2.54)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 7.62 -2.54)
-					)
+				(circle
+					(center 6.35 2.54)
+					(radius 3.81)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1350,19 +1368,20 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+						(xy 7.62 2.54) (xy 5.842 2.54)
 					)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
-				(circle
-					(center 6.35 2.54)
-					(radius 3.81)
+				(polyline
+					(pts
+						(xy 7.62 2.54) (xy 7.62 -2.54)
+					)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1426,9 +1445,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:IRLB4030PBF"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1556,7 +1578,31 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 -0.508) (xy 5.842 0.508)
+						(xy 5.842 5.588) (xy 5.842 4.572)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.842 2.032) (xy 5.842 3.048)
 					)
 					(stroke
 						(width 0.254)
@@ -1580,7 +1626,7 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.032) (xy 5.842 3.048)
+						(xy 5.842 -0.508) (xy 5.842 0.508)
 					)
 					(stroke
 						(width 0.254)
@@ -1590,34 +1636,9 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy 5.842 5.588) (xy 5.842 4.572)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 5.842 2.54)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 2.54) (xy 7.62 -2.54)
-					)
+				(circle
+					(center 6.35 2.54)
+					(radius 3.81)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1652,19 +1673,20 @@
 				)
 				(polyline
 					(pts
-						(xy 5.842 2.54) (xy 6.858 3.048) (xy 6.858 2.032) (xy 5.842 2.54)
+						(xy 7.62 2.54) (xy 5.842 2.54)
 					)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
-						(type outline)
+						(type none)
 					)
 				)
-				(circle
-					(center 6.35 2.54)
-					(radius 3.81)
+				(polyline
+					(pts
+						(xy 7.62 2.54) (xy 7.62 -2.54)
+					)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1728,6 +1750,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:PHBC24N-2R0A0219V"
 			(exclude_from_sim no)
@@ -1879,9 +1902,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:S210"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2029,18 +2055,6 @@
 				)
 				(polyline
 					(pts
-						(xy 10.16 0) (xy 12.7 0)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy 5.08 0) (xy 10.16 2.54) (xy 10.16 -2.54) (xy 5.08 0)
 					)
 					(stroke
@@ -2049,6 +2063,18 @@
 					)
 					(fill
 						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 10.16 0) (xy 12.7 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 				(pin passive line
@@ -2088,6 +2114,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "SamacSys_Parts:TSW-102-15-T-S"
 			(exclude_from_sim no)
@@ -2239,12 +2266,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+12V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2316,7 +2348,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2328,7 +2360,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2359,12 +2391,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+24V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2436,7 +2473,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2448,7 +2485,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2479,12 +2516,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+5V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2556,7 +2598,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2568,7 +2610,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2599,12 +2641,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:GND"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2695,6 +2742,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 	)
 	(junction
@@ -2734,34 +2782,22 @@
 		(uuid "0a792b06-51e4-4ff6-80f9-e7bf9e72fa02")
 	)
 	(junction
-		(at 35.56 114.3)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "12ef1b20-b911-4ba4-a1bb-9d05bbd71784")
-	)
-	(junction
 		(at 238.76 98.425)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "173ae6ab-e8c6-4304-bedd-1cd4e7cbc7a0")
 	)
 	(junction
-		(at 109.855 146.05)
+		(at 177.8 73.025)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "1c5c3a8c-1068-4eab-838a-7a9a10d1b928")
+		(uuid "1ad4a950-2226-4ed8-835e-564d365ca127")
 	)
 	(junction
 		(at 73.025 88.9)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "209aa418-bf36-4c93-9400-ca7fc3207bad")
-	)
-	(junction
-		(at 97.155 150.495)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "25a6553a-cfc6-4f29-a273-5f18f03365c0")
 	)
 	(junction
 		(at 83.82 83.185)
@@ -2782,10 +2818,10 @@
 		(uuid "2fba2813-1590-460d-b9f1-bbec0f34c5d6")
 	)
 	(junction
-		(at 264.16 113.03)
+		(at 173.99 65.405)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "339c573f-2fbb-4fe7-8158-f7839f96177b")
+		(uuid "330ccad6-93ca-4723-bec8-5e403056ef62")
 	)
 	(junction
 		(at 73.025 99.06)
@@ -2804,6 +2840,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4190d706-2aca-4af6-ae89-2e04ad26e06a")
+	)
+	(junction
+		(at 170.18 73.025)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "43c41cce-4b8f-48a7-a2e5-f971a79895d3")
 	)
 	(junction
 		(at 200.66 83.185)
@@ -2830,12 +2872,6 @@
 		(uuid "4a51a7b0-0dbe-4216-8349-db2cd1514ed4")
 	)
 	(junction
-		(at 107.315 146.05)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4e41518f-4ad6-44aa-b997-c02e520b08bb")
-	)
-	(junction
 		(at 171.45 93.345)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2858,12 +2894,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5971a9b4-cbda-44af-a971-92490eadd955")
-	)
-	(junction
-		(at 117.475 172.72)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5b92bba3-828c-47c9-96e4-24d1d99d8683")
 	)
 	(junction
 		(at 81.28 88.9)
@@ -2968,6 +2998,12 @@
 		(uuid "98648e64-5986-4b96-b4ec-e07941033fcd")
 	)
 	(junction
+		(at 126.365 73.025)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9d204591-640a-4596-87e8-f0110cf8ce86")
+	)
+	(junction
 		(at 29.21 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3034,6 +3070,12 @@
 		(uuid "ca4023f0-2c31-4133-aa8d-e8d67baf28c3")
 	)
 	(junction
+		(at 130.175 65.405)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cadef415-9f87-49bf-a06e-23c240d64ccd")
+	)
+	(junction
 		(at 171.45 73.025)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3068,6 +3110,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f2f20d77-3ba3-412d-be12-da6c59fa7709")
+	)
+	(junction
+		(at 133.985 73.025)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f8ef4c35-4173-438c-bacc-4a2523f6e8b9")
 	)
 	(junction
 		(at 29.21 73.66)
@@ -3153,6 +3201,16 @@
 	)
 	(wire
 		(pts
+			(xy 130.175 65.405) (xy 133.985 65.405)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b4c5dc9-e502-40d9-a297-b4440e7ab80b")
+	)
+	(wire
+		(pts
 			(xy 120.65 102.87) (xy 131.445 102.87)
 		)
 		(stroke
@@ -3193,17 +3251,7 @@
 	)
 	(wire
 		(pts
-			(xy 97.155 172.72) (xy 98.425 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "165bf5e4-a25e-477f-8d51-8c4f3bfde092")
-	)
-	(wire
-		(pts
-			(xy 120.015 73.025) (xy 131.445 73.025)
+			(xy 120.015 73.025) (xy 126.365 73.025)
 		)
 		(stroke
 			(width 0)
@@ -3240,16 +3288,6 @@
 			(type default)
 		)
 		(uuid "1a440112-9072-4028-b7d3-3836ec1ffb07")
-	)
-	(wire
-		(pts
-			(xy 117.475 150.495) (xy 117.475 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1a8336d2-c601-4cbf-95aa-921cbb0c11b6")
 	)
 	(wire
 		(pts
@@ -3323,16 +3361,6 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 172.72) (xy 117.475 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "22da827b-e85e-4d14-987d-218157c66016")
-	)
-	(wire
-		(pts
 			(xy 81.28 62.23) (xy 81.28 66.04)
 		)
 		(stroke
@@ -3383,7 +3411,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 73.025) (xy 180.975 73.025)
+			(xy 171.45 73.025) (xy 177.8 73.025)
 		)
 		(stroke
 			(width 0)
@@ -3643,7 +3671,7 @@
 	)
 	(wire
 		(pts
-			(xy 117.475 172.72) (xy 117.475 182.88)
+			(xy 117.475 150.495) (xy 117.475 182.88)
 		)
 		(stroke
 			(width 0)
@@ -3733,16 +3761,6 @@
 	)
 	(wire
 		(pts
-			(xy 97.155 150.495) (xy 97.155 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5d2c336f-2ce1-45c8-825b-d35af3b3073f")
-	)
-	(wire
-		(pts
 			(xy 265.43 85.725) (xy 265.43 113.03)
 		)
 		(stroke
@@ -3790,16 +3808,6 @@
 			(type default)
 		)
 		(uuid "61dffece-d5a5-4f2a-a0ae-4f92428c5e5e")
-	)
-	(wire
-		(pts
-			(xy 35.56 114.3) (xy 40.64 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6272008d-46e0-4d96-9523-03aac5d81f1e")
 	)
 	(wire
 		(pts
@@ -3873,6 +3881,16 @@
 	)
 	(wire
 		(pts
+			(xy 24.13 101.6) (xy 35.56 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6a87b37d-33da-48ef-bea9-72e595939ecc")
+	)
+	(wire
+		(pts
 			(xy 200.66 103.505) (xy 200.66 113.03)
 		)
 		(stroke
@@ -3933,7 +3951,17 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 114.3) (xy 35.56 114.3)
+			(xy 170.18 73.025) (xy 171.45 73.025)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7855ce3d-0a0a-4fd5-ae99-1dfe7cbca8b7")
+	)
+	(wire
+		(pts
+			(xy 29.21 114.3) (xy 40.64 114.3)
 		)
 		(stroke
 			(width 0)
@@ -4123,16 +4151,6 @@
 	)
 	(wire
 		(pts
-			(xy 106.045 172.72) (xy 106.68 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "98405565-e8eb-40e6-b459-1ed36e2393ce")
-	)
-	(wire
-		(pts
 			(xy 21.59 96.52) (xy 35.56 96.52)
 		)
 		(stroke
@@ -4143,6 +4161,16 @@
 	)
 	(wire
 		(pts
+			(xy 264.16 100.965) (xy 269.875 100.965)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "99cbe9c9-c5de-4b0f-8e0d-16eed2acdddf")
+	)
+	(wire
+		(pts
 			(xy 215.265 103.505) (xy 222.885 103.505)
 		)
 		(stroke
@@ -4150,16 +4178,6 @@
 			(type default)
 		)
 		(uuid "99f16ee0-5640-437b-86b4-d60b4a605044")
-	)
-	(wire
-		(pts
-			(xy 264.16 100.965) (xy 264.16 113.03)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9a3f8802-1686-4cce-bc66-205e060700e7")
 	)
 	(wire
 		(pts
@@ -4213,6 +4231,16 @@
 	)
 	(wire
 		(pts
+			(xy 133.985 73.025) (xy 151.13 73.025)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9ee56bcd-7b7d-4bcb-af44-d4ee81b979d5")
+	)
+	(wire
+		(pts
 			(xy 200.66 83.185) (xy 200.66 85.725)
 		)
 		(stroke
@@ -4243,7 +4271,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 73.025) (xy 171.45 73.025)
+			(xy 151.13 73.025) (xy 170.18 73.025)
 		)
 		(stroke
 			(width 0)
@@ -4503,7 +4531,7 @@
 	)
 	(wire
 		(pts
-			(xy 131.445 73.025) (xy 151.13 73.025)
+			(xy 131.445 73.025) (xy 133.985 73.025)
 		)
 		(stroke
 			(width 0)
@@ -4603,6 +4631,16 @@
 	)
 	(wire
 		(pts
+			(xy 126.365 65.405) (xy 130.175 65.405)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d3ed5352-96c3-436b-8a7c-5b3bf6948dca")
+	)
+	(wire
+		(pts
 			(xy 68.834 91.44) (xy 68.834 83.185)
 		)
 		(stroke
@@ -4663,6 +4701,16 @@
 	)
 	(wire
 		(pts
+			(xy 170.18 65.405) (xy 173.99 65.405)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc1905dd-6bb1-45bb-983c-0c8d4410bf7d")
+	)
+	(wire
+		(pts
 			(xy 99.06 83.185) (xy 99.06 91.44)
 		)
 		(stroke
@@ -4710,6 +4758,16 @@
 			(type default)
 		)
 		(uuid "e3404469-8356-460b-83e3-2c78c8658e6a")
+	)
+	(wire
+		(pts
+			(xy 177.8 73.025) (xy 180.975 73.025)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e34c3c33-ed2d-45ef-bb5e-e76369730bf3")
 	)
 	(wire
 		(pts
@@ -4793,6 +4851,16 @@
 	)
 	(wire
 		(pts
+			(xy 173.99 65.405) (xy 177.8 65.405)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ec1a51e8-3004-4556-b983-d80fcc8e6d8e")
+	)
+	(wire
+		(pts
 			(xy 115.57 182.88) (xy 117.475 182.88)
 		)
 		(stroke
@@ -4860,6 +4928,16 @@
 			(type default)
 		)
 		(uuid "f2b3c03f-48f5-4884-8547-baacc152e0db")
+	)
+	(wire
+		(pts
+			(xy 126.365 73.025) (xy 131.445 73.025)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f3ec6a20-e62f-4b88-ab89-1188b0de9707")
 	)
 	(wire
 		(pts
@@ -4961,16 +5039,6 @@
 		)
 		(uuid "fdbe5e2d-abd6-4432-8024-41056d52a7ca")
 	)
-	(wire
-		(pts
-			(xy 35.56 101.6) (xy 35.56 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "febc474c-7aa7-46f4-ad83-bad02a8a4850")
-	)
 	(global_label "Out-"
 		(shape input)
 		(at 92.075 189.865 180)
@@ -5028,6 +5096,28 @@
 		(uuid "2c15048a-d513-423f-a4ea-013a5ba00955")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 14.1295 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "Shutoff"
+		(shape input)
+		(at 24.13 101.6 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2f0493f0-b53b-4754-a825-751b0d2176ab")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 14.3112 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5323,6 +5413,28 @@
 			)
 		)
 	)
+	(global_label "Shutoff"
+		(shape input)
+		(at 227.33 136.525 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "af478c09-c328-4908-a6e3-f0343b6d0533")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 217.5112 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SI1"
 		(shape output)
 		(at 159.385 67.31 0)
@@ -5363,6 +5475,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "Shutoff"
+		(shape input)
+		(at 269.875 100.965 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "bdcf122c-82b6-4024-9378-639c6552b0fa")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 279.6938 100.965 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -5522,129 +5656,6 @@
 		)
 	)
 	(symbol
-		(lib_id "SamacSys_Parts:TSW-102-15-T-S")
-		(at 107.315 146.05 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "003c4b84-4114-431e-9175-65480c469307")
-		(property "Reference" "J6"
-			(at 113.665 134.6199 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "TSW-102-15-T-S"
-			(at 113.665 137.1599 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "SamacSys_Parts:TSW-102-XX-YY-S"
-			(at 202.235 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://suddendocs.samtec.com/prints/tsw-xxx-xx-xxx-x-xx-xxx-mkt.pdf"
-			(at 302.235 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "2 Position, Single Row, Classic PCB Header Strips, 0.100&quot; pitch"
-			(at 107.315 146.05 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Height" ""
-			(at 502.235 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "200-TSW10215TS"
-			(at 602.235 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Samtec/TSW-102-15-T-S?qs=rU5fayqh%252BE17aFMwqvHWLA%3D%3D"
-			(at 702.235 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "SAMTEC"
-			(at 802.235 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "TSW-102-15-T-S"
-			(at 902.235 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4ff15fe5-989e-4c7e-a1de-bda39798a3a5")
-		)
-		(pin "2"
-			(uuid "e7a43a84-4d34-4e10-ba38-aca05799ad70")
-		)
-		(instances
-			(project "H_bridge_PCB"
-				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
-					(reference "J6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 211.455 103.505 90)
 		(mirror x)
@@ -5697,26 +5708,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 211.455 103.505 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 211.455 103.505 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 211.455 103.505 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5794,25 +5787,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 265.43 81.915 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 265.43 81.915 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 265.43 81.915 0)
 			(effects
 				(font
@@ -5897,6 +5872,72 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 130.175 65.405 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "11d905ad-5eb5-4c68-99b6-f402a3a22738")
+		(property "Reference" "#PWR021"
+			(at 130.175 59.055 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 130.175 60.325 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 130.175 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 130.175 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 130.175 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c9785d9e-c1dd-41c4-be53-80b599d5a7ec")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "#PWR021")
 					(unit 1)
 				)
 			)
@@ -6087,26 +6128,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C25301"
+		(property "LCSC Part #" "C25301"
 			(at 238.125 62.23 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 238.125 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 238.125 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6181,26 +6204,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 104.775 88.9 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 104.775 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 104.775 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6330,24 +6335,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 112.395 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 112.395 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "3"
 			(uuid "9b4bc401-2ff9-45c6-8bca-a0ecb7a96d7e")
 		)
@@ -6418,26 +6405,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 90.805 83.185 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 90.805 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 90.805 83.185 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6565,34 +6534,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 168.275 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 168.275 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 168.275 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 168.275 24.13 0)
 			(effects
 				(font
@@ -6614,6 +6556,72 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 173.99 65.405 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2002df42-1a49-42c0-a787-31ede749f219")
+		(property "Reference" "#PWR022"
+			(at 173.99 59.055 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 173.99 60.325 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 173.99 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 173.99 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 173.99 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "850040d9-877a-4f56-a588-140bfb3ff570")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -6674,25 +6682,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 29.21 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 29.21 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 29.21 87.63 0)
 			(effects
 				(font
@@ -6843,34 +6833,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 230.505 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 230.505 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 230.505 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 230.505 80.01 0)
 			(effects
 				(font
@@ -6946,26 +6909,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C25301"
+		(property "LCSC Part #" "C25301"
 			(at 67.945 62.23 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 67.945 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 67.945 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7177,6 +7122,85 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C")
+		(at 126.365 69.215 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4768ab33-4e90-4d64-bf7e-ba7f027a38be")
+		(property "Reference" "C28"
+			(at 129.54 67.9449 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "1 uF"
+			(at 129.54 70.4849 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 125.3998 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 126.365 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 126.365 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C28323"
+			(at 126.365 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ce85bdea-ce9a-48b8-86a1-0fec6eeeefa6")
+		)
+		(pin "1"
+			(uuid "55e909bf-b0f3-403e-bb0d-c296b666f4e0")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "C28")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "SamacSys_Parts:IRLB4030PBF")
 		(at 123.825 83.185 0)
 		(unit 1)
@@ -7283,16 +7307,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 123.825 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 123.825 83.185 0)
 			(effects
 				(font
@@ -7426,24 +7441,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 148.59 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 148.59 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "1"
 			(uuid "cc4a8e81-3d80-4d7b-8601-f1ec05330b7f")
 		)
@@ -7510,25 +7507,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 230.505 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 230.505 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 230.505 94.615 0)
 			(effects
 				(font
@@ -7560,7 +7539,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "5a488064-a071-4f06-ac0d-96513e9ea7a5")
 		(property "Reference" "Q4"
 			(at 167.64 111.7601 0)
@@ -7659,16 +7638,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 179.07 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 179.07 113.03 0)
 			(effects
 				(font
@@ -7748,26 +7718,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 200.66 118.11 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 200.66 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 200.66 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7981,34 +7933,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 84.455 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 84.455 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 84.455 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 84.455 113.03 0)
 			(effects
 				(font
@@ -8137,34 +8062,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 120.015 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 120.015 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 120.015 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 120.015 48.26 0)
 			(effects
 				(font
@@ -8245,25 +8143,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C2181592"
-			(at 238.76 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 238.76 94.615 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2181592"
 			(at 238.76 94.615 0)
 			(effects
 				(font
@@ -8282,6 +8162,73 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 234.95 136.525 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6a319aa4-ecfa-466a-90bd-697203239094")
+		(property "Reference" "#PWR054"
+			(at 241.3 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 238.76 136.5249 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 234.95 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 234.95 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 234.95 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "86b5e2a7-360b-4128-9ff1-49e7b8ce4ae6")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "#PWR054")
 					(unit 1)
 				)
 			)
@@ -8405,26 +8352,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 102.87 118.11 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 102.87 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 102.87 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8500,26 +8429,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 211.455 83.185 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 211.455 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 211.455 83.185 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8537,6 +8448,83 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 231.14 136.525 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "76a3f97c-7036-42c0-badb-2f6622a9341f")
+		(property "Reference" "R20"
+			(at 231.14 142.875 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0"
+			(at 231.14 140.335 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 231.14 138.303 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 231.14 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 231.14 136.525 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C2074219"
+			(at 231.14 136.525 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ae749272-f858-4ba5-b5f9-9926b4aaa551")
+		)
+		(pin "2"
+			(uuid "4fcee2b9-c4a0-42a6-bd3d-4a38b07f1a51")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -8713,34 +8701,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 168.91 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 168.91 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 168.91 48.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 168.91 48.26 0)
 			(effects
 				(font
@@ -8775,7 +8736,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(uuid "8d23cc19-8da6-4052-b96b-fb65198d4f3a")
 		(property "Reference" "Q3"
 			(at 167.64 81.9151 0)
@@ -8874,16 +8835,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 179.07 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 179.07 83.185 0)
 			(effects
 				(font
@@ -9035,34 +8987,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 219.075 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 219.075 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 219.075 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 219.075 113.03 0)
 			(effects
 				(font
@@ -9139,26 +9064,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C84376"
+		(property "LCSC Part #" "C84376"
 			(at 200.66 89.535 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 200.66 89.535 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 200.66 89.535 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9354,16 +9261,7 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 123.825 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2663"
 			(at 123.825 113.03 0)
 			(effects
 				(font
@@ -9494,24 +9392,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 191.77 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 191.77 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 				(hide yes)
 			)
 		)
@@ -9657,34 +9537,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 83.82 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 83.82 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 83.82 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 83.82 91.44 0)
 			(effects
 				(font
@@ -9815,24 +9668,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 148.59 150.495 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 148.59 150.495 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "1"
 			(uuid "b5347fe5-80ca-4777-a7cd-b3752e5b6a13")
 		)
@@ -9840,6 +9675,164 @@
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
 					(reference "TP3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 133.985 69.215 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b1eef1e7-5750-48bd-ac78-ea2e6495ae25")
+		(property "Reference" "C13"
+			(at 137.16 67.9449 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "100 nF"
+			(at 137.16 70.4849 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 133.0198 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 133.985 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 133.985 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C49678"
+			(at 133.985 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "12b30e37-9c48-4e9c-ad92-164d9816a253")
+		)
+		(pin "1"
+			(uuid "dc897f61-90e6-442e-b4c9-4e43b4f55541")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "C13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 177.8 69.215 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "bced9a56-1267-4ef1-a1f7-d5d202b6f064")
+		(property "Reference" "C30"
+			(at 180.975 67.9449 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "100 nF"
+			(at 180.975 70.4849 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 176.8348 65.405 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 177.8 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 177.8 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C49678"
+			(at 177.8 69.215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "23d241b5-32e2-4284-ad5d-d1092a1cf75e")
+		)
+		(pin "1"
+			(uuid "39efd4c7-d570-44be-92c2-4258479514e7")
+		)
+		(instances
+			(project "H_bridge_PCB"
+				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
+					(reference "C30")
 					(unit 1)
 				)
 			)
@@ -9900,25 +9893,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C2181592"
-			(at 81.28 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 81.28 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2181592"
 			(at 81.28 95.25 0)
 			(effects
 				(font
@@ -10064,34 +10039,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 43.18 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C2968 "
-			(at 43.18 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 43.18 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2968 "
 			(at 43.18 96.52 0)
 			(effects
 				(font
@@ -10262,34 +10210,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 119.38 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C110669"
-			(at 119.38 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 119.38 24.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C110669"
 			(at 119.38 24.13 0)
 			(effects
 				(font
@@ -10423,24 +10344,6 @@
 				(hide yes)
 			)
 		)
-		(property "LSCS Part#" ""
-			(at 113.03 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 113.03 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(pin "3"
 			(uuid "f56b27e1-8201-44b7-b736-7c2a2de28642")
 		)
@@ -10515,34 +10418,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 256.54 95.885 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C2968 "
-			(at 256.54 95.885 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 256.54 95.885 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C2968 "
 			(at 256.54 95.885 0)
 			(effects
 				(font
@@ -10735,34 +10611,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 81.28 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 81.28 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 81.28 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 81.28 81.28 0)
 			(effects
 				(font
@@ -10838,26 +10687,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C3016584"
+		(property "LCSC Part #" "C3016584"
 			(at 91.44 104.14 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 91.44 104.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 91.44 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11368,25 +11199,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 244.475 109.855 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 244.475 109.855 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C513763"
 			(at 244.475 109.855 0)
 			(effects
 				(font
@@ -11465,25 +11278,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 73.025 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 73.025 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C354366"
 			(at 73.025 95.25 0)
 			(effects
 				(font
@@ -11631,101 +11426,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 110.49 172.72 90)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "e75ca6a7-0303-4a20-af53-cc771f6393e3")
-		(property "Reference" "R11"
-			(at 110.49 174.879 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10"
-			(at 110.49 172.593 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 110.49 170.942 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 110.49 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 110.49 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C84376"
-			(at 110.49 172.72 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 110.49 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 110.49 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4d64f0eb-7ed2-422a-ae88-c158688eac22")
-		)
-		(pin "2"
-			(uuid "801e641e-28f3-40b9-ba60-993d67dff8f9")
-		)
-		(instances
-			(project "H_bridge_PCB"
-				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
-					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 53.975 110.49 0)
 		(unit 1)
@@ -11780,25 +11480,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C513763"
-			(at 53.975 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 53.975 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C513763"
 			(at 53.975 110.49 0)
 			(effects
 				(font
@@ -11824,31 +11506,34 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 102.235 172.72 270)
+		(at 170.18 69.215 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "f2edfd77-add7-4bbb-b60c-f200da30bc13")
-		(property "Reference" "C13"
-			(at 101.981 169.545 90)
+		(fields_autoplaced yes)
+		(uuid "e9c19a36-413c-4c5c-9565-938928a124c7")
+		(property "Reference" "C29"
+			(at 173.355 67.9449 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
-		(property "Value" "100 nF"
-			(at 101.981 175.895 90)
+		(property "Value" "1 uF"
+			(at 173.355 70.4849 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 98.425 173.6852 0)
+			(at 169.2148 65.405 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11857,7 +11542,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 102.235 172.72 0)
+			(at 170.18 69.215 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11866,7 +11551,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 102.235 172.72 0)
+			(at 170.18 69.215 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11874,26 +11559,8 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part#" "C354366"
-			(at 102.235 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 102.235 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 102.235 172.72 0)
+		(property "LCSC Part #" "C28323"
+			(at 170.18 69.215 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11902,15 +11569,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "ed8905dc-7824-47a1-a2ef-d2bb39f8dde8")
+			(uuid "8f3f5aa1-b3a1-4978-93af-7c5de7d75af3")
 		)
 		(pin "1"
-			(uuid "8649cb18-b29c-496d-84a9-252241897194")
+			(uuid "5f0ed443-8188-4723-bfd2-d611b201460e")
 		)
 		(instances
 			(project "H_bridge_PCB"
 				(path "/39329e70-3d95-44e7-ab4e-2263b2a8fd19/a916a9ed-7768-408c-ba88-52c066f87a23"
-					(reference "C13")
+					(reference "C29")
 					(unit 1)
 				)
 			)
@@ -12163,34 +11830,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" ""
-			(at 219.075 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part#" "C184977"
-			(at 219.075 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 219.075 93.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
+		(property "LCSC Part #" "C184977"
 			(at 219.075 93.98 0)
 			(effects
 				(font
@@ -12318,24 +11958,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "LSCS Part#" ""
-			(at 188.595 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Lcsc Part#" ""
-			(at 188.595 83.185 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 				(hide yes)
 			)
 		)

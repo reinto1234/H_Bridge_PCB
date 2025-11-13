@@ -16,8 +16,7 @@
  ************************************************************************/
 #define SDA_PIN 32
 #define SCL_PIN 33
-#define I2CSpeed 1000000
-#define ACaddress 0x66 //ACS37800 I2C address 0x66 Board, 0x62 Testbuild
+#define I2CSpeed 200000
 
 extern TwoWire I2CINA;
 

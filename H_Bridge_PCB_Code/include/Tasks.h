@@ -10,4 +10,5 @@ void analyzerTask(void* arg);     // arg = &g_ch1_om or &g_ch2_om
 void printerTask(void* arg);      // optional diagnostics; arg ignored
 void webSocketTask(void* arg);    // arg ignored
 void webSocketUpdate(void* arg);  // arg ignored
+void EmergencyStopTask(void* arg);
 void ControllerTask(void* pvParameters);

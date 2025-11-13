@@ -22,6 +22,10 @@ public:
     static void init();
     static float* measurementall();
     static void init1();
+    static void clearflags(){
+        ina228.setAlertLatch(INA228_ALERT_LATCH_TRANSPARENT);
+        ina228.alertFunctionFlags();
+    }
 
 
 private:
@@ -32,6 +36,8 @@ private:
     static float getVoltage();
 
     static void scanI2C();
+
+    static void configure_overcurrent_alert_only(float I_limit_A, float R_shunt_ohm);
 
     /* Get current measurement */
     static float getCurrent();

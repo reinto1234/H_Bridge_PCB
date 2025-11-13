@@ -1,27 +1,22 @@
-/************************************************************************
- * @file webserver.cpp
- * @brief Web server and WebSocket implementation (BIPOLAR only)
- ************************************************************************/
 #include "webserver.h"
 #include "PWM.h"
 #include "LittleFS.h"
 #include "mutexdefinitions.h"
+#include "safety.h"
+#include "Input_meas.h"   // for INA228 clear
 
-// Define static variables
-float HBridgeWebServer::_VRMS = 14.0f; // Default RMS voltage
+float HBridgeWebServer::_VRMS = 14.0f;
 bool  HBridgeWebServer::_isRunning = false;
 AsyncWebServer   HBridgeWebServer::server(80);
 WebSocketsServer HBridgeWebServer::webSocket(81);
 
-// Broadcasts the inverter's running status to all connected clients
 void HBridgeWebServer::broadcastStatus() {
-    StaticJsonDocument<128> statusDoc;
-    statusDoc["type"] = "status";
-    statusDoc["isRunning"] = _isRunning;
-
-    char buffer[128];
-    serializeJson(statusDoc, buffer);
-    webSocket.broadcastTXT(buffer);
+    StaticJsonDocument<128> doc;
+    doc["type"] = "status";
+    doc["isRunning"] = _isRunning;
+    char buf[128];
+    serializeJson(doc, buf);
+    webSocket.broadcastTXT(buf);
 }
 
 void HBridgeWebServer::resetDefaults() {
@@ -38,111 +33,113 @@ void HBridgeWebServer::initWiFi() {
     Serial.println(IP);
 }
 
-// Initializes Web Server and WebSocket event handlers
 void HBridgeWebServer::initServer() {
     if (!LittleFS.begin(true)) {
         Serial.println("LittleFS Mount Failed!");
         return;
     }
 
-    // Handle favicon.ico requests to prevent 500 errors
-    server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(204);
+    server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *req) {
+        req->send(204);
+    });
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *req) {
+        req->send(LittleFS, "/index.html", "text/html");
+    });
+    server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *req) {
+        req->send(LittleFS, "/style.css", "text/css");
+    });
+    server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *req) {
+        req->send(LittleFS, "/script.js", "application/javascript");
     });
 
-    // Serve static files
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(LittleFS, "/index.html", "text/html");
-    });
-    server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(LittleFS, "/style.css", "text/css");
-    });
-    server.on("/script.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-        request->send(LittleFS, "/script.js", "application/javascript");
-    });
-
-    // Start the inverter 
-    server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request) {
+    // Start
+    server.on("/start", HTTP_GET, [](AsyncWebServerRequest *req) {
         if (_isRunning) {
-            request->send(400, "text/plain", "Already running");
+            req->send(400, "text/plain", "Already running");
             return;
         }
-
-        // Read VRMS parameter if provided
-        if (request->hasParam("vrms")) {
-            _VRMS = request->getParam("vrms")->value().toFloat();
-        }
-
-        // start inverter
+        if (req->hasParam("vrms"))
+            _VRMS = req->getParam("vrms")->value().toFloat();
         startInverter(_VRMS);
         _isRunning = true;
-
-        broadcastStatus(); // Notify clients of the new state
-        request->send(200, "text/plain", "Inverter Started (Bipolar)");
+        broadcastStatus();
+        req->send(200, "text/plain", "Inverter Started");
     });
 
-    // Stop the inverter
-    server.on("/stop", HTTP_GET, [](AsyncWebServerRequest *request) {
+    // Stop
+    server.on("/stop", HTTP_GET, [](AsyncWebServerRequest *req) {
         if (!_isRunning) {
-            request->send(400, "text/plain", "Already stopped");
+            req->send(400, "text/plain", "Already stopped");
             return;
         }
         stopInverter();
         _isRunning = false;
-        broadcastStatus(); // Notify clients of the new state
-        request->send(200, "text/plain", "Inverter Stopped");
+        broadcastStatus();
+        req->send(200, "text/plain", "Inverter Stopped");
+    });
+
+    // Acknowledge Trip
+    server.on("/ack-trip", HTTP_POST, [](AsyncWebServerRequest *req) {
+        pinMode(ESTOP_OUTPUT_PIN, OUTPUT);
+        digitalWrite(ESTOP_OUTPUT_PIN, LOW);  // LED off
+        g_emergency_stop = false;
+
+        InputMeasurement::clearflags();
+
+        req->send(200, "text/plain", "Trip acknowledged");
     });
 
     server.begin();
-    Serial.println("HTTP Server Started");
     webSocket.onEvent(onWebSocketEvent);
     webSocket.begin();
-    Serial.println("WebSocket Server Started");
-
-    webSocket.enableHeartbeat(15000, 3000, 2);   // ping every 15s, timeout 3s, 2 fails -> drop
+    webSocket.enableHeartbeat(15000, 3000, 2);
+    Serial.println("HTTP & WebSocket Server Started");
 }
 
-// Updates measurements and broadcasts via WebSocket
-void HBridgeWebServer::updateMeasurements(float* input, float* output) {
-    StaticJsonDocument<512> jsonDoc;
-
-    jsonDoc["voltage"]       = input[0];
-    jsonDoc["current"]       = input[1];
-    jsonDoc["power"]         = input[2];
-    jsonDoc["voltage_out"]   = output[0];
-    jsonDoc["current_out"]   = output[1];
-    jsonDoc["power_out"]     = output[2];
-    jsonDoc["powerfactor"]   = output[3];
-    jsonDoc["phase"]         = output[4];
-    jsonDoc["imaginaryPower"]= output[5];
-    jsonDoc["frequency"]     = output[6];
-
-    char buffer[512];
-    size_t len = serializeJson(jsonDoc, buffer);
-    webSocket.broadcastTXT(buffer, len);
+void HBridgeWebServer::updateMeasurements(float* in, float* out) {
+    StaticJsonDocument<512> doc;
+    doc["voltage"] = in[0];
+    doc["current"] = in[1];
+    doc["power"] = in[2];
+    doc["voltage_out"] = out[0];
+    doc["current_out"] = out[1];
+    doc["power_out"] = out[2];
+    doc["powerfactor"] = out[3];
+    doc["phase"] = out[4];
+    doc["imaginaryPower"] = out[5];
+    doc["frequency"] = out[6];
+    char buf[512];
+    size_t len = serializeJson(doc, buf);
+    webSocket.broadcastTXT(buf, len);
 }
 
-// Handles WebSocket events like connect, disconnect, and messages
-void HBridgeWebServer::onWebSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-    switch(type) {
+void HBridgeWebServer::onWebSocketEvent(uint8_t num, WStype_t type, uint8_t* payload, size_t len) {
+    switch (type) {
         case WStype_DISCONNECTED:
             Serial.printf("[%u] Disconnected!\n", num);
             break;
         case WStype_CONNECTED: {
             IPAddress ip = webSocket.remoteIP(num);
             Serial.printf("[%u] Connected from %s\n", num, ip.toString().c_str());
-
-            // Send initial status to the newly connected client
             StaticJsonDocument<128> statusDoc;
             statusDoc["type"] = "status";
             statusDoc["isRunning"] = _isRunning;
             char buffer[128];
-            size_t len = serializeJson(statusDoc, buffer);
-            webSocket.sendTXT(num, buffer, len);
+            size_t length = serializeJson(statusDoc, buffer);
+            webSocket.sendTXT(num, buffer, length);
             break;
         }
-        case WStype_TEXT:
-            // Not used in this application
-            break;
+        default: break;
     }
+}
+
+void HBridgeWebServer::broadcastTrip(const char* reason) {
+    StaticJsonDocument<192> doc;
+    doc["type"] = "trip";
+    doc["reason"] = reason;
+    char buf[192];
+    size_t len = serializeJson(doc, buf);
+    webSocket.broadcastTXT(buf, len);
+    _isRunning = false;
+    broadcastStatus();
 }
