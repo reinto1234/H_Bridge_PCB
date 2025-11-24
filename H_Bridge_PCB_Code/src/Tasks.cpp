@@ -170,6 +170,6 @@ void EmergencyStopTask(void*) {
             digitalWrite(ESTOP_OUTPUT_PIN, HIGH);
             Serial.println("Emergency Stop Triggered!");
         }
-        vTaskDelay(pdMS_TO_TICKS(1));
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
