@@ -161,8 +161,7 @@ Overcurrent protection is implemented through the **INA228** fault pin:
 
 ---
 
-## Safety
-- Always operate with **dead-time** and isolated gate drivers.  
+## Safety  
 - Use **current-limited** power supplies during development.  
 - Verify **MOSFET temperature and load** ratings.  
 - For **educational/laboratory use only**.
