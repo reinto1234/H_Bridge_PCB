@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 #define ESTOP_OUTPUT_PIN 19
-#define I_Shutdown 16.0f // Shutdown current in Amperes
+#define I_Shutdown 5.0f // Maximum current 10.9 A
 
 // Make it visible to all files that include safety.h
 extern volatile bool g_emergency_stop;

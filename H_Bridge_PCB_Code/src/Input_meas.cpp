@@ -25,39 +25,96 @@ float InputMeasurement::measurementBufferin[3] = {0.0, 0.0, 0.0}; // [Voltage, C
 
 // Call this once after ina228.begin(...)
 void InputMeasurement::configure_overcurrent_alert_only(float I_limit_A, float R_shunt_ohm) {
-  // 1) Transparent ALERT (deasserts automatically when condition clears)
-  ina228.setAlertLatch(INA228_ALERT_LATCH_ENABLED);
 
-  // 2) Compute raw SOVL threshold from I_limit * R_shunt
-  //    Adafruit readShuntVoltage() does: volts = (raw/16) * scale / 1e6
-  //    => raw = volts * 1e6 / scale * 16
-  float scale_uV = ina228.getADCRange() ? 78.125f : 312.5f; // per Adafruit lib
-  float v_limit_V = I_limit_A * R_shunt_ohm;                 // desired Vshunt
-  long  sovl_raw  = lroundf((v_limit_V * 1e6f / scale_uV) * 16.0f);
+  /**********************************************************************
+   * INA228 SHUNT-OVER-VOLTAGE LIMIT (SOVL) CALCULATION
+   *
+   * Goal:
+   *   Trigger ALERT when Shunt Voltage >= I_limit_A * R_shunt_ohm
+   *
+   * Datasheet facts (INA228 SOVL register):
+   *   - SOVL has a fixed LSB depending on ADCRANGE:
+   *
+   *       ADCRANGE = 0 → ±163.84 mV full-scale
+   *         Raw shunt conversion LSB = 312.5 nV (0.3125 µV)
+   *         SOVL_LSB = Raw_LSB * 16 = 312.5 nV * 16 = 5 µV
+   *
+   *       ADCRANGE = 1 → ±40.96 mV full-scale
+   *         Raw shunt conversion LSB = 78.125 nV (0.078125 µV)
+   *         SOVL_LSB = 78.125 nV * 16 = 1.25 µV
+   *
+   *   Therefore:
+   *       SOVL_LSB = (ADCRANGE==0 ? 5 µV : 1.25 µV)
+   *
+   * Conversion formula:
+   *       Desired_Shunt_Voltage = I_limit_A * R_shunt_ohm
+   *
+   *       sovl_raw = Desired_Shunt_Voltage / SOVL_LSB
+   *
+   * Example (your setup):
+   *       R_shunt = 0.015 Ω
+   *       I_limit = 16 A
+   *       V_limit = 16 * 0.015 = 0.24 V = 240 mV
+   *
+   *       BUT with ADCRANGE = 0 (default):
+   *           full-scale = 163.84 mV
+   *           → 240 mV exceeds ADC range → threshold must be clamped
+   *
+   *       ADCRANGE = 0 → SOVL_LSB = 5 µV
+   *       Max measurable shunt voltage = 163.84 mV
+   *
+   *       sovl_raw_max = 163.84 mV / 5 µV = 32768
+   *       limited_sovl_raw = min(32768, 240 mV / 5 µV)
+   *
+   * Result:
+   *       If I_limit * R_shunt exceeds ADC range → clamp to max
+   *
+   **********************************************************************/
 
-  // 3) Write SOVL (shunt over-voltage limit) register
+  // --- Transparent ALERT (non-latching) ---
+  ina228.setAlertLatch(INA228_ALERT_LATCH_DISABLED);
+
+  // 1) Desired voltage across shunt
+  float v_limit_V = I_limit_A * R_shunt_ohm;  // V
+
+  // 2) Full-scale shunt voltage based on ADCRANGE
+  float vshunt_fullscale =
+      ina228.getADCRange() ? 40.96e-3f : 163.84e-3f;  // V (datasheet)
+
+  // Clamp if user sets a too-large current limit
+  if (v_limit_V > vshunt_fullscale) {
+    v_limit_V = vshunt_fullscale;
+  }
+
+  // 3) SOVL LSB (datasheet)
+  float sovl_lsb_V = ina228.getADCRange() ? 1.25e-6f : 5.0e-6f;
+
+  // 4) Compute raw register value
+  long sovl_raw = lroundf(v_limit_V / sovl_lsb_V);
+
+  // 5) clamp to 16-bit positive
+  if (sovl_raw > 0x7FFF) sovl_raw = 0x7FFF;
+  if (sovl_raw < 0)      sovl_raw = 0;
+
+  // 6) Write SOVL register
   Adafruit_I2CDevice diag_dev(0x40, &I2CINA);
   Adafruit_I2CRegister SOVL(&diag_dev, INA228_REG_SOVL, 2, MSBFIRST);
-  SOVL.write((uint16_t)sovl_raw);  // fits in 16 bits for typical limits
+  SOVL.write((uint16_t)sovl_raw);
 
-  // 4) Enable ONLY SHNTOL as an alert source, disable others, keep transparent
+  // 7) Enable ONLY SHNTOL alert source
   Adafruit_I2CRegister DIAG(&diag_dev, INA228_REG_DIAGALRT, 2, MSBFIRST);
   uint16_t v = DIAG.read();
 
-  // Clear all alert source enables (bits 0..11) and CNVR (bit 14), keep polarity bit as-is.
-  v &= ~0x4FFFu;
-
-  // Enable SHNTOL (bit 6)
-  v |= (1u << 6);
-
-  // Transparent: ensure latch bit (15) = 0
-  v &= ~(1u << 15);
+  v &= ~0x4FFFu;       // disable all alert sources
+  v |=  (1u << 6);     // enable SHNTOL (bit 6)
+  v &= ~(1u << 15);    // transparent / non-latching
 
   DIAG.write(v);
 
-  // 5) Clear any stale flags once
+  // 8) Clear stale flags
   (void)ina228.alertFunctionFlags();
 }
+
 
 
 
