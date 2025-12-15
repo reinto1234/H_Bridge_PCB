@@ -91,8 +91,8 @@ void setup() {
   xTaskCreatePinnedToCore(webSocketUpdate, "WebSocketUpdate",
                           4096, NULL, 2, &webSocketUpdateHandle, 0);
 
-  xTaskCreatePinnedToCore(printerTask, "printer",
-                                  4096, NULL, 1, &printerHandle, 0);
+  //xTaskCreatePinnedToCore(printerTask, "printer",
+  //                                4096, NULL, 1, &printerHandle, 0);
 
   xTaskCreatePinnedToCore(ControllerTask, "ControllerTask",
                           4096, NULL, 4, &ControllerTaskHandle, 0);

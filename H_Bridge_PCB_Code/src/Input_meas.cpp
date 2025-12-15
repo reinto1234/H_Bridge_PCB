@@ -53,12 +53,12 @@ void InputMeasurement::configure_overcurrent_alert_only(float I_limit_A, float R
    *
    * Example (your setup):
    *       R_shunt = 0.015 Ω
-   *       I_limit = 16 A
-   *       V_limit = 16 * 0.015 = 0.24 V = 240 mV
+   *       I_limit = 5 A
+   *       V_limit = 5 * 0.015 = 0.075 V = 75 mV
    *
    *       BUT with ADCRANGE = 0 (default):
    *           full-scale = 163.84 mV
-   *           → 240 mV exceeds ADC range → threshold must be clamped
+   *           → 75 mV is within ADC range
    *
    *       ADCRANGE = 0 → SOVL_LSB = 5 µV
    *       Max measurable shunt voltage = 163.84 mV
@@ -72,7 +72,7 @@ void InputMeasurement::configure_overcurrent_alert_only(float I_limit_A, float R
    **********************************************************************/
 
   // --- Transparent ALERT (non-latching) ---
-  ina228.setAlertLatch(INA228_ALERT_LATCH_DISABLED);
+  //ina228.setAlertLatch();
 
   // 1) Desired voltage across shunt
   float v_limit_V = I_limit_A * R_shunt_ohm;  // V
